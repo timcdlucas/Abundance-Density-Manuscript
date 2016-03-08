@@ -1019,25 +1019,164 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 
 
 
+\begin{table}[b!]
+\centering
+\caption[All symbols used in Chapters \ref{ch:sims1} and \ref{ch:sims2}.]{All symbols used in Chapters \ref{ch:sims1} and \ref{ch:sims2} along with their units and default values.}
+
+\begin{tabular}{@{}lp{5cm}p{3.9cm}r@{}}
+\toprule
+Symbol & Explanation & Units & Value\\
+\midrule
+$S$ & Number of susceptible individuals &&\\
+$I_q$ & N. individuals infectious with diseases $q$ &&\\
+$I^+_p$ & Sum of classes infected with pathogen $p$ &\\
+$R$ & Number of recovered/immune individuals &&\\
+$N$ & Total Population && 30,000\\
+$m$ & Number of colonies&& 10\\
+$n$ & Colony starting size && 3,000\\
+$a$ & Area & km$^2$& 10,000\\
+$\beta$ & Transmission rate & Per year per individual& 2, 5, 10\\
+$\gamma$ & Recovery rate & Per year per individual. & 1\\
+$\lambda$ & Dispersal & Per day per individual& 0.001--0.1\\
+$\Lambda$ & Birth rate & Per year per individual& 0.05\\
+$\mu$ & Death rate & Per year per individual & 0.05\\
+%$d_I$ & Infectious death rate & Additional deaths per day per individual&\\
+$\rho$ & No. pathogens && 2\\
+$p$ &  Pathogen index \emph{i.e.} $p\in\{1,2\}$ for pathogens 1 and 2 & &\\
+$q$ & Disease class \emph{i.e.}, $q\in\{1,2,12\}$&\\
+%$\mathcal{V}$ & Neighbourhood of a node &&\\
+$t, t^\prime$ & Time and time plus waiting time \emph{i.e.}, $t+\delta$ & Days&\\
+$k_i$ & Degree of node $i$ &&\\
+$\delta$ & Waiting time until next event & Days&\\
+$\alpha$ & Cross immunity & Proportion& 0.1\\
+$n, m$ & Colony index &&\\
+%$\bm{A}_{mn}$ & Adjacency matrix. & Distance &\\
+%$\mu$ & Maximum distance for edge to exist & km& 40, 100\\
+$\sigma$ & Invading pathogen seed size & & 10\\
+$r_i$ & The rate that event $i$ occurs. & Days$^{-1}$&\\
+\bottomrule
+\end{tabular}
+
+\label{t:params}
+\end{table}
+
+
+
 
 \subsection{Metapopulation model}
 
-\tmpsection{Overview}
 
 
-I used a two-pathogen, metapopulation SIR model to compare the roles of demographic parameters on pathogen species richness.
-Specifically I let two identical pathogens---an endemic pathogen and an invading pathogen---compete.
-I used persistence or not of the second pathogen as my response variable.
-I tested whether population size is more important than population density.
-I then tested whether colony size or the number of colonies is the more important component of population size.
-The multipathogen SIR model is identical to that in Chapter \ref{ch:sims1} and is implemented in R \cite{R}.
+
+\subsubsection{Two pathogen SIR model}
+
+I examine a multipathogen SIR model with vital dynamics. 
+This is a compartment model with individuals being classed as susceptible, infected or recovered with immunity (Figure~\ref{f:sir}).
+Susceptible individuals are counted in class $S$.
+There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with pathogen 1, pathogen 2 or both respectively.
+Recovered individuals, $R$, are immune to both pathogens, even if they have only been infected with one.
+Furthermore, recovery from one pathogen moves an individual straight into the recovered class, even if the individual is infected with both pathogen.
+This modelling choice allows the model to be easily expanded to include more than two pathogens.
+The assumption of immediate recovery from all other diseases is likely to be quite accurate for very closely related pathogens as is being studied here as once an acquired immune response is activated, all infections are likely to be cleared quickly.
+
+The coinfection rate (the rate at which an infected individual is infected with a second pathogen) is adjusted compared to the infection rate by a factor $\alpha$ (here I used $\alpha = 0.1$ which means coinfection happens at a tenth the rate of first infections).
+In the application of long term existence of pathogens it is vital to include vital dynamics (births and deaths) as the SIR without vital dynamics has no endemic state.
+Birth and death rates are assumed to be equal, $\mu = \Lambda$ (see Table~\ref{t:params} for a list of symbols and values used).
+The time scale of the simulations are set by setting $\mu$ = 0.05 per year, yielding an average host generation time of 20 years.
+Infection is assumed to cause no extra mortality as for a number of viruses, bats show no clinical signs of infection \cite{halpin2011pteropid, deThoisy2016bioecological}.
+
+
+\subsubsection{Metapopulation}
+
+
+The population is divided into a number of subpopulations.
+This metapopulation is modelled as a network with subpopulations being nodes and dispersal between subpopulations being indicated by edges (Figure~\ref{f:net}).
+Individuals within a subpopulation interact randomly so that the subpopulation is fully mixed.
+Dispersal between subpopulations occurs at a rate $\lambda$.
+Individuals can only disperse to subpopulations connected to theirs in the network.
+The rate of dispersal is not affected by the number of edges a subpopulation has (the degree of the subpopulation).
+So the dispersal rate from a subpopulation $m$ with degree $k_m$ to subpopulation $n$ is $\frac{\lambda}{k_m}$.
+Note this rate is independent of the degree of subpopulation $n$.
+
+
+
+
+
+\subsubsection{Stochastic simulations}
+
+I examine this model using stochastic, continuous time simulations (using the Gillespie algorithm) implemented in R \cite{R}.
+At each step in the simulation we calculate the rate that each possible event might occur.
+One event is then randomly chosen, weighted by it's rate
+\begin{align}
+  p(\text{event } i) = \frac{r_i}{\sum_i r_i}
+\end{align}
+where $r_i$ is the rate that event $i$ occurs.
+Finally, the length of the time step, $\delta$, is drawn from an exponential distribution 
+\begin{align}
+  \delta \sim \operatorname{Exp}\left(\sum_i r_i  \right).
+\end{align}
+This means that the total length of each simulation is stochastic. 
+We define the number of events we wish to simulate instead.
+
+
+\begin{figure}[t]
+\centering
+  \includegraphics[width=0.4\textwidth]{figure/SIRoption1.pdf}
+  \caption[Schematic of the SIR model used]{
+Schematic of the SIR model used. 
+Individuals are in one five classes, susceptible (orange, S), infectious with pathogen 1, pathogen 2 or both (blue, $I_1, I_2, I_{12}$) or recovered and immune from further infection (green, R).
+Transitions between classes occurs only as indicated by arrows.
+Note that individuals in $I_{12}$ move into R, not back to $I_1$ or $I_2$. 
+That is, recovery from one pathogen causes immediate recovery from the other pathogen.
+}
+  \label{f:sir}
+\end{figure}
+
+
+We can now write down the rates of all events. 
+I defined $I^+_p$ to be the sum of all classes that are infectious with pathogen $p$, for example $I^+_1 = I_1 + I_{12}$. 
+Assuming asexual reproduction, that all classes reproduce at the same rate and that individuals are born into the susceptible class we get
+\begin{align}
+  P\left( S_{nt^\prime} = S_{nt} +1\right) &= \Lambda\left( S_{nt}+\sum_q I_{qnt} + R_{nt}\right) 
+\end{align}
+where $P\left( S_{nt^\prime} = S_{nt} +1\right)$ is the probability that the number of susceptibles in subpopulation $n$ will increase by 1 (a single birth) in the time interval $t$ to $t^\prime$ and $\sum_q I_{qnt}$ is the sum of all infection classes $q \in {1, 2, 12}$.
+The rates of death, given a death rate $d$ are given by
+\begin{align}
+  P\left( S_{nt^\prime} = S_{nt}-1 \right) &= \mu S_{nt}, \\
+  P\left( I_{qnt^\prime} = I_{qnt}-1 \right) &= \mu I_{qnt},\\
+  P\left( R_{nt^\prime} = R_{nt}-1 \right) &= \mu R_{nt}.
+\end{align}
+I modelled transmission as density-dependant.
+This assumption was more suitable than frequency-dependant transmission as I am modelling a disease transmitted by saliva or urine in highly dense populations confined to caves, building or potentially a small number of tree roosts.
+I was notably not modelling an STD as these diseases are not expected to be commonly zoonotic.
+Infection of a susceptible with either pathogen 1 or 2, $S \rightarrow I_p$ where $p\in \{1,2\}$, is therefore given by
+\begin{align}
+  P\left( I_{pnt^\prime} = I_{pnt}+1, S_{nt^\prime} = S_{nt}-1 \right) &= \beta S_{nt}I^+_{pnt},
+\end{align}
+while coinfection, given a crossimmunity factor $\alpha$, is given by
+\begin{align}
+  P\left( I_{12,nt^\prime} = I_{12,nt}+1,\: I_{1nt^\prime} = I_{1nt}-1\right) = &\alpha\beta I_{1nt}I^+_{2nt},\\
+  P\left( I_{12,nt^\prime} = I_{12,nt}+1,\: I_{2nt^\prime} = I_{2nt}-1\right) = &\alpha\beta I_{2nt}I^+_{1nt}.
+\end{align}
+The probability of migration from colony $m$ (with degree $k_m$) to colony $n$, given a dispersal rate $\lambda$ is given by
+\begin{align}
+  P\left(S_{nt^\prime}=S_{nt}+1,\: S_{mt^\prime} = S_{mt}-1\right) &= \frac{\lambda S_{mt}}{k_m-1},\\
+  P\left(I_{qnt^\prime}=I_{qnt}+1,\: I_{qmt^\prime} = I_{qmt}-1\right) &= \frac{\lambda I_{qmt}}{k_m-1},\\
+  P\left(R_{nt^\prime}=S_{nt}+1,\: R_{mt^\prime} = R_{mt}-1\right) &= \frac{\lambda R_{mt}}{k_m-1}.
+\end{align}
+Finally, recovery from any infectious class occurs at a rate $\gamma$
+\begin{align}
+  P\left( I_{qnt^\prime} = I_{qnt}-1,\: R_{nt^\prime} = R_{nt}+1 \right) &= \gamma I_{qnt}.
+\end{align}
 
 
 
 In each simulation the population is seeded with 20 individuals infected with pathogen 1 in each colony. 
 Pathogen 1 is then allowed to spread and reach equilibrium. 
+Visual inspection of preliminary simulations was used to decide on \rinline{invadeT} as being long enough for the epidemic to reach an equilibrium state.
 After \rinline{invadeT} events, 5 individuals infected with pathogen 2 are added to one randomly selected colony. 
 After another \rinline{nEvent - invadeT} events the invasion of pathogen 2 is considered successful if any individuals with pathogen 2 still remain.
+Again visual inspection of preliminary simulations was used to determine that after \rinline{nEvent - invadeT} events, if an invading pathogen was still present, it was well established. 
 
 \subsection{Dependant variables}
 
