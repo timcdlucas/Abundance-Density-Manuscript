@@ -1781,7 +1781,7 @@ write.csv(allResults, file = 'Data/modelSelectResults.csv')
 
 allResults <- read.csv('Data/modelSelectResults.csv', row.names = 1)
 
-varWeights <- sapply(names(allResults)[1:6], function(x) sum(allResults$weight[allResults[, x]])/nBoots)
+varWeights <- sapply(names(allResults)[1:5], function(x) sum(allResults$weight[allResults[, x]])/nBoots)
 
 sepVarWeights <- lapply(1:nBoots, function(b) 
                       sapply(names(allResults)[1:6], 
