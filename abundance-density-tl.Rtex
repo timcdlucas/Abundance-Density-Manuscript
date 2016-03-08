@@ -98,6 +98,20 @@ extraFigs <- 'hide'
 # How many cores do you want to use to run simulations?
 nCores <- 7
 
+
+##################################
+### Run web scraping?          ###
+##################################
+
+# There's some slow webscrapping functions. Run them?
+runPubmedScrape <- FALSE
+runScholarScrape <- FALSE
+runFstScrape <- FALSE
+
+
+# Run slow iucn data collecting.
+runIucn <- FALSE
+
 ##########################
 ### End options        ###
 ##########################
@@ -120,27 +134,55 @@ theme_set(theme_grey() + theme_tcdl)
 #   https://github.com/timcdlucas/metapopepi
 library(MetapopEpi)
 
-# Data manipulations
-library(reshape2)
-library(dplyr)
-
 # Calc confidence intervals (could probably do with broom instead now.)
 library(binom)
 
 # To tidy up stats models/tests
 library(broom)
 
-
 # Run simulations in parallel
 library(parallel)
 
 
-# plotting
+# phylogenetic regression
+library(ape)
+library(caper)
+library(phytools)
+library(nlme)
+library(qpcR)
+library(car)
+
+# Data handling
+library(dplyr)
+library(broom)
+library(readxl)
+library(sqldf)
+library(reshape2)
+
+
+# weighted means + var
+library(Hmisc)
+
+# Plotting
 library(ggplot2)
+library(ggtree)
 library(palettetown)
+library(ggthemes)
+library(GGally)
+library(cowplot)
+
 # Get nice fonts in base graphics
 library(showtext)
 
+# Web scraping.
+library(rvest)
+
+# For synonym list
+library(taxize)
+
+# Spatial analysis
+library(maptools)
+library(geosphere)
 
 
 %%end.rcode
@@ -286,6 +328,19 @@ Secondly I tested whether the invasion of a new pathogen is more strongly promot
 % (with the words “here we show” or their equivalent).
 
 
+
+\begin{figure}[t]
+\centering
+  \includegraphics[width=0.4\textwidth]{figure/SIRoption1.pdf}
+  \caption[Schematic of the SIR model used]{
+Schematic of the SIR model used. 
+Individuals are in one five classes, susceptible (orange, S), infectious with pathogen 1, pathogen 2 or both (blue, $I_1, I_2, I_{12}$) or recovered and immune from further infection (green, R).
+Transitions between classes occurs only as indicated by arrows.
+Note that individuals in $I_{12}$ move into R, not back to $I_1$ or $I_2$. 
+That is, recovery from one pathogen causes immediate recovery from the other pathogen.
+}
+  \label{f:sir}
+\end{figure}
 
 %%begin.rcode SimSetup
 
@@ -1008,6 +1063,496 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 
 
 
+
+%%begin.rcode parameters
+# Define some parameters.
+#   This is useful at the top so that it can go in text.
+
+# How many bootstraps for model selection NULL variable
+nBoots <- 50
+
+
+# What proportion of a species range should be covered for an Fst study to count as valid.
+rangeUseable <- 0.20
+
+
+
+%%end.rcode
+
+%%begin.rcode luis2013virusRead
+
+#read in luis2013virus data
+virus2 <- read.csv('Data/luis2013comparison.csv', stringsAsFactors = FALSE)
+
+
+virus2$binomial <- paste(virus2$host.genus, virus2$host.species)
+
+
+# From methods
+#Many viruses were not identified to species level or their identified species was not in the ICTV virus taxonomy \cite{ICTV}.
+#I counted a virus if it was the only virus, for that host species, in the lowest taxonomic level identified in the ICTV taxonomy.
+#That is, if a host carries an unknown Paramyxoviridae virus, then it must carry at least one Paramyxoviridae virus.
+#If a host carries an unknown Paramyxoviridae virus and a known Paramyxoviridae virus, then it is hard to confirm that the unknown virus is not another record of the known virus.
+#In this case, this would be counted as one virus species.
+
+# This has been implemented manually and indicated in the column `remove`
+
+virus2 <- virus2[!virus2$remove, ]
+
+%%end.rcode
+
+
+%%begin.rcode wilsonReaderTaxonomyRead, fig.show = extraFigs, fig.cap = 'Histogram of number of subspecies'
+
+##################################################################
+### Subspecies vs Viruses analysis.                            ###
+##################################################################
+
+
+# Read in the wilson Reader Taxonomy and use it to calculate the number of subspecies each bat species has.
+
+tax <- read.csv('Data/msw3-all.csv', stringsAsFactors = FALSE)
+
+chir <- tax %>%
+          filter(Order == 'CHIROPTERA')
+
+# Save some memory.
+rm(tax)
+
+# Count the number of subspecies each bat species has.
+subs <- sqldf('
+  SELECT Family, Genus, Species, COUNT(Subspecies)
+  AS NumberOfSubspecies
+  FROM chir
+  Where Species <> ""
+  GROUP BY Genus, Species
+               ')   
+
+
+
+# I think each species has 1 row for species and extra rows for subspecies
+#   Check this is true. 
+#   If that is correct, then Species with >1 NumberOfSubspecies should be one less.
+
+SpeciesRows <- sqldf('
+  SELECT Genus, Species, COUNT(Subspecies)
+  AS SpeciesRows
+  FROM chir
+  WHERE Subspecies == "" AND Species <> ""
+  GROUP BY Genus, Species
+               ') 
+
+# 
+(SpeciesRows$SpeciesRows != 1) %>% sum
+all(SpeciesRows$SpeciesRows == 1)
+
+# Species with >1 NumberOfSubspecies should be one less
+subs$NumberOfSubspecies <- ifelse(subs$NumberOfSubspecies > 1, 
+                             subs$NumberOfSubspecies - 1, 
+                             subs$NumberOfSubspecies)
+
+# Quick look at species with highest number of subspecies.
+subs[order(subs$NumberOfSubspecies, decreasing = TRUE ),] %>% head
+
+# Megaderma spasma is top. It's widespread across south east asia islands. 
+#   So this makes sense.
+
+# Quick look at the number of subspecies.
+ggplot(subs, aes(x = NumberOfSubspecies)) +
+  geom_histogram(binwidth = 2) +
+  xlab('Number of Subspecies') +
+  ylab('Count')
+
+
+# Create a combined binomial name column
+subs$binomial <- paste(subs$Genus, subs$Species)
+
+
+
+
+# Check overlap of datasets.
+sum(!(virus2$binomial[virus2$host.species != ''] %in% subs$binomial))
+
+notInTax <- (virus2$binomial[virus2$host.species != ''])[!(virus2$binomial[virus2$host.species != ''] %in% subs$binomial)]
+
+# Run this to find synonyms of names not in Wilson and Reeder
+#   Doesn't find much of use.
+# syns <- synonyms(notInTax, db = 'itis')
+
+# Clean some names
+#  As taxize::synonyms didn't find most of them, I am using IUCN.
+#  And checking that the IUCN name is then in The Wilson & Reeder taxonomy
+
+virus2$binomial[virus2$binomial == 'Myotis pilosus'] <- 'Myotis ricketti'
+virus2$binomial[virus2$binomial == 'Tadarida pumila'] <- 'Chaerephon pumilus'
+virus2$binomial[virus2$binomial == 'Tadarida condylura'] <- 'Mops condylurus'
+virus2$binomial[virus2$binomial == 'Rhinolophus hildebrandti'] <- 'Rhinolophus hildebrandtii'
+# Rhinolophus horsfeldi: I can't find this species anywhere. Will exclude.
+#   Possibly Megaderma spasma according to http://www.fao.org/3/a-i2407e.pdf
+virus2$binomial[virus2$binomial == 'Tadarida plicata'] <- 'Chaerephon plicatus'
+virus2$binomial[virus2$binomial == 'Artibeus planirostris'] <- 'Artibeus jamaicensis'
+
+sum(!(virus2$binomial[virus2$host.species != ''] %in% subs$binomial))
+
+%%end.rcode
+
+%%begin.rcode subsHistsByFam, fig.show = extraFigs, fig.height = 3, fig.cap = 'Histograms of number of subspecies for the families with many species.'
+
+# Compare the histograms of numbers of subspecies over the families with many species.
+subs %>%
+  filter(Family %in% names(which(table(subs$Family) > 99))) %>%
+  ggplot(., aes(x = NumberOfSubspecies, y = ..density..)) + 
+    geom_histogram() +
+    facet_grid(. ~ Family) +
+    xlab('Number of Subspecies') +
+    ylab('Density')
+
+%%end.rcode
+
+%%begin.rcode, subvsvirusCaption
+
+# Caption for subspecies vs n. viruses plot.
+subvsvirus <- '
+Number of viruses against number of subspecies.
+Points are coloured by family, with families with less than 10 species being grouped into "other".
+Contours show the 2D density of points and suggest a positive correlation.
+'
+subvsvirusTitle <- 'Number of viruses against number of subspecies.'
+%%end.rcode
+
+%%begin.rcode subsDataFrame, fig.show = extraFigs, fig.cap = subvsvirus, fig.scap = subvsvirusTitle, out.width = '\\textwidth'
+# create combined dataframe
+
+# Join dataframes
+species <- sqldf("
+               SELECT subs.binomial, virus2.[virus.species]
+               FROM subs
+               INNER JOIN virus2
+               ON subs.binomial=virus2.binomial;
+              ")
+                        
+# Count number of virus species for each bat species
+nSpecies <- species %>%
+              unique %>%
+              group_by(binomial) %>%
+              summarise(virusSpecies = n())
+        
+# Add other Subspecies data.
+nSpecies <- sqldf("
+              SELECT nSpecies.binomial, virusSpecies, NumberOfSubspecies, Genus, Family
+              FROM nSpecies
+              LEFT JOIN subs
+              ON nSpecies.binomial=subs.binomial
+             ")
+
+# Create another column to make plotting easier.
+#   Group families with few rows into 'other'
+
+nSpecies$familyPlotCol <- nSpecies$Family
+nSpecies$familyPlotCol[
+  nSpecies$Family %in% names(which(table(nSpecies$Family) < 10))] <- 'Other'
+
+table(nSpecies$familyPlotCol)
+
+ggplot(nSpecies, aes(x = log(NumberOfSubspecies), y = log(virusSpecies))) +
+  # geom_smooth(method = 'lm') +
+  geom_jitter(aes(colour = familyPlotCol), size = 2.5, alpha = 0.8, 
+    position = position_jitter(width = .1, height = .1)) +
+  scale_colour_hc() +
+  geom_density2d() +
+  labs(colour = 'Family')
+  
+%%end.rcode
+
+%%begin.rcode virusHist, fig.show = extraFigs, fig.cap = 'Histogram of known viruses per species'
+
+ggplot(nSpecies, aes(x = virusSpecies)) +
+  geom_histogram()
+
+%%end.rcode
+
+
+
+%%begin.rcode euthRead
+
+# Read in pantheria data base
+pantheria <- read.table(file = 'Data/PanTHERIA_1-0_WR05_Aug2008.txt',
+  header = TRUE, sep = "\t", na.strings = c("-999", "-999.00"))
+
+pantheria <- pantheria %>%
+               filter(MSW05_Order == 'Chiroptera', !is.na(X10.1_PopulationGrpSize))
+
+nSpecies <- sqldf("
+  SELECT [MSW05_Binomial],[X5.1_AdultBodyMass_g], [X10.1_PopulationGrpSize], virusSpecies, [MSW05_Family]
+  FROM pantheria
+  LEFT JOIN nSpecies
+  ON nSpecies.binomial=pantheria.MSW05_Binomial
+  ")
+
+names(nSpecies) <- c('binomial', 'mass', 'colonySize', 'virusSpecies', 'Family')
+nSpecies$virusSpecies[is.na(nSpecies$virusSpecies)] <- 0
+
+nSpecies$familyPlotCol <- as.character(nSpecies$Family)
+nSpecies$familyPlotCol[
+  nSpecies$Family %in% names(which(table(nSpecies$Family) < 10))] <- 'Other'
+
+
+# Remove 'Dobsonia magna' as us the same species as 'Dobsonia moluccensis'
+nSpecies <- nSpecies %>% 
+              filter(binomial != 'Dobsonia magna')
+
+
+nSpecies$binomial <- factor(nSpecies$binomial)
+
+# Now add additional mass estimates.
+
+#additionalMass <- read.csv('Data/AdditionalBodyMass.csv', stringsAsFactors = FALSE)
+#meanAdditionalMass <- additionalMass %>%
+#                        group_by(binomial) %>% 
+#                        summarise(mass = mean(Body.Mass.grams))
+
+#nSpecies$mass[
+#  sapply(meanAdditionalMass$binomial, function(x) which(nSpecies$binomial == x))
+#  ] <- meanAdditionalMass$mass 
+
+
+%%end.rcode
+
+
+
+%%begin.rcode IUCNranges, eval = runIucn
+
+# Read in iucn ranges and calculate range sizes for each species.
+ranges <- readShapePoly('Data/TERRESTRIAL_MAMMALS/TERRESTRIAL_MAMMALS.shp')
+
+ranges <- ranges[ranges$order_name == 'CHIROPTERA', ]
+
+nSpecies$binomial[!(nSpecies$binomial %in% ranges$binomial)]
+
+ranges$binomial <- factor(ranges$binomial)
+
+#levels(ranges$binomial) <- c(levels(ranges$binomial), 'Myotis ricketti')
+#ranges$binomial[ranges$binomial == 'Myotis pilosus'] <- 'Myotis ricketti'
+
+#nSpecies$binomial[!(nSpecies$binomial %in% ranges$binomial)]
+
+
+findArea <- function(name){
+  #cat(name)
+  A <- areaPolygon(ranges[ranges$binomial == as.character(name), ])
+  sum(A)
+}
+
+iucnDistr <- sapply(nSpecies$binomial, findArea)
+
+write.csv(iucnDistr, 'Data/iucnDistr.csv')
+
+%%end.rcode
+
+%%begin.rcode readIucnIn
+
+iucnDistr <- read.csv('Data/iucnDistr.csv', row.names = 1)
+
+nSpecies$distrSize <- iucnDistr$x
+
+%%end.rcode
+
+
+
+%%begin.rcode pubmedScrapeFunc
+
+# Scrape from pubmed
+
+scrapePub <- function(sp){
+    
+  Sys.sleep(2)
+
+  # Initialise refs
+  refs <- NA
+
+  # Find synonyms from taxize
+  syns <- synonyms(sp, db = 'itis')
+  if(NROW(syns[[1]]) == 1){
+    spString <- tolower(gsub(' ', '%20', sp))
+  } else {
+    spString <- paste(tolower(gsub(' ', '%20', syns[[1]]$syn_name)), collapse = '%22+OR+%22')
+  }
+
+
+  url <- paste0('http://www.ncbi.nlm.nih.gov/pubmed/?term=%22', spString, '%22')
+
+
+  page <- html(url)
+  
+  # Test if exact phrase was found.
+  phraseFound <- try(page %>% 
+                   html_node('.icon') %>%
+                   html_text() %>%
+                   grepl("The following term was not found in PubMed:", .), silent = TRUE)
+
+  if (class(phraseFound) == "logical") {
+    if(phraseFound){
+      if(phraseFound) refs <- NA
+    }
+  } 
+  if (class(phraseFound) != "logical") {
+    try({
+    refs <- page %>%
+              html_node('.result_count') %>%
+              html_text() %>%
+              strsplit(' ') %>% 
+              .[[1]] %>%
+              .[length(.)] %>%
+              as.numeric()
+    })
+  }
+
+  return(refs)
+}
+
+
+%%end.rcode
+
+
+%%begin.rcode pubmedScrape, eval = runPubmedScrape
+
+# Create empty vector
+pubmedRefs <- rep(NA, nrow(nSpecies))
+
+for(i in 1:NROW(nSpecies)){
+  pubmedRefs[i] <- scrapePub(nSpecies$binomial[i])
+}
+
+pubmedScrapeDate <- Sys.Date()
+
+pubmedRefs <- cbind(binomial = nSpecies$binomial, pubmedRefs = pubmedRefs)
+
+# Write out.
+write.csv(pubmedRefs, file = 'Data/pubmedRefs.csv')
+
+%%end.rcode
+
+
+
+
+%%begin.rcode pubmedRead
+
+
+pubmedRefs <- read.csv('Data/pubmedRefs.csv', stringsAsFactors = FALSE, row.names = 1)
+
+# Function returns NA for none found. Change that to a zero.
+pubmedRefs$pubmedRefs[is.na(pubmedRefs$pubmedRefs)] <- 0
+nSpecies$pubmedRefs <- pubmedRefs$pubmedRefs
+
+%%end.rcode
+
+%%begin.rcode scholarScrapeFunc
+
+scrapeScholar <- function(sp){
+    
+  wait <- rnorm(1, 120, 2)
+  Sys.sleep(wait)
+
+
+  syns <- synonyms(sp, db = 'itis')
+  if(NROW(syns[[1]]) == 1){
+    spString <- tolower(gsub(' ', '%20', sp))
+  } else {
+    spString <- paste(tolower(gsub(' ', '%20', syns[[1]]$syn_name)), collapse = '%22+OR+%22')
+  }
+
+  url <- paste0('https://scholar.google.co.uk/scholar?hl=en&q=%22', 
+                spString, '%22&btnG=&as_sdt=1%2C5&as_sdtp=')
+
+
+  page <- html(url)
+  
+  try({
+  refs <- page %>%
+            html_node('#gs_ab_md') %>%
+            html_text() %>%
+            gsub('About\\s(.*)\\sresults.*', '\\1', .) %>%
+            gsub(',', '', .) %>%
+            as.numeric
+  })
+  return(refs)
+}
+
+%%end.rcode
+
+%%begin.rcode scholarScrape, eval = runScholarScrape
+
+# Create empty vector
+scholarRefs <- rep(NA, nrow(nSpecies))
+
+for(i in 1:NROW(nSpecies)){
+  scholarRefs[i] <- scrapeScholar(nSpecies$binomial[i])
+}
+
+scholarScrapeDate <- Sys.Date()
+
+scholarRefs <- cbind(binomial = nSpecies$binomial, scholarRefs = scholarRefs)
+
+# Write out.
+write.csv(scholarRefs, file = 'Data/scholarRefs.csv')
+
+%%end.rcode
+
+
+
+
+%%begin.rcode scholarRead
+
+
+scholarRefs <- read.csv('Data/scholarRefs.csv', stringsAsFactors = FALSE, row.names = 1)
+
+# Function returns NA for none found. Change that to a zero.
+scholarRefs$scholarRefs[is.na(scholarRefs$scholarRefs)] <- 0
+
+nSpecies$scholarRefs <- sqldf('
+  SELECT scholarRefs
+  FROM nSpecies
+  LEFT JOIN scholarRefs
+  ON scholarRefs.binomial=nSpecies.binomial
+  '
+  ) %>%
+  .$scholarRefs
+
+#TODO Rescrape
+
+%%end.rcode
+
+
+
+
+
+%%begin.rcode subsRemoveNAs
+
+# Remove missing data and sort out the data frame a little.
+
+#nSpecies <- nSpecies[complete.cases(nSpecies), ]
+
+## Add number of subspecies as a factor. Might help plotting.
+#nSpecies$SubspeciesFactor <- factor(nSpecies$NumberOfSubspecies, 
+#  levels = as.character(1:max(nSpecies$NumberOfSubspecies)))
+
+# Rownames to species names
+rownames(nSpecies) <- nSpecies$binomial
+
+%%end.rcode
+
+
+%%begin.rcode savenSpecies
+########################################################
+### At this point, nSpecies should be in final form  ###
+########################################################
+
+write.csv(nSpecies, file = 'Data/nSpecies.csv')
+
+%%end.rcode
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -1118,19 +1663,6 @@ Finally, the length of the time step, $\delta$, is drawn from an exponential dis
 This means that the total length of each simulation is stochastic. 
 We define the number of events we wish to simulate instead.
 
-
-\begin{figure}[t]
-\centering
-  \includegraphics[width=0.4\textwidth]{figure/SIRoption1.pdf}
-  \caption[Schematic of the SIR model used]{
-Schematic of the SIR model used. 
-Individuals are in one five classes, susceptible (orange, S), infectious with pathogen 1, pathogen 2 or both (blue, $I_1, I_2, I_{12}$) or recovered and immune from further infection (green, R).
-Transitions between classes occurs only as indicated by arrows.
-Note that individuals in $I_{12}$ move into R, not back to $I_1$ or $I_2$. 
-That is, recovery from one pathogen causes immediate recovery from the other pathogen.
-}
-  \label{f:sir}
-\end{figure}
 
 
 We can now write down the rates of all events. 
