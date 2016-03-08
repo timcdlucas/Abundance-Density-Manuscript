@@ -106,11 +106,12 @@ nCores <- 7
 # There's some slow webscrapping functions. Run them?
 runPubmedScrape <- FALSE
 runScholarScrape <- FALSE
-runFstScrape <- FALSE
-
 
 # Run slow iucn data collecting.
 runIucn <- FALSE
+
+# Run slow bootstraps
+runBoots <- TRUE
 
 ##########################
 ### End options        ###
@@ -1637,24 +1638,12 @@ nSpecies %>%
 ##################################################################################
 ## N Virus ~ subs + log(cites + mass)
 
-compSubspecies <- comparative.data(data = nSpecies, phy = pruneTree, names.col = 'binomial')
+#compSubspecies <- comparative.data(data = nSpecies, phy = pruneTree, names.col = 'binomial')
 
 
-model1 <- pgls(
-  virusSpecies ~ log(scholarRefs) + log(mass) + log(distrSize) + log(colonySize), 
-  data = compSubspecies, lambda = 'ML')
-
-
-
-## N Virus ~ subs + log(cites + mass) + subs*log(cites)
-
-subspeciesInter <- pgls(
-  virusSpecies ~ log(mass) + 
-  NumberOfSubspecies*log(scholarRefs), 
-  data = compSubspecies, lambda = 'ML')
-
-#subInter.summary <- summary(subspeciesInter)
-
+#model1 <- pgls(
+#  virusSpecies ~ log(scholarRefs) + log(mass) + log(distrSize) + log(colonySize), 
+#  data = compSubspecies, lambda = 'ML')
 
 
 
@@ -1664,6 +1653,190 @@ subspeciesInter <- pgls(
 #sqrt(vif(lm(virusSpecies ~ log(scholarRefs) + NumberOfSubspecies +  log(mass) + log(distrSize), data = nSpecies)))
 
 %%end.rcode
+
+
+
+%%begin.rcode fstITanalysis
+
+findCombs <- function(k, vars, longest){
+  x <- t(combn(vars, k))
+  nas <- matrix(NA, ncol = longest - NCOL(x), nrow = nrow(x))
+  mat <- cbind(x, nas)
+  return(mat)
+}
+
+varList <- c('scholarRefs', 'colonySize', 'mass', 'distrSize', 'rand')
+
+
+modelList <- lapply(0:5, function(k) findCombs(k, varList, 5))
+modelMat <- do.call(rbind, modelList)
+
+allFormulae <- apply(modelMat[-1, ], 1, function(x) as.formula(paste('virusSpecies ~', paste(x[!is.na(x)], collapse = ' + '))))
+
+allFormulae <- c(as.formula('virusSpecies ~ 1'), allFormulae)
+
+%%end.rcode
+
+
+
+%%begin.rcode modelSelectBoots, eval = runBoots
+
+
+
+modelSelect <- function(allForm, data, phy, boot, allModelMat, varList){
+  
+  set.seed(paste0('2388', boot))
+  bootData <- cbind(data, rand = runif(nrow(data)))
+  row.names(bootData) <- bootData$binomial
+
+
+  # log some predictors
+  bootData[, c('mass', 'scholarRefs', 'colonySize', 'distrSize')] <- log(bootData[, c('mass', 'scholarRefs', 'colonySize', 'distrSize')])
+  
+  # scale
+  bootData[, c('mass', 'scholarRefs', 'colonySize', 'distrSize', 'rand')] <- base::scale(bootData[, c('mass', 'scholarRefs', 'colonySize', 'distrSize', 'rand')])
+  
+
+  coefs <- matrix(NA, ncol = length(varList) + 1, nrow = nrow(allModelMat), 
+             dimnames = list(NULL, paste0('beta.', c('(Intercept)', varList))))
+
+  results <- apply(allModelMat, 1, function(x) sapply(varList, function(y) y %in% x)) %>%
+               t %>%
+               data.frame %>%
+               cbind(AIC = NA, boot = boot, lambda = NA, attempt = NA, predictors = NA, coefs)
+
+  # Fit each model 
+  # I'm having problems with convergence so sometimes have to try different starting values.
+  for(m in 1:length(allForm)){
+    if(exists('model')){
+      rm(model)
+    }
+    try({
+      model <- gls(allForm[[m]], correlation = corPagel(value = 0.4, phy = phy), data = bootData, method = 'ML')  
+      results$attempt[m] <- 1
+    }) 
+    if(!exists('model')){
+      try({
+        model <- gls(allForm[[m]], correlation = corPagel(value = 0.3, phy = phy), data = bootData, method = 'ML')  
+        results$attempt[m] <- 2
+      }) 
+    }
+    if(!exists('model')){
+      try({
+        model <- gls(allForm[[m]], correlation = corPagel(value = 0.2, phy = phy), data = bootData, method = 'ML')  
+        results$attempt[m] <- 3
+      }) 
+    }
+    if(!exists('model')){
+        try({
+          model <- gls(allForm[[m]], correlation = corPagel(value = 0.1, phy = phy), data = bootData, method = 'ML')  
+          results$attempt[m] <- 4
+        }) 
+      }
+    if(!exists('model')){
+      try({
+        model <- lm(allForm[[m]], data = bootData) 
+        results$attempt[m] <- 5
+        message('Running lm')
+      }) 
+    }
+    #model <- pgls(allForm[[m]], data = compBootData, lambda = 'ML')
+    results$AIC[m] <- AICc(model)
+
+    if(inherits(model, 'gls')){
+        results$lambda[m] <- model$modelStruct$corStruct[1]
+    }
+
+    results$predictors[m] <- allForm[[m]] %>% as.character %>% .[3]
+
+
+    results[m, paste0('beta.', names(coef(model)))] <- coef(model)
+
+    message(paste('Boot:', boot, ', m:', m, '\n'))
+  }
+
+  results$dAIC <- results$AIC - min(results$AIC)
+  results$weight <- exp(- 0.5 * results$dAIC) / sum(exp(- 0.5 * results$dAIC))
+
+
+  return(results)
+
+}
+
+
+
+
+modelsBootstrap <- mclapply(1:nBoots, function(b) modelSelect(allFormulae, nSpecies, pruneTree, b, modelMat, varList), mc.cores = nCores)
+
+allResults <- do.call(rbind, modelsBootstrap)
+
+write.csv(allResults, file = 'Data/modelSelectResults.csv')
+
+
+%%end.rcode
+
+
+
+%%begin.rcode analyseModelSelect, fig.show = extraFigs
+
+allResults <- read.csv('Data/modelSelectResults.csv', row.names = 1)
+
+varWeights <- sapply(names(allResults)[1:6], function(x) sum(allResults$weight[allResults[, x]])/nBoots)
+
+sepVarWeights <- lapply(1:nBoots, function(b) 
+                      sapply(names(allResults)[1:6], 
+                        function(x) 
+                          sum(allResults[allResults$boot == b, 'weight'][allResults[allResults$boot == b, x]])
+                      )
+                     )      
+
+sepVarWeights <- do.call(rbind, sepVarWeights) %>%
+                      data.frame(., boot = 1:nBoots) %>%
+                      reshape2::melt(., value.name = 'estimate', id.vars = 'boot')
+
+sepVarWeights$col <- 'Other Variables'
+sepVarWeights$col[grep('NumberOf', sepVarWeights$variable)] <- 'Population Structure'
+sepVarWeights$col[sepVarWeights$variable == 'rand'] <- 'Null'
+
+
+
+modelWeights <- allResults %>%
+                  group_by(predictors) %>%
+                  summarise(AICc = mean(AIC)) %>%
+                  mutate(dAIC = AICc - min(AICc), modelWeight = exp(- 0.5 * dAIC) / sum(exp(- 0.5 * dAIC))) %>%
+                  arrange(desc(modelWeight)) %>%
+                  mutate(cumulativeWeight = cumsum(modelWeight)) %>%
+                  mutate(string = predictors)
+
+
+allResults %>% 
+  filter(rand, !`scholarRefs.NumberOfSubspecies`, NumberOfSubspecies) %>%
+ggplot(., aes(x = lambda, colour = predictors)) + 
+  geom_density() +
+  scale_colour_hc()
+
+ggplot(allResults, aes(x = lambda)) + 
+  geom_density() 
+
+allResults %>% 
+  filter(boot == 1) %>%
+  dplyr::select(predictors, lambda)
+
+%%end.rcode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
