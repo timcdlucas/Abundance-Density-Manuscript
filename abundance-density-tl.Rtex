@@ -1563,6 +1563,10 @@ rownames(nSpecies) <- nSpecies$binomial
 ### At this point, nSpecies should be in final form  ###
 ########################################################
 
+# Use all species with colony sizes.
+#   So call NAs, 0s.
+nSpecies$virusSpecies[ia.na(nSpecies$virusSpecies)] <- 0
+
 write.csv(nSpecies, file = 'Data/nSpecies.csv')
 
 %%end.rcode
