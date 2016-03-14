@@ -120,9 +120,9 @@ runBoots <- TRUE
 
 opts_chunk$set(cache.path = '.cache/')
 
-source('misc/theme_tcdl.R')
+#source('misc/theme_tcdl.R')
 source('misc/KnitrOptions.R')
-theme_set(theme_grey() + theme_tcdl)
+#theme_set(theme_grey() + theme_tcdl)
 
 
 
@@ -170,7 +170,7 @@ library(ggtree)
 library(palettetown)
 library(ggthemes)
 library(GGally)
-library(cowplot)
+library(cowplot)    
 
 # Get nice fonts in base graphics
 library(showtext)
@@ -188,6 +188,18 @@ library(geosphere)
 
 %%end.rcode
 
+%%begin.rcode parameters
+# Define some parameters.
+#   This is useful at the top so that it can go in text.
+
+# How many bootstraps for model selection NULL variable
+nBoots <- 100
+
+
+# What proportion of a species range should be covered for an Fst study to count as valid.
+rangeUseable <- 0.20
+
+%%end.rcode
 
 \section{Abstract}
 
@@ -1065,20 +1077,6 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 
 
 
-%%begin.rcode parameters
-# Define some parameters.
-#   This is useful at the top so that it can go in text.
-
-# How many bootstraps for model selection NULL variable
-nBoots <- 100
-
-
-# What proportion of a species range should be covered for an Fst study to count as valid.
-rangeUseable <- 0.20
-
-
-
-%%end.rcode
 
 %%begin.rcode luis2013virusRead
 
@@ -1533,6 +1531,8 @@ nSpecies$scholarRefs <- sqldf('
   ) %>%
   .$scholarRefs
 
+nSpecies$scholarRefs[is.na(nSpecies$scholarRefs)] <- 0
+
 #TODO Rescrape
 
 %%end.rcode
@@ -1551,6 +1551,11 @@ nSpecies$scholarRefs <- sqldf('
 #nSpecies$SubspeciesFactor <- factor(nSpecies$NumberOfSubspecies, 
 #  levels = as.character(1:max(nSpecies$NumberOfSubspecies)))
 
+
+# Use all species with colony sizes.
+#   So call NAs, 0s.
+nSpecies$virusSpecies[is.na(nSpecies$virusSpecies)] <- 0
+
 # Rownames to species names
 nSpecies <- nSpecies[complete.cases(nSpecies), ]
 rownames(nSpecies) <- nSpecies$binomial
@@ -1563,9 +1568,6 @@ rownames(nSpecies) <- nSpecies$binomial
 ### At this point, nSpecies should be in final form  ###
 ########################################################
 
-# Use all species with colony sizes.
-#   So call NAs, 0s.
-nSpecies$virusSpecies[ia.na(nSpecies$virusSpecies)] <- 0
 
 write.csv(nSpecies, file = 'Data/nSpecies.csv')
 
@@ -1837,7 +1839,7 @@ allResults %>%
 
 
 
-%%begin.rcode ITPlots
+%%begin.rcode ITPlots, fig.cap = "Akaika variable weights. The probability that each variable will be in the best model if the data were recollected is shown for each of the bootstrap analyses. The purple ``Random'' box is a uniform random variable used as a null. Population structure (Number of subspecies and Gene flow), shown in red, is likely to be in the best model in both analyses.", fig.height = 2.5, fig.scap = 'Akaika variable weights for $F_{ST}$ analysis.', out.width = '\\textwidth',
 
 ITPlot <- ggplot(sepVarWeights, aes(x = variable, y = estimate, colour = col, fill = col)) +
   geom_boxplot(outlier.colour = grey(0.3), notch = FALSE, width = 0.99, outlier.size = 1, lwd = 0.4) +
@@ -1850,7 +1852,7 @@ ITPlot <- ggplot(sepVarWeights, aes(x = variable, y = estimate, colour = col, fi
   xlab('')
 
 
-
+ITPlot
 %%end.rcode
 
 
