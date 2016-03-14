@@ -96,7 +96,7 @@ extraFigs <- 'hide'
 
 
 # How many cores do you want to use to run simulations?
-nCores <- 2
+nCores <- 3
 
 
 ##################################
@@ -1070,7 +1070,7 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 #   This is useful at the top so that it can go in text.
 
 # How many bootstraps for model selection NULL variable
-nBoots <- 5
+nBoots <- 100
 
 
 # What proportion of a species range should be covered for an Fst study to count as valid.
@@ -1426,7 +1426,7 @@ for(i in 1:NROW(nSpecies)){
 
 pubmedScrapeDate <- Sys.Date()
 
-pubmedRefs <- cbind(binomial = nSpecies$binomial, pubmedRefs = pubmedRefs)
+pubmedRefs <- cbind(binomial = as.character(nSpecies$binomial), pubmedRefs = pubmedRefs)
 
 # Write out.
 write.csv(pubmedRefs, file = 'Data/pubmedRefs.csv')
@@ -1441,17 +1441,31 @@ write.csv(pubmedRefs, file = 'Data/pubmedRefs.csv')
 
 pubmedRefs <- read.csv('Data/pubmedRefs.csv', stringsAsFactors = FALSE, row.names = 1)
 
+pubmedRefs$binomial <- levels(nSpecies$binomial)[pubmedRefs$binomial]
+
 # Function returns NA for none found. Change that to a zero.
 pubmedRefs$pubmedRefs[is.na(pubmedRefs$pubmedRefs)] <- 0
-nSpecies$pubmedRefs <- pubmedRefs$pubmedRefs
+
+# Add the 1 here to avoid log issues later.
+pubmedRefs$pubmedRefs <- pubmedRefs$pubmedRefs + 1 
+
+nSpecies$pubmedRefs <- sqldf('
+  SELECT pubmedRefs.pubmedRefs
+  FROM nSpecies
+  LEFT JOIN pubmedRefs
+  ON pubmedRefs.binomial=nSpecies.binomial
+  '
+  ) %>%
+  .$pubmedRefs
+
 
 %%end.rcode
 
-%%begin.rcode scholarScrapeFunc
+%%begin.rcode   ScrapeFunc
 
 scrapeScholar <- function(sp){
     
-  wait <- rnorm(1, 300, 2)
+  wait <- runif(1, 1200, 1500)
   Sys.sleep(wait)
 
 
@@ -1588,7 +1602,7 @@ p %<+% nSpecies[, 1:6] +
   geom_point2(aes(size = virusSpecies, colour = Family, subset = isTip)) +
   scale_size(range = c(0.2, 2)) +
   scale_colour_manual(values = c(pokepal('oddish')[c(1,3,5,6,9,10)],    pokepal('Carvanha')[c(1,2,4, 13, 12)])) +
-  theme_tcdl +
+  #theme_tcdl +
   theme(plot.margin = unit(c(-1, 3, -2.5, -2), "lines")) +
   theme(legend.position = 'right') +
   labs(size = 'Virus Richness') +
@@ -1626,8 +1640,8 @@ p %<+% nSpecies[, 1:6] +
 
 %%begin.rcode pairsplot, fig.show = extraFigs
 nSpecies %>%
-  dplyr::select(virusSpecies, mass, colonySize, distrSize, scholarRefs) %>%
-  mutate(mass = log(mass), distrSize = log(distrSize), colonySize = log(colonySize), scholarRefs = log(scholarRefs)) %>%
+  dplyr::select(virusSpecies, mass, colonySize, distrSize, pubmedRefs) %>%
+  mutate(mass = log(mass), distrSize = log(distrSize), colonySize = log(colonySize), pubmedRefs = log(pubmedRefs)) %>%
   ggpairs(.)
 
 %%end.rcode
@@ -1665,7 +1679,7 @@ findCombs <- function(k, vars, longest){
   return(mat)
 }
 
-varList <- c('scholarRefs', 'colonySize', 'mass', 'distrSize', 'rand')
+varList <- c('pubmedRefs', 'colonySize', 'mass', 'distrSize', 'rand')
 
 
 modelList <- lapply(0:5, function(k) findCombs(k, varList, 5))
@@ -1691,10 +1705,10 @@ modelSelect <- function(allForm, data, phy, boot, allModelMat, varList){
 
 
   # log some predictors
-  bootData[, c('mass', 'scholarRefs', 'colonySize', 'distrSize')] <- log(bootData[, c('mass', 'scholarRefs', 'colonySize', 'distrSize')])
+  bootData[, c('mass', 'pubmedRefs', 'colonySize', 'distrSize')] <- log(bootData[, c('mass', 'pubmedRefs', 'colonySize', 'distrSize')])
   
   # scale
-  bootData[, c('mass', 'scholarRefs', 'colonySize', 'distrSize', 'rand')] <- base::scale(bootData[, c('mass', 'scholarRefs', 'colonySize', 'distrSize', 'rand')])
+  bootData[, c('mass', 'pubmedRefs', 'colonySize', 'distrSize', 'rand')] <- base::scale(bootData[, c('mass', 'pubmedRefs', 'colonySize', 'distrSize', 'rand')])
   
 
   coefs <- matrix(NA, ncol = length(varList) + 1, nrow = nrow(allModelMat), 
@@ -1827,7 +1841,7 @@ ITPlot <- ggplot(sepVarWeights, aes(x = variable, y = estimate, colour = col, fi
   scale_fill_manual(values = pokepal('nidorino')[c(3, 6, 10)]) +
   theme(legend.position = 'none', axis.text.x = element_text(size = 10, angle = 40, hjust = 1, colour = 'black', family = 'lato light'),
     axis.text.y = element_text(size = 8)) +
-  scale_x_discrete(labels = c('Scholar', 'Colony Size', 'Mass', 'Range Size', 'Random')) +
+  scale_x_discrete(labels = c('Pubmed', 'Colony Size', 'Mass', 'Range Size', 'Random')) +
   ylab('P(in best model)') +
   xlab('')
 
@@ -1861,7 +1875,7 @@ varCoefVars  <- apply(allResults[, grep('beta', names(allResults))], 2, function
 
 colonyLambda <- summary(pgls(log(colonySize) ~ 1, data = compSubspecies, lambda = 'ML'))
 massLambda <- summary(pgls(log(mass) ~ 1, data = compSubspecies, lambda = 'ML'))
-scholarLambda <- summary(pgls(log(scholarRefs) ~ 1, data = compSubspecies, lambda = 'ML'))
+pubmedLambda <- summary(pgls(log(pubmedRefs) ~ 1, data = compSubspecies, lambda = 'ML'))
 virusLambda <- summary(pgls(virusSpecies ~ 1, data = compSubspecies, lambda = 'ML'))
 distrLambda <- summary(pgls(log(distrSize) ~ 1, data = compSubspecies, lambda = 'ML'))
 
