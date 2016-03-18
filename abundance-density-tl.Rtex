@@ -1709,6 +1709,7 @@ modelSelect <- function(allForm, data, phy, boot, allModelMat, varList){
   bootData <- cbind(data, rand = runif(nrow(data)))
   row.names(bootData) <- bootData$binomial
 
+  phyPolys <- multi2di(phy, random = FALSE)
 
   # log some predictors
   bootData[, c('mass', 'pubmedRefs', 'colonySize', 'distrSize')] <- log(bootData[, c('mass', 'pubmedRefs', 'colonySize', 'distrSize')])
@@ -1732,24 +1733,24 @@ modelSelect <- function(allForm, data, phy, boot, allModelMat, varList){
       rm(model)
     }
     try({
-      model <- gls(allForm[[m]], correlation = corPagel(value = 0.4, phy = phy), data = bootData, method = 'ML')  
+      model <- gls(allForm[[m]], correlation = corPagel(value = 0.4, phy = phyPolys), data = bootData, method = 'ML')  
       results$attempt[m] <- 1
     }) 
     if(!exists('model')){
       try({
-        model <- gls(allForm[[m]], correlation = corPagel(value = 0.3, phy = phy), data = bootData, method = 'ML')  
+        model <- gls(allForm[[m]], correlation = corPagel(value = 0.3, phy = phyPolys), data = bootData, method = 'ML')  
         results$attempt[m] <- 2
       }) 
     }
     if(!exists('model')){
       try({
-        model <- gls(allForm[[m]], correlation = corPagel(value = 0.2, phy = phy), data = bootData, method = 'ML')  
+        model <- gls(allForm[[m]], correlation = corPagel(value = 0.2, phy = phyPolys), data = bootData, method = 'ML')  
         results$attempt[m] <- 3
       }) 
     }
     if(!exists('model')){
         try({
-          model <- gls(allForm[[m]], correlation = corPagel(value = 0.1, phy = phy), data = bootData, method = 'ML')  
+          model <- gls(allForm[[m]], correlation = corPagel(value = 0.1, phy = phyPolys), data = bootData, method = 'ML')  
           results$attempt[m] <- 4
         }) 
       }
