@@ -96,7 +96,7 @@ extraFigs <- 'hide'
 
 
 # How many cores do you want to use to run simulations?
-nCores <- 3
+nCores <- 6
 
 
 ##################################
@@ -111,7 +111,7 @@ runScholarScrape <- FALSE
 runIucn <- FALSE
 
 # Run slow bootstraps
-runBoots <- TRUE
+runBoots <- FALSE
 
 ##########################
 ### End options        ###
@@ -120,9 +120,9 @@ runBoots <- TRUE
 
 opts_chunk$set(cache.path = '.cache/')
 
-#source('misc/theme_tcdl.R')
+source('misc/theme_tcdl.R')
 source('misc/KnitrOptions.R')
-#theme_set(theme_grey() + theme_tcdl)
+theme_set(theme_grey() + theme_tcdl)
 
 
 
@@ -193,7 +193,7 @@ library(geosphere)
 #   This is useful at the top so that it can go in text.
 
 # How many bootstraps for model selection NULL variable
-nBoots <- 100
+nBoots <- 30
 
 
 # What proportion of a species range should be covered for an Fst study to count as valid.
@@ -777,8 +777,7 @@ All simulations had 20 colonies, meaning 19 is the maximum value of $\\bar{k}$.
 plotKtitle <- 'Change in average network degree with increasing area'
 
 
-%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, out.width = '0.8\\textwidth'
-
+%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, out.width = '0.8\\textwidth', cache = FALSE
 
 ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
   geom_boxplot(outlier.size = 1, size = 0.3, outlier.colour = grey(0.3), 
@@ -885,10 +884,9 @@ valueChangeMeansTitle <- 'Comparison of the probability of invasion when populat
 
 %%end.rcode
 
-%%begin.rcode plotValueChangeMeans, fig.cap = valueChangeMeansCapt, fig.scap = valueChangeMeansTitle, out.width = '\\textwidth'
+%%begin.rcode plotValueChangeMeans, fig.cap = valueChangeMeansCapt, fig.scap = valueChangeMeansTitle, out.width = '0.8\\textwidth', cache = FALSE
 
 # Convert to percentage change in density, colonysize or colony number.
-
 
 d <- rbind(popMeans %>% 
              mutate(ValueChange = as.numeric(as.character(area))/median(as.numeric(as.character(area))), vary = 'Density') %>%
@@ -1007,13 +1005,11 @@ transMeansTitle <- 'Comparison of the probability of invasion when population si
 
 %%end.rcode
 
-%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '\\textwidth', fig.show = TRUE
+%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.8\\textwidth', fig.show = TRUE, cache = FALSE
 
 d2 <- rbind(dens1Means, dens2Means)
 d2$transmission <- factor(d2$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
 densPreds$transmission <- factor(densPreds$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
-
-
 
 
 ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
@@ -1219,7 +1215,7 @@ Contours show the 2D density of points and suggest a positive correlation.
 subvsvirusTitle <- 'Number of viruses against number of subspecies.'
 %%end.rcode
 
-%%begin.rcode subsDataFrame, fig.show = extraFigs, fig.cap = subvsvirus, fig.scap = subvsvirusTitle, out.width = '\\textwidth'
+%%begin.rcode subsDataFrame, fig.show = extraFigs, fig.cap = subvsvirus, fig.scap = subvsvirusTitle, out.width = '0.8\\textwidth'
 # create combined dataframe
 
 # Join dataframes
@@ -1253,13 +1249,13 @@ nSpecies$familyPlotCol[
 
 table(nSpecies$familyPlotCol)
 
-ggplot(nSpecies, aes(x = log(NumberOfSubspecies), y = log(virusSpecies))) +
-  # geom_smooth(method = 'lm') +
-  geom_jitter(aes(colour = familyPlotCol), size = 2.5, alpha = 0.8, 
-    position = position_jitter(width = .1, height = .1)) +
-  scale_colour_hc() +
-  geom_density2d() +
-  labs(colour = 'Family')
+#ggplot(nSpecies, aes(x = log(NumberOfSubspecies), y = log(virusSpecies))) +
+#  # geom_smooth(method = 'lm') +
+#  geom_jitter(aes(colour = familyPlotCol), size = 2.5, alpha = 0.8, 
+#    position = position_jitter(width = .1, height = .1)) +
+#  scale_colour_hc() +
+#  geom_density2d() +
+#  labs(colour = 'Family')
   
 %%end.rcode
 
@@ -1599,7 +1595,7 @@ rm(t)
 
 %%end.rcode
 
-%%begin.rcode nSpeciesTreePlot, out.width = '\\textwidth', fig.cap = 'Pruned phylogeny with dot size showing number of pathogens and colour showing family.', fig.show = extraFigs
+%%begin.rcode nSpeciesTreePlot, out.width = '0.8\\textwidth', fig.cap = 'Pruned phylogeny with dot size showing number of pathogens and colour showing family.', fig.show = extraFigs
 
 # Plot tree 
 p <- ggtree(pruneTree, layout = 'fan') 
@@ -1653,30 +1649,68 @@ nSpecies %>%
 %%end.rcode
 
 
-%%begin.rcode, subsAnalysis, fig.show = extraFigs
-
-##################################################################################
-## N Virus ~ subs + log(cites + mass)
+%%begin.rcode, phyloAnalysis, fig.show = extraFigs
 
 compSubspecies <- comparative.data(data = nSpecies, phy = pruneTree, names.col = 'binomial')
 
-
-#model1 <- pgls(
-#  virusSpecies ~ log(scholarRefs) + log(mass) + log(distrSize) + log(colonySize), 
-#  data = compSubspecies, lambda = 'ML')
+colonysize.pgls <- gls(virusSpecies ~ log(colonySize), correlation = corPagel(0.5, phy = pruneTree), data = nSpecies, method = 'ML')  
+studyeffort.pgls <- gls(virusSpecies ~ log(pubmedRefs), correlation = corPagel(0.2, phy = pruneTree), data = nSpecies, method = 'ML')  
 
 
+# Make predicted lines
+colonysizePreds <- data.frame(colonySize = seq(min(nSpecies$colonySize), max(nSpecies$colonySize), length.out = 1000))
+colonysizePreds$virusSpecies <- predict(colonysize.pgls, newdata = list(colonySize = colonysizePreds$colonySize))
 
-## Look at Variance inflation factors.
-##   Couple of help messages imply lm vif is fine.
+studyeffortPreds <- data.frame(pubmedRefs = seq(min(nSpecies$pubmedRefs), max(nSpecies$pubmedRefs), length.out = 1000))
+studyeffortPreds$virusSpecies <- predict(studyeffort.pgls, newdata = list(pubmedRefs = studyeffortPreds$pubmedRefs))
 
-#sqrt(vif(lm(virusSpecies ~ log(scholarRefs) + NumberOfSubspecies +  log(mass) + log(distrSize), data = nSpecies)))
 
 %%end.rcode
 
 
 
-%%begin.rcode fstITanalysis
+
+%%begin.rcode DataPlotsTitles
+
+dataTitle <- 'Relationships between viral richness and both study effort and colony size'
+
+dataCaption <- 'Relationships between viral richness and both study effort and colony size'
+
+
+%%end.rcode
+
+
+%%begin.rcode DataPlots, fig.cap = dataCaption, fig.title = dataTitle, cache = FALSE
+
+
+colonySizePlot <- ggplot(nSpecies, aes(colonySize, virusSpecies)) +
+                    geom_point(aes(colour = familyPlotCol)) +
+                    scale_x_log10(breaks = c(1, 100, 100000), labels = c('1', '100', '100,000')) +
+                    geom_line(data = colonysizePreds) +
+                    scale_colour_poke(pokemon = 'oddish', spread = 4) +
+                    labs(x = 'Colony Size', y = 'Viral Richness', colour = 'Family') 
+
+
+
+nSpeciesCounts <- nSpecies %>%
+                    group_by(pubmedRefs, virusSpecies) %>%
+                    dplyr::summarize(n = n())
+
+
+studyEffortPlot <- ggplot(nSpeciesCounts, aes(pubmedRefs, virusSpecies)) +
+                    geom_point(aes(size = n)) +
+                    scale_x_log10() +
+                    scale_size(range = c(0.5, 4.3), breaks = c(1, 10, 20)) +
+                    geom_line(data = studyeffortPreds) +
+                    scale_colour_poke(pokemon = 'oddish', spread = 4) +
+                    labs(x = 'Study Effort', y = 'Viral Richness')
+
+
+plot_grid(colonySizePlot, studyEffortPlot, ncol = 1)
+
+%%end.rcode
+
+%%begin.rcode ITanalysis
 
 findCombs <- function(k, vars, longest){
   x <- t(combn(vars, k))
@@ -1840,7 +1874,7 @@ allResults %>%
 
 
 
-%%begin.rcode ITPlots, fig.cap = "Akaika variable weights. The probability that each variable will be in the best model if the data were recollected is shown for each of the bootstrap analyses. The purple ``Random'' box is a uniform random variable used as a null. Population structure (Number of subspecies and Gene flow), shown in red, is likely to be in the best model in both analyses.", fig.height = 2.5, fig.scap = 'Akaika variable weights for $F_{ST}$ analysis.', out.width = '\\textwidth',
+%%begin.rcode ITPlots, fig.cap = "Akaika variable weights. The probability that each variable will be in the best model if the data were recollected is shown for each of the bootstrap analyses. The purple ``Random'' box is a uniform random variable used as a null. Population structure (Number of subspecies and Gene flow), shown in red, is likely to be in the best model in both analyses.", fig.height = 2.5, fig.scap = 'Akaika variable weights for $F_{ST}$ analysis.', out.width = '0.7\\textwidth', cache = FALSE
 
 ITPlot <- ggplot(sepVarWeights, aes(x = variable, y = estimate, colour = col, fill = col)) +
   geom_boxplot(outlier.colour = grey(0.3), notch = FALSE, width = 0.99, outlier.size = 1, lwd = 0.4) +
@@ -1857,6 +1891,17 @@ ITPlot
 %%end.rcode
 
 
+
+%%begin.rcode resid
+
+nSpeciesResid <- nSpecies
+nSpeciesResid$resid <- nSpecies$virusSpecies / nSpecies$pubmed
+
+resid <- gls(resid ~ colonySize + distrSize + mass, correlation = corPagel(value = 0.9, phy = pruneTree), data = nSpeciesResid, method = 'ML')  
+
+anova(resid)
+
+%%end.rcode
 
 
 
