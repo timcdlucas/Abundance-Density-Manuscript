@@ -293,7 +293,7 @@ I found that population size has a much stronger affect on the invasion of a new
   # How often should the population be sampled. Only sampled populations are saved.
   sample <- 1000
 
-  source('chapter4functions.R')
+  source('abundance-density-functions-tl.R')
 
 %%end.rcode
 
@@ -331,7 +331,7 @@ I found that population size has a much stronger affect on the invasion of a new
 
 %%end.rcode
 
-%%begin.rcode runDensSim, eval = F, cache = TRUE
+%%begin.rcode runDensSim, eval = runAllSims, cache = TRUE
 
 # Create and set seed (seed object is used to set seed in each separate simulation.'
 seed <- 1
