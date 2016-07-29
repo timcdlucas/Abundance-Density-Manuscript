@@ -351,7 +351,7 @@ z <- do.call(rbind, z)
 write.csv(z, file = 'data/Chapter4/DensSims.csv')
 
 %%end.rcode
-
+C4\/7h0n
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Constant density 2. 
