@@ -1,80 +1,14 @@
-
-
-
-
-\documentclass[a4paper,10pt,reqno]{amsart}
-
-\usepackage[T1]{fontenc}
-
-\usepackage[bitstream-charter]{mathdesign}
-\usepackage{tgheros}  %  the advanced helvet as it was nice.
-
-
-
-% Redefine cite so that we get references in footnotes.
-
-\usepackage[
-  backend=biber, 
-  bibencoding=utf8, 
-  useprefix=true,%
-	uniquename=false, 
-  uniquelist=false, %
-	style=authoryear, 
-  firstinits=true, 
-  dashed=false, %
-	maxcitenames=2, 
-  terseinits=true,
-  maxbibnames=99,
-  sortcites=true
-]{biblatex}
-%\renewcommand{\cite}[1]{\footcite{#1}}
-\renewcommand{\cite}[1]{\parencite{#1}}
-
-\addbibresource{epilit.bib}
-
-
-% This has to go below fontenc for some reason
-%\input{KnitrSettings}
-
-
-\usepackage{caption}
-\usepackage{verbatim, geometry, fancyhdr,  graphicx, xcomment, microtype, array}
-%\usepackage{amsmath}
-
-
-% no "In: "
-\renewbibmacro{in:}{%
-  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
-
-
-\usepackage{booktabs}
-\usepackage[pdftex,hidelinks]{hyperref}
-
-
-
-% Setup environment `entry' to use `entry*' with a drop cap
-\newcommand{\lettr}[1]{#1}
-% Setup environment `entry*' so that lettrine can be manually specified if needed
-
-\newcommand{\tmpsection}[1]{}
+%--------------------------------------------------------------------------------------------------------------------------------%
+% Code and text for "A mechanistic model to compare the importance of interrelated population measures: population size, population density and colony size"
+% Chapter 4 of thesis "The role of population structure and size in determining bat pathogen richness"
+% by Tim CD Lucas
+%
+%---------------------------------------------------------------------------------------------------------------------------------%
 
 
 
 
 
-\setcounter{tocdepth}{4} % make TOC go to subsubsection
-
-
-
-\begin{document}
-
-
-\title{The interactions between population structure and density in pathogen diversity}
-\author{Tim Lucas. \today}
-\date{}
-
-\maketitle
-%\tableofcontents
 
 %%begin.rcode settings, echo = FALSE, cache = FALSE, message = FALSE, results = 'hide'
 
@@ -84,7 +18,7 @@
 
 # Compilation options
 # Run simulations? This will take many hours
-runAllSims <- FALSE
+runAllSims <- TRUE
 
 # Save raw simulation output
 # This will take ~10GB or so.
@@ -96,29 +30,14 @@ extraFigs <- 'hide'
 
 
 # How many cores do you want to use to run simulations?
-nCores <- 6
-
-
-##################################
-### Run web scraping?          ###
-##################################
-
-# There's some slow webscrapping functions. Run them?
-runPubmedScrape <- FALSE
-runScholarScrape <- FALSE
-
-# Run slow iucn data collecting.
-runIucn <- FALSE
-
-# Run slow bootstraps
-runBoots <- FALSE
+nCores <- 8
 
 ##########################
 ### End options        ###
 ##########################
 
 
-opts_chunk$set(cache.path = '.cache/')
+opts_chunk$set(cache.path = 'abundanceCache/')
 
 source('misc/theme_tcdl.R')
 source('misc/KnitrOptions.R')
@@ -135,116 +54,64 @@ theme_set(theme_grey() + theme_tcdl)
 #   https://github.com/timcdlucas/metapopepi
 library(MetapopEpi)
 
+# Data manipulations
+library(reshape2)
+library(dplyr)
+
 # Calc confidence intervals (could probably do with broom instead now.)
 library(binom)
 
 # To tidy up stats models/tests
 library(broom)
 
+
 # Run simulations in parallel
 library(parallel)
 
 
-# phylogenetic regression
-library(ape)
-library(caper)
-library(phytools)
-library(nlme)
-library(qpcR)
-library(car)
-
-# Data handling
-library(dplyr)
-library(broom)
-library(readxl)
-library(sqldf)
-library(reshape2)
-
-
-# weighted means + var
-library(Hmisc)
-
-# Plotting
+# plotting
 library(ggplot2)
-library(ggtree)
 library(palettetown)
-library(ggthemes)
-library(GGally)
-library(cowplot)    
-
 # Get nice fonts in base graphics
 library(showtext)
 
-# Web scraping.
-library(rvest)
-
-# For synonym list
-library(taxize)
-
-# Spatial analysis
-library(maptools)
-library(geosphere)
 
 
 %%end.rcode
 
-%%begin.rcode parameters
-# Define some parameters.
-#   This is useful at the top so that it can go in text.
-
-# How many bootstraps for model selection NULL variable
-nBoots <- 30
-
-
-# What proportion of a species range should be covered for an Fst study to count as valid.
-rangeUseable <- 0.20
-
-%%end.rcode
 
 \section{Abstract}
 
-\tmpsection{One or two sentences providing a basic introduction to the field}
+%\tmpsection{One or two sentences providing a basic introduction to the field}
 % comprehensible to a scientist in any discipline.
-\lettr{A}n increasingly large fraction of emerging diseases come from wild animals and these diseases have a huge impact on human health.
-The chance that a new disease will come from any particularly host species increases with the diversity of pathogens in that species.
-However, the factors that control pathogen diversity in wild populations are still poorly understood.
-
-
-
-\tmpsection{Two to three sentences of more detailed background}
-Population density is thought to increase pathogen richness while theory suggests that population structure and population size may also play a role.
-However, these factors are intrinsically linked---reducing density reduces contacts between individuals and directly reduces population size.
-In group living species group size and the total number of groups both contribute to total population size. 
-As these factors are all completely interdependent, it is very difficult to study them empirically \emph{e.g.}, in a comparative frame work.
-
-\tmpsection{One sentence clearly stating the general problem (the gap)}
+\lettr{A} large proportion of human diseases are zoonotic and there is a continuous flow of new pathogens from wild animals to humans.
+The chance that a particularly host species will be the source of a new zoonotic disease increases with the pathogen richness of that host species.
+However, the relative importance of factors that control pathogen richness is not known.
+%\tmpsection{Two to three sentences of more detailed background}
+Comparative studies have found evidence that host density, geographic range size and population structure are associated with high pathogen richness. 
+Additionally, epidemiological theory suggests that host population structure and host population abundance may influence pathogen richness.
+However, these factors are intrinsically linked.
+For example, host density is defined as the population size divided by range size.
+Furthermore, a reduction in host density reduces contacts between individuals, therefore increasing population structure.
+In group living species, group size and the total number of groups both contribute to total host population size. 
+As these factors are all completely interdependent, it is impossible to identify the causal factors within a comparative frame work.
+%\tmpsection{One sentence clearly stating the general problem (the gap)}
 % being addressed by this particular study.
-
-\tmpsection{One sentence summarising the main result}
-%  (with the words “here we show” or their equivalent).
-
-It is unknown whether it is specifically density that controls pathogen diversity or whether density merely correlates with other causal factors such as population structure, group size or population size.
-Here I use metapopulation SIR models to test whether it is density \emph{per se} that increases the ability of a newly evolved pathogen to invade and persist in a population as apposed to colony size, population size or population structure.
-
-\tmpsection{Two or three sentences explaining what the main result reveals in direct comparison to what was thought to be the case previously}
+%\tmpsection{One sentence summarising the main result}
+%  (with the words ``here we show'' or their equivalent).
+Here I use metapopulation susceptible-infected-recovered (SIR) models to test whether the ability of a newly evolved pathogen to invade and persist in a population is controlled specifically by host density as opposed to host population size.
+I also test whether pathogens invade more readily into a population with large groups or many groups.
+I parameterised these metapopulations to mimic bat populations, as bats exhibit a large range in group (colony) size and geographic range size as well as being associated with a number of important zoonotic pathogens.
+%\tmpsection{Two or three sentences explaining what the main result reveals in direct comparison to what was thought to be the case previously}
 % or how the main result adds to previous knowledge
-
-\tmpsection{One or two sentences to put the results into a more general context.}
-
-
-
-I found that increased group size increases the chance that a new pathogen will invade into a population to the largest extent.
-Both group size and the number of groups (\emph{i.e.} components of population size) promote pathogen richness more than population density.
-This implies that population density is merely a correlate of group size or population size.
-As these factors are not equally important it is expected that the pathogen communities of different host species will respond to climate change in different ways.
-Species which experience changes in group size are expected to have larger changes in pathogen richness than other species.
-
-\tmpsection{Two or three sentences to provide a broader perspective, }
+%\tmpsection{One or two sentences to put the results into a more general context.}
+I found that increased population size increased the chance that a new pathogen will invade into a population more than host density.
+Furthermore, increased group size increased the probability of pathogen invasion more than the number of groups.
+This implies that, in comparative studies, host density may be merely a correlate of group size or population size.
+%\tmpsection{Two or three sentences to provide a broader perspective, }
 % readily comprehensible to a scientist in any discipline.
-
-
-This study helps clarify both the inter-relationships between, and relative importance of, a number of population level factors affecting pathogen richness. 
-It also highlights the necessity for studying the mechanisms underlying pathogen community construction as comparative approaches do not have the specificity to do so.
+This study helps clarify both the inter-relationships between, and relative importance of, a number of population-level factors affecting pathogen richness. 
+It also highlights the necessity for studying the mechanisms underlying pathogen community construction, as comparative approaches do not have the specificity to do so.
 
 
 
@@ -256,6 +123,19 @@ It also highlights the necessity for studying the mechanisms underlying pathogen
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+%This is quite a good introduction but I think the order is a bit mixed up - you are first talking about mechanistic studies and then comparative studies and then go back into mechanistic studies but this is far from clear and it is a confusing read at the moment
+
+%I would suggest the following structure
+%1. Zoonotics important - determinants of pathogen richness important
+%2. review the evidence for comparative studies for size and other interrelated variables  first as that is the order you do it in other chapters
+%3. But other interrelated variables and problems with definitions
+%4. Problems can't be fixed with a comparative approach
+%5. review the evidence for mechanistic studies
+%6. limitations of the mechanistic approach so far
+%7. what you are going to do that is new (ie tease apart these interdependencies) - using case study on bats (and why this is a good group to ask this particular question on)
+
+
+
 
 
 \tmpsection{General Intro}
@@ -263,13 +143,15 @@ It also highlights the necessity for studying the mechanisms underlying pathogen
 % A basic introduction to the field,
 % comprehensible to a scientist in any discipline.
 
+%1. Zoonotics important - determinants of pathogen richness important
+
 Zoonotic diseases are an increasingly important source of human infectious diseases \cite{jones2008global, woolhouse2006host, taylor2001risk}.
-The diversity of pathogens in wild animal populations is huge and largely unknown \cite{poulin2014parasite}.
-Furthermore, the factors that allow large numbers of pathogen species to coexist in a host (\emph{e.g.}, \textcite{anthony2013strategy}) are still unclear.
-It is clear that population level factors such as population density, range size and population structure have an important role in controlling pathogen community dynamics \cite{anderson1979population, may1979population, colizza2007invasion, may2001infection}.
-Global change is strongly perturbing wild animal populations \cite{thomas2004extinction, craigie2010large}, but without clear mechanistic models of how these populations maintain pathogen species richness, we can not predict how pathogen communities, and the risks of zoonotic outbreaks, will change in the coming decades.
+The chance that a new zoonotic disease will come from a particular host reservoir depends on a number of factors including the number of pathogen species it carries \cite{wolfe2000deforestation}.
+It is well known that population-level factors such as host density, range size and population structure have an important role in controlling pathogen dynamics \cite{anderson1979population, may1979population, colizza2007invasion, may2001infection}.
+However, the relative importance of these factors in controlling pathogen richness is largely unknown.
 
 
+%Global change is strongly perturbing wild animal populations \cite{thomas2004extinction, craigie2010large}, but without good mechanistic models of how these populations maintain pathogen species richness, we can not predict how pathogen communities, and the risks of zoonotic outbreaks, will change in the coming decades.
 
 
 
@@ -278,82 +160,123 @@ Global change is strongly perturbing wild animal populations \cite{thomas2004ext
 % more detailed background}
 % comprehensible to scientists in related disciplines.
 
-\tmpsection{Theoretical background}
-Variables that describe populations, such as population density and structure, are well established as having a central role in pathogen dynamics \cite{colizza2007invasion, barthelemy2010fluctuation, colizza2007invasion,  wu2013threshold, may1979population, anderson1979population}.
-More recently, the role of the population has been examined with respect to pathogen richness and the coexistence of competing pathogens \cite{qiu2013vector, allen2004sis, nunes2006localized}.
-Yet even in theoretical studies there is confusion as to how exactly we should measure populations.
-There is disagreement on whether population density (individuals per unit area) should be preferred over population size (number of individuals) and how exactly area should be incorporated \cite{begon2002clarification}. 
+
+%2. review the evidence for comparative studies for size and other interrelated variables first as that is the order you do it in other chapters
+
+\tmpsection{Density/size/structure in comparative research}
+With the increase of novel zoonotic pathogens \cite{jones2008global} much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species (Chapter~\ref{ch:empirical}, \cites{poulin2000diversity, kamiya2014determines, luis2013comparison}).
+Many comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}.
+However, factors related to host population biology are also expected to affect disease dynamics and therefore affect pathogen richness.
+
+Host density is commonly included in comparative studies and seems to promote high pathogen richness \cite{morand1998density, kamiya2014determines, lindenfors2007parasite, nunn2003comparative, arneberg2002host}.
+In contrast, host population size has rarely been directly studied as a predictor of pathogen richness.
+Studies also often test for correlations between pathogen richness and range size \cite{lindenfors2007parasite, nunn2003comparative, turmelle2009correlates, huang2015parasite, kamiya2014determines}.
+Overall it seems that species with larger geographic range sizes have higher pathogen richness \cite{kamiya2014determines}.
+While host population structure can be difficult to define and measure, a number of studies have found that increased population structure is associated with increased pathogen richness (Chapter~\ref{ch:empirical}, \cites{maganga2014bat, turmelle2009correlates}).
+Finally, many studies have tested for correlations between pathogen richness and group size, though results are equivocal \cite{vitone2004body, gay2014parasite, ezenwa2006host, rifkin2012animals, nunn2003comparative}.
 
 
-\tmpsection{Density/size in comparative research}
-With the increase of novel zoonotic pathogens \cite{jones2008global} attention has turned to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity}.
-Here again there is little clarity on the relationship between a number of species measurements.
-Population density is commonly studied \cite{morand1998density, kamiya2014determines, lindenfors2007parasite, nunn2003comparative, arneberg2002host} as is range size \cite{lindenfors2007parasite, nunn2003comparative, turmelle2009correlates, huang2015parasite, kamiya2014determines}.
-However it is rarely if ever acknowledge that these two values are intrinsically linked by $d = N/a$ (where $d$ is density, $N$ is the population size and $a$ is area. See Table~\ref{t:params} for all parameters used) or that the relationship $N \propto a$ has broad empirical support \cite{blackburn2006variations, borregaard2010causality}.
-In contrast, population size has never been directly studied as a predictor of pathogen richness---although confusingly, population range size is sometimes used as a measure of size \emph{e.g.}, \cite{vogeli2011island}.
-%This is a glaring omission.
-Furthermore, population size is considered the more relevant measure in terms of pathogen dynamics, especially when area cannot be assumed to be constant \cite{begon2002clarification} as is commonly the case in wild populations, especially in the face of global warming and habitat degradation.
+%2 But problems with interrelated variables
 
-\tmpsection{Population structure in comparative research}
-It is clear that animals are neither randomly distributed in space nor epidemiologically `will-mixed': social groups are common \cite{kerth2008causes} and distance and geographic boundaries reduce contacts between isolated populations \cite{jenkins2010meta, peel2012henipavirus}.
-In social species, measures such as global population density are largely meaningless with respect to the number of infectious contacts individuals may have.
-Rather, contacts are based on group size and rates of movements between groups.
-Two aspects of non-random transmission have been studied in particular: group size \cite{vitone2004body, gay2014parasite, ezenwa2006host, rifkin2012animals, nunn2003comparative} and global measures of population structure including genetic measures and measures derived from geographic distribution shapes (\textcite{gay2014parasite}, \textcite{maganga2014bat}, \textcite{turmelle2009correlates} and see Chapter \ref{ch:empirical}).
-Again however, the relationships between these terms and range size, population size and density are rarely examined.
-Population size can be decomposed into two components, the number of groups and the average size of a group with $N = nm$ where $n$ is group size and $m$ is the number of groups.
-The amount of movement between groups is at least partially dependant on the distance between them \cite{jenkins2010meta, le2012patterns, schooley2009enhancing}.
-The distance between neighbouring groups decreases with the number of groups per area $m/a$ or $N/na$.
-
-\tmpsection{But reaction to climate change, and predictions depend on which factor is actually important}
-
-Importantly, these factors, although interrelated, will respond differently to global change and the response will be species dependant.
-Some species may suffer large range contractions, and therefore large falls in population size, while their density remains fairly constant.
-Other species might retain their distribution but have a depressed population density.
-Similarly with population structure, species particularly affected by habitat fragmentation can expect increased reduced movement of individuals between groups, while other species may be most affected by a reduction in group size.
-Furthermore, different mechanisms of maintenance and creation of pathogen richness will respond to changes in these factors differently as well.
-If pathogen richness ultimately depends on the ``island size'' of the host population, then falls in population size will reduce pathogen richness the most.
-If local group size affects the ability of new pathogens to invade (Chapter \ref{ch:sims1}) then changes in group size are likely to be more important.
-Finally, if increased population structure allows pathogens to coexist (\parencite{qiu2013vector, allen2004sis, nunes2006localized} and Chapter \ref{ch:empirical}) increase habitat fragmentation could be expected to increase pathogen richness.
-
-As these population factors---population size and density, range size and group size---are likely to be intercorrelated, correlative comparative studies will struggle to distinguish between them.
-Furthermore, even if some factors are statistically supported or rejected, the specific mechanisms by which they promote pathogen richness will remain unknown, and these may suggest different responses to global change.
-Finally, mechanistic models are expected to be more predictive into the future and into hitherto unseen population regimes.
+However, the intrinsic relationships between these population-level factors are rarely discussed or accounted for in comparative studies.
+There are two particularly clear relationships between these factors.
+Firstly, host density, $d$, host population size, $N$, and geographic range size, $a$, are, by definition, linked by $d = N / a$ (See Table~\ref{t:params} for all parameters used).
+The relationship, $N \propto a$, has broad empirical support \cite{blackburn2006variations, borregaard2010causality}.
+Secondly, host population size can be decomposed into two components, the number of groups, $m$, and the average size of a group, $n$, with $N = n$.
+While less clear, geographic range size and host population structure are also related.
+The amount of movement between groups is at least partially dependent on the distance between them \cite{jenkins2010meta, le2012patterns, schooley2009enhancing} and the distance between neighbouring groups decreases with the number of groups per area, $m/a$.
 
 
 
 
-\tmpsection{The gap}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%4. then talk about the limitations of taking a comparative approach and how mechanistic models can help
+
+Collinearity between explanatory variables is a common problem in correlative studies.
+However, this issue is exacerbated when there are clear, causal relationships between explanatory variables (e.g.,\ an increase in host density will directly cause an increase in host population size).
+Therefore, correlative comparative studies will be especially poor at identifying which of these factors are closely correlated with pathogen richness.
+If the aim of correlative studies is to create predictive models for estimating pathogen richness of wild animal species, these relationships are not an issue.
+In each of the above relationships ($d = N / a$ and $N = mn$), as long as two of three variables are included in a statistical model, all the variance in the third variable will also be captured.
+
+However, if the aim is to know which factors are causally affecting pathogen richness, and the mechanisms by which they control pathogen richness, correlative approaches are less useful.
+Correlative models are unable to definitively select the causal factor out of correlated factors.
+Furthermore, understanding the mechanisms by which population factors can affect pathogen richness has a number of important benefits.
+Firstly, mechanistic models provide a deeper understanding of the system than correlative approaches.
+Secondly, mechanistic models are expected to be more accurate when forecasting into the future or when extrapolating outside the range of the data it was fitted with.
+The ability of mechanistic models to extrapolate is particularly important with respect to global change and its effects on zoonotic disease emergence.
+Population-level factors such as host population size and geographic range size, although interrelated, will respond differently to global change and the response will be species specific.
+Some host species may suffer large range contractions, and therefore large falls in population size, while their density remains fairly constant \cite{thomas2004extinction}.
+Other host species might retain their distribution but have a depressed population density \cite{craigie2010large}.
+Therefore, only by knowing which of these interrelated factors controls pathogen richness will we be able to predict future changes in pathogen richness.
 
 
-\tmpsection{What I did and found}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%5. review the evidence for mechanistic studies
+%6. limitations of the mechanistic approach so far
 
-Therefore there is great need for mechanistic models that try to disentangle the interplay between these many factors: density, population size, range size, population structure, group size and the number of groups.
-Here, I have used multipathogen, metapopulation models to individually vary these population parameters.
-I examined how these factors affect the ability of a newly evolved pathogen to invade and persist in a population in the presence of strong competition from an endemic pathogen strain.
+Theoretical studies have established that a number of host population factors are important for epidemiological dynamics generally and for the maintenance of pathogen richness specifically.
+Host density and structure are well established as having central roles in pathogen dynamics \cite{colizza2007invasion, barthelemy2010fluctuation, wu2013threshold, may1979population, anderson1979population}.
+Host group size is also known to strongly affect disease dynamics with disease spreading more quickly through populations made up of larger groups \cite{colizza2007invasion}.
+Fewer studies specifically study how these factors affect pathogen coexistence.
+A number of studies find that increased host population structure can promote pathogen coexistence \cite{qiu2013vector, allen2004sis, nunes2006localized}.
+
+While some theoretical studies have examined whether these population-level factors can promote pathogen richness, none have attempted to distinguish which might be the most important.
+Most studies have examined how pathogen coexistence depends on pathogen traits such as the transmission rate and virulence \cite{allen2004sis, may1994superinfection, alizon2008decreased}.
+This focus is more relevant to studies of pathogens in humans and how different human pathogens may coexist.
+As wild animal populations are often very different to human populations these conclusions based on human populations cannot necessarily be transferred easily to wild animal species.
+However, it has been noted that host population size is a more natural measure than population density and that particularly in comparative settings, population size should be preferred \cite{begon2002clarification}.
+This preference is due to the fact that host population size uniquely describes a property of the population while, for example, a high host density could be produced by a large population in a medium sized area or a medium sized population in a small area \cite{begon2002clarification}.
+
+
+
+%7. what you are going to do that is new (ie tease apart these interdependencies) - using case study on bats (and why this is a good group to ask this particular question on)
+
+
+Therefore there is great need for mechanistic models that try to disentangle the interplay between these many factors: host density, population size, range size, population structure, group size and the number of groups.
+Here, I have used multipathogen, metapopulation models to individually vary these host population parameters.
+The metapopulations were parameterised to broadly mimic wild bat populations.
+I used bats as a case study as the size of bat groups (colonies) is very variable and bat colonies are often very stable \cite{kerth2011bats, mccracken1981social}.
+Furthermore, bats are particularly relevant in the context of zoonotic disease as they are thought to be reservoirs for a number of important, recent outbreaks \cite{calisher2006bats, li2005bats}.
+I examined how the interrelated population factors affect the ability of a newly evolved pathogen to invade and persist in a population in the presence of strong competition from an endemic pathogen strain.
 I used these simulations to test two specific hypotheses.
-First I tested whether population size or population density more strongly promotes the invasion of a new pathogen.
-Secondly I tested whether the invasion of a new pathogen is more strongly promoted by colony size or the number of colonies.
-
-
-% One sentence summarising the main result
-% (with the words “here we show” or their equivalent).
+First, I tested whether host population size or density more strongly promotes the invasion of a new pathogen.
+Secondly, I tested whether the invasion of a new pathogen is more strongly promoted by colony size or the number of colonies.
+I found that population size has a much stronger affect on the invasion of a new pathogen than host density and that increasing population size by increasing group size promotes pathogen invasion much more than increasing population size by increasing the number of groups.
 
 
 
-\begin{figure}[t]
-\centering
-  \includegraphics[width=0.4\textwidth]{figure/SIRoption1.pdf}
-  \caption[Schematic of the SIR model used]{
-Schematic of the SIR model used. 
-Individuals are in one five classes, susceptible (orange, S), infectious with pathogen 1, pathogen 2 or both (blue, $I_1, I_2, I_{12}$) or recovered and immune from further infection (green, R).
-Transitions between classes occurs only as indicated by arrows.
-Note that individuals in $I_{12}$ move into R, not back to $I_1$ or $I_2$. 
-That is, recovery from one pathogen causes immediate recovery from the other pathogen.
-}
-  \label{f:sir}
-\end{figure}
+%
+%\begin{table}
+%
+%\caption[Population parameter values]{
+%Population parameter values used.
+%}
+%\label{t:popParams}
+%\centering
+%\begin{tabular}{@{}llrrrrr@{}}
+%\toprule
+%Focal Pop. Factor & Parameter & $\times$0.25 & $\times$0.5 & $\times$1 & $\times$2 & $\times$4\\
+%\midrule
+%                   & Colony size & 400 & 400 & 400 & 400 & 400 \\
+%                   & Number of colonies & 20 & 20 & 20 & 20 & 20 \\
+%\emph{Host Density}& Range size & \textbf{2\,500} & \textbf{5\,000} & \textbf{10\,000} & \textbf{20\,000} & \textbf{40\,000} \\ 
+%(Population density)& Host density & \emph{0.2} & \emph{0.4} & \emph{0.8} & \emph{1.6} & \emph{3.2} \\
+%                   & Population size & 8\,000 & 8\,000 & 8\,000 & 8\,000 & 8\,000 \\[4mm]
+%%
+%                   & Colony size & \textbf{100} & \textbf{200} & \textbf{400} &\textbf{800} & \textbf{1\,600} \\
+%                   & Number of colonies & 20 & 20 & 20 & 20 & 20 \\
+%\emph{Colony size} & Range size & 2\,500 & 5\,000 & 10\,000 & 20\,000 & 40\,000 \\
+%(Population size)  & Host density & 0.8 & 0.8 & 0.8 & 0.8 & 0.8 \\
+%                   & Population size & \emph{2\,000} & \emph{4\,000} & \emph{8\,000} & \emph{16\,000} & \emph{32\,000} \\[4mm]
+%                  %
+%                   & Colony size & 400 & 400 & 400 & 400 & 400 \\
+%                   & Number of colonies & \textbf{5} & \textbf{10} & \textbf{20} & \textbf{40} & \textbf{80} \\
+%\emph{Number of Colonies} & Range size & 2\,500 & 5\,000 & 10\,000 & 20\,000 & 40\,000 \\
+%(Population size)  & Host density & 0.8 & 0.8 & 0.8 & 0.8 & 0.8 \\
+%                   & Population size & \emph{2\,000} & \emph{4\,000} & \emph{8\,000} & \emph{16\,000} & \emph{32\,000} \\
+%\bottomrule
+%
+%\end{tabular}
+%\end{table}
+%
 
 %%begin.rcode SimSetup
 
@@ -410,7 +333,7 @@ That is, recovery from one pathogen causes immediate recovery from the other pat
 
 %%begin.rcode runDensSim, eval = F, cache = TRUE
 
-# Create and set seed (seed object is used to set seed in each seperate simulation.'
+# Create and set seed (seed object is used to set seed in each separate simulation.'
 seed <- 1
 set.seed(seed)
 
@@ -468,7 +391,7 @@ write.csv(z, file = 'data/Chapter4/DensSims.csv')
 
 %%begin.rcode runDens2Sim, eval = runAllSims, cache = TRUE
 
-# Create and set seed (seed object is used to set seed in each seperate simulation.'
+# Create and set seed (seed object is used to set seed in each separate simulation.'
 seed <- 2
 set.seed(seed)
 
@@ -525,7 +448,7 @@ write.csv(z, file = 'data/Chapter4/Dens2Sims.csv')
 
 %%begin.rcode runPopSim, eval = runAllSims, cache = TRUE
 
-# Create and set seed (seed object is used to set seed in each seperate simulation.'
+# Create and set seed (seed object is used to set seed in each separate simulation.'
 seed <- 3
 set.seed(seed)
 
@@ -547,14 +470,18 @@ write.csv(z, file = 'data/Chapter4/PopSims.csv')
 
 %%begin.rcode colonyNetCaptions
 
-colonyNetTitle <- 'Example metapopulation networks'
+colonyNetTitle <- 'Relationship between range size and metapopulation network structure'
 
 colonyNetCapt <- '
-Examples of the metapopulation networks used.
-They include the smallest number of colonies (five, A and B) and the default (20, C and D).
-They also include the default area ($10^4\\,\\text{km}^2$, grey dashed lines, A and C) and the largest area ($4\\times10^4\\,\\text{km}^2$, full plot, B and C), though all networks are plotted on the same spatial scale.
-Colonies are connected if they are within 100km.
-As area increases, the number of connections each subpopulation has decreases as seen by the changes in mean degree, $\\bar{k}$.
+The relationship between range size and metapopulation network structure.
+Colonies are shown by circles.
+Colonies that are close enough for animals to disperse between (i.e.\  within \\SI{100}{\\kilo\\meter} of each other) are joined by a line.
+Colonies are placed randomly in spaces of various sizes (grey dashed lines).
+A and C) the default range size (\\SI{10000}{\\square\\kilo\\metre}).
+B and D) the largest range size (\\SI{40000}{\\square\\kilo\\metre}).
+A and B) the smallest number of colonies (five).
+C and D) the default number of colonies (20).
+The mean number of connections per subpopulation, $\\bar{k}$, is shown for each metapopulation.
 '
 
 
@@ -624,42 +551,42 @@ labSz <- 1
 bigy <- 11.4
 bigx <- 10.6
 titleSz <- 4
-axSz <- 3
+axSz <- 4
 
 par(mfrow = c(2,2))
 
 
 plotColonyNet(p1, area = side[5], cex = 0.25, mar = c(bigx, bigy, 3, 2))
-axis(2, col = 'grey', cex.axis = axSz, at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), col.axis = 'grey', family = 'Lato', font = 2)
+axis(2, col = 'grey', cex.axis = axSz, at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), col.axis = '#a4a4a4', family = 'Lato', font = 2)
 axis(1, col = 'grey', labels = FALSE)
 title(main = bquote(italic(bar(k)) ~ '='~ .(k1)), cex.main = titleSz, family = 'Lato',  line = 0.5)
 mtext(side = 2,  line = 7.8, text = 'Longitude', cex = labSz, family = 'Lato')
 lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
-mtext(side = 3,  line = -0.3, text = 'A', cex = 1.1, family = 'Lato', at = -62)
+mtext(side = 3,  line = -0.3, text = 'A)', cex = 1, family = 'Lato', at = -62)
 
 plotColonyNet(p4, area = side[5], cex = 0.25, mar = c(bigx, 6, 3, 2))
 axis(2, col = 'grey', labels = FALSE)
 axis(1, col = 'grey', labels = FALSE)
 title(main = bquote(italic(bar(k)) ~ '='~ .(k4)), cex.main = titleSz, family = 'Lato',  line = 0.5)
-mtext(side = 3,  line = -0.3, text = 'B', cex = 1.1, family = 'Lato', at = -22)
+mtext(side = 3,  line = -0.3, text = 'B)', cex = 1, family = 'Lato', at = -22)
 
 plotColonyNet(p3, area = side[5], cex = 0.25, mar = c(bigx, bigy, 3, 2))
-axis(2, col = 'grey', cex.axis = axSz, col.axis = 'grey', at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), family = 'Lato', font = 2)
+axis(2, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), family = 'Lato', font = 2)
 axis(1, col = 'grey', labels = FALSE)
-axis(1, col = 'grey', cex.axis = axSz, col.axis = 'grey', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'Lato', font = 2, line = 3, lwd = 0)
+axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'Lato', font = 2, line = 3, lwd = 0)
 title(main = bquote(italic(bar(k)) ~ '='~ .(k3)), cex.main = titleSz, family = 'Lato',  line = 0.5)
 mtext(side = 2,  line = 7.8, text = 'Longitude', cex = labSz, family = 'Lato')
 mtext(side = 1,  line = 9.8, text = 'Latitude', cex = labSz, family = 'Lato')
 lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
-mtext(side = 3,  line = -0.3, text = 'C', cex = 1.1, family = 'Lato', at = -62)
+mtext(side = 3,  line = -0.3, text = 'C)', cex = 1, family = 'Lato', at = -62)
 
 plotColonyNet(p2, area = side[5], cex = 0.25, mar = c(bigx, 6, 3, 2))
 axis(1, col = 'grey', labels = FALSE)
-axis(1, col = 'grey', cex.axis = axSz, col.axis = 'grey', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'Lato', font = 2, line = 3, lwd = 0)
+axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'Lato', font = 2, line = 3, lwd = 0)
 axis(2, col = 'grey', labels = FALSE)
 title(main = bquote(italic(bar(k)) ~ '='~ .(k2)), cex.main = titleSz, family = 'Lato',  line = 0.5)
 mtext(side = 1,  line = 9.8, text = 'Latitude', cex = labSz, family = 'Lato')
-mtext(side = 3,  line = -0.3, text = 'D', cex = 1.1, family = 'Lato', at = -22)
+mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, family = 'Lato', at = -22)
 
 
 
@@ -671,7 +598,7 @@ mtext(side = 3,  line = -0.3, text = 'D', cex = 1.1, family = 'Lato', at = -22)
 %%begin.rcode calcMeans
 # Constant density, altered colony size
 
-dens1 <- read.csv('Data/DensSims.csv') %>% dplyr::select(-X)
+dens1 <- read.csv('data/Chapter4/DensSims.csv') %>% dplyr::select(-X)
 
 dens1Means <- dens1 %>%
                 filter(nExtantDis > 0) %>%
@@ -694,7 +621,7 @@ dens1Model <- dens1 %>%
 
 # Constant density, altered colony number
 
-dens2 <- read.csv('Data/Dens2Sims.csv') %>% dplyr::select(-X)
+dens2 <- read.csv('data/Chapter4/Dens2Sims.csv') %>% dplyr::select(-X)
 
 dens2Means <- dens2 %>%
                 filter(nExtantDis > 0) %>%
@@ -715,7 +642,7 @@ dens2Model <- dens2 %>%
 
 # Constant population, altered area
 
-pop <- read.csv('Data/PopSims.csv') %>% dplyr::select(-X)
+pop <- read.csv('data/Chapter4/PopSims.csv') %>% dplyr::select(-X)
 
 popMeans <- pop %>%
                 filter(nExtantDis > 0) %>%
@@ -768,16 +695,16 @@ popModel <- pop %>%
 %%begin.rcode plotKcapt
 
 plotKcapt <- '
-Change in average metapopulation network degree ($\\bar{k}$) with increasing area. 
-Bars show the median, boxes show the interquartile range, vertical lines show and range and grey dots indicate outlier values.
-Notches indicate the 95\\% confidence interval of the mean.
+Change in average metapopulation network degree ($\\bar{k}$) with increasing range size. 
+Bars show the median, boxes show the interquartile range, vertical lines show the range and grey dots indicate outlier values.
+Notches indicate the 95\\% confidence interval of the median.
 All simulations had 20 colonies, meaning 19 is the maximum value of $\\bar{k}$.
 '
 
-plotKtitle <- 'Change in average network degree with increasing area'
+plotKtitle <- 'Change in average network degree with increasing range size'
 
 
-%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, out.width = '0.8\\textwidth', cache = FALSE
+%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, out.width = '\\textwidth', cache = FALSE, plot.height = 2.3
 
 ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
   geom_boxplot(outlier.size = 1, size = 0.3, outlier.colour = grey(0.3), 
@@ -786,11 +713,12 @@ ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
   scale_fill_manual(values = pokepal('vileplume')[7]) +
   stat_summary(geom = "crossbar", width = 0.2, fatten = 2, 
     fun.data = function(x){ return(c(y = median(x), ymin = median(x), ymax = median(x))) }) +
-  theme(legend.position = 'none') + 
+  theme(legend.position = 'none', panel.grid.major.x = element_blank()) + 
   scale_x_discrete(labels = c('2500', '5000', '10000', '20000', '40000')) +
   xlab(expression(paste('Area ', (km^2)))) +
   ylab(expression(paste('Mean degree, ', italic(bar(k))))) +
   ylim(0, 20)
+
 
 %%end.rcode
 
@@ -848,9 +776,120 @@ ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Methods}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+I used a two-pathogen, metapopulation SIR model to compare the roles of population parameters on pathogen species richness.
+The multipathogen SIR model was identical to that in Chapter~\ref{ch:sims1} using the same \emph{R} implementation \cite{metapopepi}.
+Specifically, I let two identical pathogens compete: an endemic pathogen (Pathogen 1) and an invading pathogen (Pathogen 2).
+I used persistence (coded as 1) or extinction (coded as 0) of Pathogen 2 as a binomial response variable.
+I tested whether host population size is more important than host density.
+I then tested whether colony size or the number of colonies is the more important component of population size.
+I used the same fixed parameters as Chapter~\ref{ch:sims1} (Table~\ref{t:params}) except I used only three values of the transmission rate $\beta$,  0.1, 0.2 and 0.3.
+All simulations were run under all three transmission rates.
+The code used for running all simulations is available at \url{https://github.com/timcdlucas/PhDThesis/blob/master/Chapter4.Rtex}.
+
+In each simulation the host population was seeded with 20 individuals infected with Pathogen 1 in each colony. 
+Pathogen 1 was then allowed to spread and reach equilibrium. 
+After \SI{\rinline{invadeT}} events, five hosts individuals infected with Pathogen 2 were added to one randomly selected colony. 
+The simulation was then run for another \SI{\rinline{nEvent - invadeT}} events.
+The invasion of Pathogen 2 was considered successful if any individuals infected with Pathogen 2 remained at the end of the simulation.
+
+The effect of range size on disease dynamics occurred through changes in the metapopulation network.
+The metapopulation network was created for each simulation by randomly placing colonies in a square space (Figure~\ref{fig:colonyNetworkPlots}).
+This square space was considered to be the species geographic range, the size of which was varied.
+Range size was varied between \SI{\rinline{min(area)}} and \SI{\rinline{max(area)}}{\square\kilo\metre}.
+This corresponds to square areas with sides of \rinline{sqrt(min(area))} to \SI{\rinline{sqrt(max(area))}}{\kilo\metre}.
+Dispersal was only allowed to occur between two colonies if they were within \SI{100}{\kilo\metre} of each other i.e.\ they were then counted as connected nodes in the metapopulation network.
+The number of connections each colony has is called its degree, $k$.
+The mean degree, $\bar{k}$ is a measure of how well connected the metapopulation network is overall.
+
+The metapopulation network was not necessarily connected (i.e.\ made up of a single connected component) as the network was created by randomly placing colonies and only connecting colonies within \SI{100}{\kilo\metre} of each other.
+As Pathogen 1 was seeded in all colonies, Pathogen 2 could not be seeded into a fully susceptible colony.
+To ensure connected metapopulation networks I would have had to repeatedly resample the colony locations until a connected metapopulation population occurred.
+However, this would bias $\bar{k}$.
+Therefore, it was considered preferential to keep the unconnected networks.
+The threshold of \SI{100}{\kilo\metre} was arbitrary but I aimed to maximise the range  of $\bar{k}$ (Figure~\ref{fig:plotK}) while not having many simulations with networks that were unconnected.
+Given this setup, populations with low densities had relatively unconnected metapopulation networks while high density populations had fully connected networks (Figure~\ref{fig:plotK}).
+
+
+
+
+
+
+\subsection{Population factors}
+
+Three sets of simulations were run.
+This set of three simulations was used to compare two pairs of population factors: \emph{i}) population size and host density, \emph{ii}) colony size and the number of colonies.
+The population parameters that were directly varied were colony size, the number of colonies and range size.
+In each case these parameters were assigned their default value multiplied by 0.25, 0.5, 1, 2 and 4.
+The default colony size was 400, the default number of colonies was 20 and the default range size was \SI{10000}{{\square\kilo\metre}}.
+
+\subsubsection{Population size and host density}
+In the first set of simulations, host density was varied by keeping population constant while varying range size.
+Colony size was kept at a constant value of 400 while the number of colonies was fixed at 20 giving a population size of 8000.
+The values of range size used were \SI{40000}, \SI{20000}, \SI{10000}, \SI{5000} and \SI{\rinline{dep3[5]}}{\square\kilo\metre} which gave density values of \rinline{depDens[-5]} and \rinline{depDens[5]} animals per \si{\square\kilo\metre}.
+
+In the second set of simulations, population size was varied by changing colony size while the number of colonies was kept constant.
+To keep host density constant, range size was reduced as population size increased.
+The values of colony size used were 100, 200, 400, 800 and \SI{600} while range size was set to \SI{40000}, \SI{20000}, \SI{10000}, \SI{5000} and \SI{\rinline{dep3[5]}}{\square\kilo\metre}.
+This gave population size values of \SI{2000}, \SI{4000}, \SI{8000}, \SI{16000} and \SI{32000} while host density remained at 0.8 hosts per {\si{\square\kilo\metre}}.
+
+In the third set of simulations, population size was varied by changing the number of colonies while colony size was kept constant.
+Again, to keep host density constant, range size was reduced as population size increased.
+The numbers of colonies used were 5, 10, 20, 40 and 80 while range size was set to \SI{40000}, \SI{20000}, \SI{10000}, \SI{5000} and \SI{\rinline{dep3[5]}}{\square\kilo\metre}.
+Again, this gave population size values of \SI{2000}, \SI{4000}, \SI{8000}, \SI{16000} and \SI{32000} while host density remained at 0.8 hosts per {\si{\square\kilo\metre}}.
+
+
+\subsubsection{Colony size and the number of colonies}
+
+To compare colony size and the number of colonies, only the second and third set of simulations above were used.
+However, colony size and the number of colonies were directly used as independent variables instead of using the derived values for host population size or density.
+It can be seen that population density and range size are equivalent in the two sets of simulations.
+Therefore, the only difference between these two sets of simulations is the factor used to increase population size: this factor being either colony size or the number of colonies.
+
+
+
+
+
+\subsection{Statistical analysis}
+
+I tested two hypotheses.
+Firstly I tested the hypothesis that an increase in host population size creates a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density.
+Secondly, I tested the hypothesis that an increase in colony size creates a stronger increase in invasion probability than a proportionally equal increase in number of colonies.
+To statistically test these hypotheses I combined the results from different simulations and fitted multiple logistic regressions, centering and scaling the independent variables.
+Specifically, I fitted the model 
+\begin{align}
+  \text{Invasion} = b_1 d + b_2 n + b_3 m + c + \epsilon
+\end{align}
+where $d, n$ and $m$ are density, colony size and number of colonies respectively and $b_i$ are the regression coefficients. 
+$c$ is a fitted intercept and $\epsilon$ is a binomially distributed error term.
+To test the first hypothesis I compared the size (and 95\% confidence intervals) of $b_1$ to $b_2$ and $b_3$.
+To test the second hypothesis I compared $b_2$ to $b_3$.
+
+Logistic regression was also used to test for an effect of transmission rate at the default parameter setting.
+Finally, in a small number of simulations both pathogens went extinct.
+Logistic regression was used to test whether transmission rate was associated with these events.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Results}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 %%begin.rcode predictModels
 
-# Predict seperate glms for plotting
+# Predict separate glms for plotting
 
 popPred <- seq(min(dens2$pop), max(dens2$pop), length.out = 200)
 
@@ -870,21 +909,22 @@ densPreds <- rbind(dens1Model, dens2Model) %>%
 %%begin.rcode valueChangeMeansCapt
 
 valueChangeMeansCapt <- '
-Comparison of the effect of colony size, colony number and area on probability of invasion.
-Default values are: colony number = 20, colony size = 400 and density = 0.8 animals per unit area.
-The $x$-axis shows the relative change in each of these values ($\\times 0.25, 0.5, 1, 2$ and $4$).
-For colony size and number, area is altered so that density remains constant.
-For density, population size is constant at 8,000 and area is altered.
+Comparison of the effect of colony size, number of colonies and host density on probability of invasion.
+The $x$-axis shows the change ($\\times$0.25, 0.5, 1, 2 and $4$) in the each of these factors  relative to the default value.
+Default values are: colony number = 20, colony size = 400 and density = 0.8 animals per \\si{\\square\\kilo\\metre}.
+Red lines: population size is altered by changing colony number.
+Blue lines: population size is altered by changing colony size.
+Yellow lines: population density is altered by changing range size.
 Each point is the mean of 100 simulations and bars are 95\\% confidence intervals.
-Curves are bivariate logistic regression fits for each independant variable.
-Relationships are shown seperately for each transmission value.
+Curves are simple logistic regression fits for each independent variable.
+Relationships are shown separately for each transmission value, $\\beta$.
 '
 
-valueChangeMeansTitle <- 'Comparison of the probability of invasion when population size is altered by changing colony size or colony number.'
+valueChangeMeansTitle <- 'Comparison of the effect of colony size, number of colonies and host density on probability of invasion'
 
 %%end.rcode
 
-%%begin.rcode plotValueChangeMeans, fig.cap = valueChangeMeansCapt, fig.scap = valueChangeMeansTitle, out.width = '0.8\\textwidth', cache = FALSE
+%%begin.rcode plotValueChangeMeans, fig.cap = valueChangeMeansCapt, fig.scap = valueChangeMeansTitle, out.width = '\\textwidth', cache = FALSE
 
 # Convert to percentage change in density, colonysize or colony number.
 
@@ -963,7 +1003,6 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary)) +
   facet_grid(transmission ~ ., labeller = label_parsed) 
 
 
-
 %%end.rcode
 
 
@@ -974,20 +1013,25 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary)) +
 combDensModel <- rbind(dens1, dens2) %>% 
                    mutate(invasion = nExtantDis == 2 ) %>%
                    group_by(transmission) %>% 
-                   mutate(colonySize = scale(colonySize), colonyNumber = scale(colonyNumber)) %>% 
+                   mutate(colonySize = scale(colonySize), 
+                          colonyNumber = scale(colonyNumber)) %>% 
                    do(glm(invasion ~ colonySize + colonyNumber, data = ., family = binomial) %>% tidy)
 
 
 combModel <- rbind(dens1, dens2, pop) %>% 
                mutate(invasion = nExtantDis == 2 ) %>%
                group_by(transmission) %>% 
-               mutate(colonySize = scale(colonySize), colonyNumber = scale(colonyNumber), area = scale(area)) %>% 
+               mutate(colonySize = scale(colonySize), 
+                      colonyNumber = scale(colonyNumber), 
+                      area = scale(area)) %>% 
                do(glm(invasion ~  colonySize + colonyNumber + area, data = ., family = binomial) %>% tidy)
 
 combModel <- rbind(dens1, dens2, pop) %>% 
                mutate(invasion = nExtantDis == 2 ) %>%
                group_by(transmission) %>% 
-               mutate(colonySize = scale(colonySize), colonyNumber = scale(colonyNumber), area = scale(area)) %>% 
+               mutate(colonySize = scale(colonySize), 
+                      colonyNumber = scale(colonyNumber), 
+                      area = scale(area)) %>% 
                do(glm(invasion ~ colonySize + colonyNumber + area, data = ., family = binomial) %>% confint_tidy) %>%
                ungroup %>%
                dplyr::select(conf.low, conf.high) %>%
@@ -998,22 +1042,21 @@ combModel <- rbind(dens1, dens2, pop) %>%
 %%begin.rcode transMeansCapt
 
 transMeansCapt <- '
-Comparison of the effect of population size on probability of invasion when population size is altered by changing colony size or colony number.
-Relationship is shown seperately for each transmission value.
+Comparison of the effect of host population size on probability of invasion when population size is altered by changing colony size or colony number.
+Relationships are shown separately for each transmission value, $\\beta$.
 It can be seen that changes in colony size give a much greater increase in invasion probability than changes in colony number.
-Note that this is the same data as Figure~\\ref{fig:plotValueChangeMeans} but with the $x$-axis scaled by population size, not parameter change.
+Note that this is the same data as Figure~\\ref{fig:plotValueChangeMeans} but with the $x$-axis scaled by population size, rather than relative parameter change.
 '
 
-transMeansTitle <- 'Comparison of the probability of invasion when population size is altered by changing colony size or colony number.'
+transMeansTitle <- 'Comparison of the probability of the affect of colony size and number of colonies on probability of invasion'
 
 %%end.rcode
 
-%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.8\\textwidth', fig.show = TRUE, cache = FALSE
+%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '\\textwidth', fig.show = TRUE, cache = FALSE
 
 d2 <- rbind(dens1Means, dens2Means)
 d2$transmission <- factor(d2$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
 densPreds$transmission <- factor(densPreds$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
-
 
 
 ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
@@ -1032,6 +1075,7 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
                      breaks = c(0, 1e4, 2e4, 3e4), 
                      label = c('0', '10000', '20000', '30000')) +
   facet_grid(transmission ~ ., labeller = label_parsed) 
+
 %%end.rcode
 
 %%begin.rcode descriptive
@@ -1041,13 +1085,16 @@ meanDefault <- rbind(dens1, dens2, pop) %>%
                  group_by(transmission) %>%
                  summarise(mean = mean(nExtantDis == 2))
 
-transTest <- rbind(dens1, dens2, pop) %>%
-                 filter(colonyNumber == 20, colonySize == 400, dens == 0.8, nExtantDis != 0) %>%
-               group_by(transmission) %>%
-               summarise(x = sum(nExtantDis == 2), n = n()) %>% 
-               with(., prop.test(x = x, n = n)) %>%
-               tidy
 
+
+
+
+
+transTest <- rbind(dens1, dens2, pop) %>%
+               filter(colonyNumber == 20, colonySize == 400, dens == 0.8, nExtantDis != 0) %>%
+               mutate(invasion = nExtantDis == 2) %>%
+               glm(invasion ~ transmission, data = .) %>%
+               tidy
 
 
 
@@ -1061,7 +1108,11 @@ whichTransAllExtinct <- rbind(dens1, dens2, pop) %>%
                           group_by(transmission) %>%
                           summarise(n = n())
 
-transExtinctTest <- chisq.test(whichTransAllExtinct$n) %>% tidy
+transExtinctTest <- rbind(dens1, dens2, pop) %>%
+                      mutate(doubleExtinct = nExtantDis == 0) %>%
+                      glm(doubleExtinct ~ transmission, data = .) %>%
+                      tidy
+
 
 
 smallAllExtinct <- rbind(dens1, dens2, pop) %>%
@@ -1076,1259 +1127,51 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 %%end.rcode
 
 
-
-
-
-%%begin.rcode luis2013virusRead
-
-#read in luis2013virus data
-virus2 <- read.csv('Data/luis2013comparison.csv', stringsAsFactors = FALSE)
-
-
-virus2$binomial <- paste(virus2$host.genus, virus2$host.species)
-
-
-# From methods
-#Many viruses were not identified to species level or their identified species was not in the ICTV virus taxonomy \cite{ICTV}.
-#I counted a virus if it was the only virus, for that host species, in the lowest taxonomic level identified in the ICTV taxonomy.
-#That is, if a host carries an unknown Paramyxoviridae virus, then it must carry at least one Paramyxoviridae virus.
-#If a host carries an unknown Paramyxoviridae virus and a known Paramyxoviridae virus, then it is hard to confirm that the unknown virus is not another record of the known virus.
-#In this case, this would be counted as one virus species.
-
-# This has been implemented manually and indicated in the column `remove`
-
-virus2 <- virus2[!virus2$remove, ]
-
-%%end.rcode
-
-
-%%begin.rcode wilsonReaderTaxonomyRead, fig.show = extraFigs, fig.cap = 'Histogram of number of subspecies'
-
-##################################################################
-### Subspecies vs Viruses analysis.                            ###
-##################################################################
-
-
-# Read in the wilson Reader Taxonomy and use it to calculate the number of subspecies each bat species has.
-
-tax <- read.csv('Data/msw3-all.csv', stringsAsFactors = FALSE)
-
-chir <- tax %>%
-          filter(Order == 'CHIROPTERA')
-
-# Save some memory.
-rm(tax)
-
-# Count the number of subspecies each bat species has.
-subs <- sqldf('
-  SELECT Family, Genus, Species, COUNT(Subspecies)
-  AS NumberOfSubspecies
-  FROM chir
-  Where Species <> ""
-  GROUP BY Genus, Species
-               ')   
-
-
-
-# I think each species has 1 row for species and extra rows for subspecies
-#   Check this is true. 
-#   If that is correct, then Species with >1 NumberOfSubspecies should be one less.
-
-SpeciesRows <- sqldf('
-  SELECT Genus, Species, COUNT(Subspecies)
-  AS SpeciesRows
-  FROM chir
-  WHERE Subspecies == "" AND Species <> ""
-  GROUP BY Genus, Species
-               ') 
-
-# 
-(SpeciesRows$SpeciesRows != 1) %>% sum
-all(SpeciesRows$SpeciesRows == 1)
-
-# Species with >1 NumberOfSubspecies should be one less
-subs$NumberOfSubspecies <- ifelse(subs$NumberOfSubspecies > 1, 
-                             subs$NumberOfSubspecies - 1, 
-                             subs$NumberOfSubspecies)
-
-# Quick look at species with highest number of subspecies.
-subs[order(subs$NumberOfSubspecies, decreasing = TRUE ),] %>% head
-
-# Megaderma spasma is top. It's widespread across south east asia islands. 
-#   So this makes sense.
-
-# Quick look at the number of subspecies.
-ggplot(subs, aes(x = NumberOfSubspecies)) +
-  geom_histogram(binwidth = 2) +
-  xlab('Number of Subspecies') +
-  ylab('Count')
-
-
-# Create a combined binomial name column
-subs$binomial <- paste(subs$Genus, subs$Species)
-
-
-
-
-# Check overlap of datasets.
-sum(!(virus2$binomial[virus2$host.species != ''] %in% subs$binomial))
-
-notInTax <- (virus2$binomial[virus2$host.species != ''])[!(virus2$binomial[virus2$host.species != ''] %in% subs$binomial)]
-
-# Run this to find synonyms of names not in Wilson and Reeder
-#   Doesn't find much of use.
-# syns <- synonyms(notInTax, db = 'itis')
-
-# Clean some names
-#  As taxize::synonyms didn't find most of them, I am using IUCN.
-#  And checking that the IUCN name is then in The Wilson & Reeder taxonomy
-
-virus2$binomial[virus2$binomial == 'Myotis pilosus'] <- 'Myotis ricketti'
-virus2$binomial[virus2$binomial == 'Tadarida pumila'] <- 'Chaerephon pumilus'
-virus2$binomial[virus2$binomial == 'Tadarida condylura'] <- 'Mops condylurus'
-virus2$binomial[virus2$binomial == 'Rhinolophus hildebrandti'] <- 'Rhinolophus hildebrandtii'
-# Rhinolophus horsfeldi: I can't find this species anywhere. Will exclude.
-#   Possibly Megaderma spasma according to http://www.fao.org/3/a-i2407e.pdf
-virus2$binomial[virus2$binomial == 'Tadarida plicata'] <- 'Chaerephon plicatus'
-virus2$binomial[virus2$binomial == 'Artibeus planirostris'] <- 'Artibeus jamaicensis'
-
-sum(!(virus2$binomial[virus2$host.species != ''] %in% subs$binomial))
-
-%%end.rcode
-
-%%begin.rcode subsHistsByFam, fig.show = extraFigs, fig.height = 3, fig.cap = 'Histograms of number of subspecies for the families with many species.'
-
-# Compare the histograms of numbers of subspecies over the families with many species.
-subs %>%
-  filter(Family %in% names(which(table(subs$Family) > 99))) %>%
-  ggplot(., aes(x = NumberOfSubspecies, y = ..density..)) + 
-    geom_histogram() +
-    facet_grid(. ~ Family) +
-    xlab('Number of Subspecies') +
-    ylab('Density')
-
-%%end.rcode
-
-%%begin.rcode, subvsvirusCaption
-
-# Caption for subspecies vs n. viruses plot.
-subvsvirus <- '
-Number of viruses against number of subspecies.
-Points are coloured by family, with families with less than 10 species being grouped into "other".
-Contours show the 2D density of points and suggest a positive correlation.
-'
-subvsvirusTitle <- 'Number of viruses against number of subspecies.'
-%%end.rcode
-
-%%begin.rcode subsDataFrame, fig.show = extraFigs, fig.cap = subvsvirus, fig.scap = subvsvirusTitle, out.width = '0.8\\textwidth'
-# create combined dataframe
-
-# Join dataframes
-species <- sqldf("
-               SELECT subs.binomial, virus2.[virus.species]
-               FROM subs
-               INNER JOIN virus2
-               ON subs.binomial=virus2.binomial;
-              ")
-                        
-# Count number of virus species for each bat species
-nSpecies <- species %>%
-              unique %>%
-              group_by(binomial) %>%
-              summarise(virusSpecies = n())
-        
-# Add other Subspecies data.
-nSpecies <- sqldf("
-              SELECT nSpecies.binomial, virusSpecies, NumberOfSubspecies, Genus, Family
-              FROM nSpecies
-              LEFT JOIN subs
-              ON nSpecies.binomial=subs.binomial
-             ")
-
-# Create another column to make plotting easier.
-#   Group families with few rows into 'other'
-
-nSpecies$familyPlotCol <- nSpecies$Family
-nSpecies$familyPlotCol[
-  nSpecies$Family %in% names(which(table(nSpecies$Family) < 10))] <- 'Other'
-
-table(nSpecies$familyPlotCol)
-
-#ggplot(nSpecies, aes(x = log(NumberOfSubspecies), y = log(virusSpecies))) +
-#  # geom_smooth(method = 'lm') +
-#  geom_jitter(aes(colour = familyPlotCol), size = 2.5, alpha = 0.8, 
-#    position = position_jitter(width = .1, height = .1)) +
-#  scale_colour_hc() +
-#  geom_density2d() +
-#  labs(colour = 'Family')
-  
-%%end.rcode
-
-%%begin.rcode virusHist, fig.show = extraFigs, fig.cap = 'Histogram of known viruses per species'
-
-ggplot(nSpecies, aes(x = virusSpecies)) +
-  geom_histogram()
-
-%%end.rcode
-
-
-
-%%begin.rcode euthRead
-
-# Read in pantheria data base
-pantheria <- read.table(file = 'Data/PanTHERIA_1-0_WR05_Aug2008.txt',
-  header = TRUE, sep = "\t", na.strings = c("-999", "-999.00"))
-
-pantheria <- pantheria %>%
-               filter(MSW05_Order == 'Chiroptera', !is.na(X10.1_PopulationGrpSize))
-
-nSpecies <- sqldf("
-  SELECT [MSW05_Binomial],[X5.1_AdultBodyMass_g], [X10.1_PopulationGrpSize], virusSpecies, [MSW05_Family]
-  FROM pantheria
-  LEFT JOIN nSpecies
-  ON nSpecies.binomial=pantheria.MSW05_Binomial
-  ")
-
-names(nSpecies) <- c('binomial', 'mass', 'colonySize', 'virusSpecies', 'Family')
-nSpecies$virusSpecies[is.na(nSpecies$virusSpecies)] <- 0
-
-nSpecies$familyPlotCol <- as.character(nSpecies$Family)
-nSpecies$familyPlotCol[
-  nSpecies$Family %in% names(which(table(nSpecies$Family) < 10))] <- 'Other'
-
-
-# Remove 'Dobsonia magna' as us the same species as 'Dobsonia moluccensis'
-nSpecies <- nSpecies %>% 
-              filter(binomial != 'Dobsonia magna')
-
-
-nSpecies$binomial <- factor(nSpecies$binomial)
-
-# Now add additional mass estimates.
-
-#additionalMass <- read.csv('Data/AdditionalBodyMass.csv', stringsAsFactors = FALSE)
-#meanAdditionalMass <- additionalMass %>%
-#                        group_by(binomial) %>% 
-#                        summarise(mass = mean(Body.Mass.grams))
-
-#nSpecies$mass[
-#  sapply(meanAdditionalMass$binomial, function(x) which(nSpecies$binomial == x))
-#  ] <- meanAdditionalMass$mass 
-
-
-%%end.rcode
-
-
-
-%%begin.rcode IUCNranges, eval = runIucn
-
-# Read in iucn ranges and calculate range sizes for each species.
-ranges <- readShapePoly('Data/TERRESTRIAL_MAMMALS/TERRESTRIAL_MAMMALS.shp')
-
-ranges <- ranges[ranges$order_name == 'CHIROPTERA', ]
-
-nSpecies$binomial[!(nSpecies$binomial %in% ranges$binomial)]
-
-ranges$binomial <- factor(ranges$binomial)
-
-#levels(ranges$binomial) <- c(levels(ranges$binomial), 'Myotis ricketti')
-#ranges$binomial[ranges$binomial == 'Myotis pilosus'] <- 'Myotis ricketti'
-
-#nSpecies$binomial[!(nSpecies$binomial %in% ranges$binomial)]
-
-
-findArea <- function(name){
-  #cat(name)
-  A <- areaPolygon(ranges[ranges$binomial == as.character(name), ])
-  sum(A)
-}
-
-iucnDistr <- sapply(nSpecies$binomial, findArea)
-
-write.csv(iucnDistr, 'Data/iucnDistr.csv')
-
-%%end.rcode
-
-%%begin.rcode readIucnIn
-
-iucnDistr <- read.csv('Data/iucnDistr.csv', row.names = 1)
-
-nSpecies$distrSize <- iucnDistr$x
-
-%%end.rcode
-
-
-
-%%begin.rcode pubmedScrapeFunc
-
-# Scrape from pubmed
-
-scrapePub <- function(sp){
-    
-  Sys.sleep(2)
-
-  # Initialise refs
-  refs <- NA
-
-  # Find synonyms from taxize
-  syns <- synonyms(sp, db = 'itis')
-  if(NROW(syns[[1]]) == 1){
-    spString <- tolower(gsub(' ', '%20', sp))
-  } else {
-    spString <- paste(tolower(gsub(' ', '%20', syns[[1]]$syn_name)), collapse = '%22+OR+%22')
-  }
-
-
-  url <- paste0('http://www.ncbi.nlm.nih.gov/pubmed/?term=%22', spString, '%22')
-
-
-  page <- read_html(url)
-  
-  # Test if exact phrase was found.
-  phraseFound <- try(page %>% 
-                   html_node('.icon') %>%
-                   html_text() %>%
-                   grepl("The following term was not found in PubMed:", .), silent = TRUE)
-
-  if (class(phraseFound) == "logical") {
-    if(phraseFound){
-      if(phraseFound) refs <- NA
-    }
-  } 
-  if (class(phraseFound) != "logical") {
-    try({
-    refs <- page %>%
-              html_node('.result_count') %>%
-              html_text() %>%
-              strsplit(' ') %>% 
-              .[[1]] %>%
-              .[length(.)] %>%
-              as.numeric()
-    })
-  }
-
-  return(refs)
-}
-
-
-%%end.rcode
-
-
-%%begin.rcode pubmedScrape, eval = runPubmedScrape
-
-# Create empty vector
-pubmedRefs <- rep(NA, nrow(nSpecies))
-
-for(i in 1:NROW(nSpecies)){
-  pubmedRefs[i] <- scrapePub(nSpecies$binomial[i])
-}
-
-pubmedScrapeDate <- Sys.Date()
-
-pubmedRefs <- cbind(binomial = as.character(nSpecies$binomial), pubmedRefs = pubmedRefs)
-
-# Write out.
-write.csv(pubmedRefs, file = 'Data/pubmedRefs.csv')
-
-%%end.rcode
-
-
-
-
-%%begin.rcode pubmedRead
-
-
-pubmedRefs <- read.csv('Data/pubmedRefs.csv', stringsAsFactors = FALSE, row.names = 1)
-
-pubmedRefs$binomial <- levels(nSpecies$binomial)[pubmedRefs$binomial]
-
-# Function returns NA for none found. Change that to a zero.
-pubmedRefs$pubmedRefs[is.na(pubmedRefs$pubmedRefs)] <- 0
-
-# Add the 1 here to avoid log issues later.
-pubmedRefs$pubmedRefs <- pubmedRefs$pubmedRefs + 1 
-
-nSpecies$pubmedRefs <- sqldf('
-  SELECT pubmedRefs.pubmedRefs
-  FROM nSpecies
-  LEFT JOIN pubmedRefs
-  ON pubmedRefs.binomial=nSpecies.binomial
-  '
-  ) %>%
-  .$pubmedRefs
-
-
-%%end.rcode
-
-%%begin.rcode   ScrapeFunc
-
-scrapeScholar <- function(sp){
-    
-  wait <- runif(1, 1200, 1500)
-  Sys.sleep(wait)
-
-
-  syns <- synonyms(sp, db = 'itis')
-  if(NROW(syns[[1]]) == 1){
-    spString <- tolower(gsub(' ', '%20', sp))
-  } else {
-    spString <- paste(tolower(gsub(' ', '%20', syns[[1]]$syn_name)), collapse = '%22+OR+%22')
-  }
-
-  url <- paste0('https://scholar.google.co.uk/scholar?hl=en&q=%22', 
-                spString, '%22&btnG=&as_sdt=1%2C5&as_sdtp=')
-
-
-  page <- read_html(url)
-  
-  try({
-  refs <- page %>%
-            html_node('#gs_ab_md') %>%
-            html_text() %>%
-            gsub('About\\s(.*)\\sresults.*', '\\1', .) %>%
-            gsub(',', '', .) %>%
-            as.numeric
-  })
-  return(refs)
-}
-
-%%end.rcode
-
-%%begin.rcode scholarScrape, eval = runScholarScrape
-
-# Create empty vector
-scholarRefs <- rep(NA, nrow(nSpecies))
-
-for(i in 1:NROW(nSpecies)){
-  scholarRefs[i] <- scrapeScholar(nSpecies$binomial[i])
-}
-
-scholarScrapeDate <- Sys.Date()
-
-scholarRefs <- cbind(binomial = nSpecies$binomial, scholarRefs = scholarRefs)
-
-# Write out.
-write.csv(scholarRefs, file = 'Data/scholarRefs.csv')
-
-%%end.rcode
-
-
-
-
-%%begin.rcode scholarRead
-
-
-scholarRefs <- read.csv('Data/scholarRefs.csv', stringsAsFactors = FALSE, row.names = 1)
-
-# Function returns NA for none found. Change that to a zero.
-scholarRefs$scholarRefs[is.na(scholarRefs$scholarRefs)] <- 0
-
-nSpecies$scholarRefs <- sqldf('
-  SELECT scholarRefs
-  FROM nSpecies
-  LEFT JOIN scholarRefs
-  ON scholarRefs.binomial=nSpecies.binomial
-  '
-  ) %>%
-  .$scholarRefs
-
-nSpecies$scholarRefs[is.na(nSpecies$scholarRefs)] <- 0
-
-#TODO Rescrape
-
-%%end.rcode
-
-
-
-
-
-%%begin.rcode subsRemoveNAs
-
-# Remove missing data and sort out the data frame a little.
-
-#nSpecies <- nSpecies[complete.cases(nSpecies), ]
-
-## Add number of subspecies as a factor. Might help plotting.
-#nSpecies$SubspeciesFactor <- factor(nSpecies$NumberOfSubspecies, 
-#  levels = as.character(1:max(nSpecies$NumberOfSubspecies)))
-
-
-# Use all species with colony sizes.
-#   So call NAs, 0s.
-nSpecies$virusSpecies[is.na(nSpecies$virusSpecies)] <- 0
-
-# Rownames to species names
-nSpecies <- nSpecies[complete.cases(nSpecies), ]
-rownames(nSpecies) <- nSpecies$binomial
-
-%%end.rcode
-
-
-%%begin.rcode savenSpecies
-########################################################
-### At this point, nSpecies should be in final form  ###
-########################################################
-
-
-write.csv(nSpecies, file = 'Data/nSpecies.csv')
-
-%%end.rcode
-
-
-
-
-
-
-%%begin.rcode treeRead
-
-# Read in trees
-t <- read.nexus('Data/fritz2009geographical.tre')
-
-# Select best supported tree
-tr1 <- t[[1]]
-
-# Make names match previous names
-tr1$tip.label <- gsub('_', ' ', tr1$tip.label)
-
-# Which tips are not needed
-unneededTips <- tr1$tip.label[!(tr1$tip.label %in% nSpecies$binomial)]
-
-# Prune tree down to only needed tips.
-pruneTree <- drop.tip(tr1, unneededTips)
-
-rm(t)
-
-%%end.rcode
-
-%%begin.rcode nSpeciesTreePlot,out.width = '1\\textwidth', out.extra = 'trim = 0cm 0cm 0cm 0cm', fig.height = 5, fig.height = 5.5, fig.cap = 'Pruned phylogeny with dot size showing number of pathogens and colour showing family.', fig.show = 'show'
-
-# Plot tree 
-p <- ggtree(pruneTree, layout = 'fan') 
-
-p %<+% nSpecies[, 1:6] + 
-  geom_point2(aes(size = virusSpecies, colour = Family, subset = isTip)) +
-  scale_size(range = c(0.1, 4)) +
-  scale_colour_manual(values = c(pokepal('oddish')[c(3,5,7,9,10)],    pokepal('Carvanha')[c(1,2,4, 13, 12, 9)])) +
-  theme_tcdl +
-  theme(plot.margin = unit(c(-2, -0, +3, -0), "lines")) +
-  theme(legend.position = c(0.5, -0.04)) +
-  labs(size = 'Virus Richness') +
-#  guides(size = guide_legend(override.aes = list(shape = 1))) +
-  theme(legend.key.size = unit(0.8, "lines"),
-        legend.text = element_text(size = 10),
-        legend.margin = unit(c(0.05), "cm"),
-        legend.title = element_text(size = 12),
-        legend.direction = "horizontal") +
-  guides(colour = guide_legend(ncol=3))
-
-
-
-%%end.rcode
-
-
-
-%%begin.rcode scholarvspubmed, fig.show = extraFigs, fig.cap = 'Logged number of references on scholar and pubmed, with a fitted (unphylogenetic) linear model. Colours indicate family.'
-
-# Check how correlated pubmed and scholar are.
-
-
-#compSubspecies <- comparative.data(data = nSpecies, phy = pruneTree, names.col = 'binomial')
-
-#citeCor <- pgls(log(scholarRefs) ~ log(pubmedRefs + 1), data = compSubspecies, lambda = 'ML')
-
-#studyEffortCor <- summary(citeCor)
-## And plot
-#ggplot(nSpecies, aes(x = scholarRefs, y = pubmedRefs + 1)) +
-#  geom_point(aes(colour = familyPlotCol), size = 2.5) +
-#  geom_smooth(method = 'lm') +
-#  scale_x_log10() +
-#  scale_y_log10() +
-#  scale_colour_hc()
-
-%%end.rcode
-
-
-
-
-%%begin.rcode pairsplot, fig.show = extraFigs
-nSpecies %>%
-  dplyr::select(virusSpecies, mass, colonySize, distrSize, pubmedRefs) %>%
-  mutate(mass = log(mass), distrSize = log(distrSize), colonySize = log(colonySize), pubmedRefs = log(pubmedRefs)) %>%
-  ggpairs(.)
-
-%%end.rcode
-
-
-%%begin.rcode, phyloAnalysis, fig.show = extraFigs
-
-compSubspecies <- comparative.data(data = nSpecies, phy = pruneTree, names.col = 'binomial')
-
-colonysize.pgls <- gls(virusSpecies ~ log(colonySize), correlation = corPagel(0.5, phy = pruneTree), data = nSpecies, method = 'ML')  
-studyeffort.pgls <- gls(virusSpecies ~ log(pubmedRefs), correlation = corPagel(0.2, phy = pruneTree), data = nSpecies, method = 'ML')  
-
-
-# Make predicted lines
-colonysizePreds <- data.frame(colonySize = seq(min(nSpecies$colonySize), max(nSpecies$colonySize), length.out = 1000))
-colonysizePreds$virusSpecies <- predict(colonysize.pgls, newdata = list(colonySize = colonysizePreds$colonySize))
-
-studyeffortPreds <- data.frame(pubmedRefs = seq(min(nSpecies$pubmedRefs), max(nSpecies$pubmedRefs), length.out = 1000))
-studyeffortPreds$virusSpecies <- predict(studyeffort.pgls, newdata = list(pubmedRefs = studyeffortPreds$pubmedRefs))
-
-
-%%end.rcode
-
-
-
-
-%%begin.rcode DataPlotsTitles
-
-dataTitle <- 'Relationships between viral richness and both study effort and colony size'
-
-dataCaption <- 'Relationships between viral richness and both study effort and colony size'
-
-
-%%end.rcode
-
-
-%%begin.rcode DataPlots, fig.cap = dataCaption, fig.title = dataTitle, cache = FALSE
-
-
-colonySizePlot <- ggplot(nSpecies, aes(colonySize, virusSpecies)) +
-                    geom_point(aes(colour = familyPlotCol)) +
-                    scale_x_log10(breaks = c(1, 100, 100000), labels = c('1', '100', '100,000')) +
-                    geom_line(data = colonysizePreds) +
-                    scale_colour_poke(pokemon = 'oddish', spread = 4) +
-                    labs(x = 'Colony Size', y = 'Viral Richness', colour = 'Family') 
-
-
-
-nSpeciesCounts <- nSpecies %>%
-                    group_by(pubmedRefs, virusSpecies) %>%
-                    dplyr::summarize(n = n())
-
-
-studyEffortPlot <- ggplot(nSpeciesCounts, aes(pubmedRefs, virusSpecies)) +
-                    geom_point(aes(size = n)) +
-                    scale_x_log10() +
-                    scale_size(range = c(0.5, 4.3), breaks = c(1, 10, 20)) +
-                    geom_line(data = studyeffortPreds) +
-                    scale_colour_poke(pokemon = 'oddish', spread = 4) +
-                    labs(x = 'Study Effort', y = 'Viral Richness')
-
-
-plot_grid(colonySizePlot, studyEffortPlot, ncol = 1)
-
-%%end.rcode
-
-%%begin.rcode ITanalysis
-
-findCombs <- function(k, vars, longest){
-  x <- t(combn(vars, k))
-  nas <- matrix(NA, ncol = longest - NCOL(x), nrow = nrow(x))
-  mat <- cbind(x, nas)
-  return(mat)
-}
-
-varList <- c('pubmedRefs', 'colonySize', 'mass', 'distrSize', 'rand')
-
-
-modelList <- lapply(0:5, function(k) findCombs(k, varList, 5))
-modelMat <- do.call(rbind, modelList)
-
-allFormulae <- apply(modelMat[-1, ], 1, function(x) as.formula(paste('virusSpecies ~', paste(x[!is.na(x)], collapse = ' + '))))
-
-allFormulae <- c(as.formula('virusSpecies ~ 1'), allFormulae)
-
-%%end.rcode
-
-
-
-%%begin.rcode modelSelectBoots, eval = runBoots
-
-
-
-modelSelect <- function(allForm, data, phy, boot, allModelMat, varList){
-  
-  set.seed(paste0('2388', boot))
-  bootData <- cbind(data, rand = runif(nrow(data)))
-  row.names(bootData) <- bootData$binomial
-
-  phyPolys <- multi2di(phy, random = FALSE)
-
-  # log some predictors
-  bootData[, c('mass', 'pubmedRefs', 'colonySize', 'distrSize')] <- log(bootData[, c('mass', 'pubmedRefs', 'colonySize', 'distrSize')])
-  
-  # scale
-  bootData[, c('mass', 'pubmedRefs', 'colonySize', 'distrSize', 'rand')] <- base::scale(bootData[, c('mass', 'pubmedRefs', 'colonySize', 'distrSize', 'rand')])
-  
-
-  coefs <- matrix(NA, ncol = length(varList) + 1, nrow = nrow(allModelMat), 
-             dimnames = list(NULL, paste0('beta.', c('(Intercept)', varList))))
-
-  results <- apply(allModelMat, 1, function(x) sapply(varList, function(y) y %in% x)) %>%
-               t %>%
-               data.frame %>%
-               cbind(AIC = NA, boot = boot, lambda = NA, attempt = NA, predictors = NA, coefs)
-
-  # Fit each model 
-  # I'm having problems with convergence so sometimes have to try different starting values.
-  for(m in 1:length(allForm)){
-    if(exists('model')){
-      rm(model)
-    }
-    try({
-      model <- gls(allForm[[m]], correlation = corPagel(value = 0.4, phy = phyPolys), data = bootData, method = 'ML')  
-      results$attempt[m] <- 1
-    }) 
-    if(!exists('model')){
-      try({
-        model <- gls(allForm[[m]], correlation = corPagel(value = 0.3, phy = phyPolys), data = bootData, method = 'ML')  
-        results$attempt[m] <- 2
-      }) 
-    }
-    if(!exists('model')){
-      try({
-        model <- gls(allForm[[m]], correlation = corPagel(value = 0.2, phy = phyPolys), data = bootData, method = 'ML')  
-        results$attempt[m] <- 3
-      }) 
-    }
-    if(!exists('model')){
-        try({
-          model <- gls(allForm[[m]], correlation = corPagel(value = 0.1, phy = phyPolys), data = bootData, method = 'ML')  
-          results$attempt[m] <- 4
-        }) 
-      }
-    if(!exists('model')){
-      try({
-        model <- lm(allForm[[m]], data = bootData) 
-        results$attempt[m] <- 5
-        message('Running lm')
-      }) 
-    }
-    #model <- pgls(allForm[[m]], data = compBootData, lambda = 'ML')
-    results$AIC[m] <- AICc(model)
-
-    if(inherits(model, 'gls')){
-        results$lambda[m] <- model$modelStruct$corStruct[1]
-    }
-
-    results$predictors[m] <- allForm[[m]] %>% as.character %>% .[3]
-
-
-    results[m, paste0('beta.', names(coef(model)))] <- coef(model)
-
-    message(paste('Boot:', boot, ', m:', m, '\n'))
-  }
-
-  results$dAIC <- results$AIC - min(results$AIC)
-  results$weight <- exp(- 0.5 * results$dAIC) / sum(exp(- 0.5 * results$dAIC))
-
-
-  return(results)
-
-}
-
-
-
-
-modelsBootstrap <- mclapply(1:nBoots, function(b) modelSelect(allFormulae, nSpecies, pruneTree, b, modelMat, varList), mc.cores = nCores)
-
-allResults <- do.call(rbind, modelsBootstrap)
-
-write.csv(allResults, file = 'Data/modelSelectResults.csv')
-
-
-%%end.rcode
-
-
-
-%%begin.rcode analyseModelSelect, fig.show = extraFigs
-
-allResults <- read.csv('Data/modelSelectResults.csv', row.names = 1)
-
-varWeights <- sapply(names(allResults)[1:5], function(x) sum(allResults$weight[allResults[, x]])/nBoots)
-
-sepVarWeights <- lapply(1:nBoots, function(b) 
-                      sapply(names(allResults)[1:5], 
-                        function(x) 
-                          sum(allResults[allResults$boot == b, 'weight'][allResults[allResults$boot == b, x]])
-                      )
-                     )      
-
-sepVarWeights <- do.call(rbind, sepVarWeights) %>%
-                      data.frame(., boot = 1:nBoots) %>%
-                      reshape2::melt(., value.name = 'estimate', id.vars = 'boot')
-
-sepVarWeights$col <- 'Other Variables'
-sepVarWeights$col[sepVarWeights$variable == 'rand'] <- 'Null'
-sepVarWeights$col[sepVarWeights$variable == 'colonySize' | sepVarWeights$variable == 'distrSize'] <- 'Main Variable'
-
-
-modelWeights <- allResults %>%
-                  group_by(predictors) %>%
-                  summarise(AICc = mean(AIC)) %>%
-                  mutate(dAIC = AICc - min(AICc), modelWeight = exp(- 0.5 * dAIC) / sum(exp(- 0.5 * dAIC))) %>%
-                  arrange(desc(modelWeight)) %>%
-                  mutate(cumulativeWeight = cumsum(modelWeight)) %>%
-                  mutate(string = predictors)
-
-
-ggplot(allResults, aes(x = lambda)) + 
-  geom_density() 
-
-allResults %>% 
-  filter(boot == 1) %>%
-  dplyr::select(predictors, lambda)
-
-%%end.rcode
-
-
-
-%%begin.rcode ITPlots, fig.cap = "Akaika variable weights. The probability that each variable will be in the best model if the data were recollected is shown for each of the bootstrap analyses. The purple ``Random'' box is a uniform random variable used as a null. Population structure (Number of subspecies and Gene flow), shown in red, is likely to be in the best model in both analyses.", fig.height = 2.5, fig.scap = 'Akaika variable weights for $F_{ST}$ analysis.', out.width = '0.7\\textwidth', cache = FALSE
-
-ITPlot <- ggplot(sepVarWeights, aes(x = variable, y = estimate, colour = col, fill = col)) +
-  geom_boxplot(outlier.colour = grey(0.3), notch = FALSE, width = 0.99, outlier.size = 1, lwd = 0.4) +
-  scale_colour_manual(values = pokepal('nidorino')[c(2, 5, 11)]) +
-  scale_fill_manual(values = pokepal('nidorino')[c(3, 6, 10)]) +
-  theme(legend.position = 'none', axis.text.x = element_text(size = 10, angle = 40, hjust = 1, colour = 'black', family = 'lato light'),
-    axis.text.y = element_text(size = 8)) +
-  scale_x_discrete(labels = c('Pubmed', 'Colony Size', 'Mass', 'Range Size', 'Random')) +
-  ylab('P(in best model)') +
-  xlab('')
-
-
-ITPlot
-%%end.rcode
-
-
-
-%%begin.rcode resid
-
-nSpeciesResid <- nSpecies
-nSpeciesResid$resid <- nSpecies$virusSpecies / nSpecies$pubmed
-
-resid <- gls(resid ~ colonySize + distrSize + mass, correlation = corPagel(value = 0.9, phy = pruneTree), data = nSpeciesResid, method = 'ML')  
-
-anova(resid)
-
-%%end.rcode
-
-
-
-%%begin.rcode nSpeciesCoef, fig.show = extraFigs
-
-
-
-varCoefMeans <- apply(allResults[, grep('beta', names(allResults))], 2, function(x) wtd.mean(x, allResults$weight, na.rm = TRUE))
-varCoefVars  <- apply(allResults[, grep('beta', names(allResults))], 2, function(x) wtd.var(x, allResults$weight, na.rm = TRUE))
-
-
-
-%%end.rcode
-
-
-
-
-
-%%begin.rcode univariatePGLS
-
-
-
-
-colonyLambda <- summary(pgls(log(colonySize) ~ 1, data = compSubspecies, lambda = 'ML'))
-massLambda <- summary(pgls(log(mass) ~ 1, data = compSubspecies, lambda = 'ML'))
-pubmedLambda <- summary(pgls(log(pubmedRefs) ~ 1, data = compSubspecies, lambda = 'ML'))
-virusLambda <- summary(pgls(virusSpecies ~ 1, data = compSubspecies, lambda = 'ML'))
-distrLambda <- summary(pgls(log(distrSize) ~ 1, data = compSubspecies, lambda = 'ML'))
-
-%%end.rcode
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\section{Methods}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%
-
-
-
-\begin{table}[b!]
-\centering
-\caption[All symbols used in Chapters \ref{ch:sims1} and \ref{ch:sims2}.]{All symbols used in Chapters \ref{ch:sims1} and \ref{ch:sims2} along with their units and default values.}
-
-\begin{tabular}{@{}lp{5cm}p{3.9cm}r@{}}
-\toprule
-Symbol & Explanation & Units & Value\\
-\midrule
-$S$ & Number of susceptible individuals &&\\
-$I_q$ & N. individuals infectious with diseases $q$ &&\\
-$I^+_p$ & Sum of classes infected with pathogen $p$ &\\
-$R$ & Number of recovered/immune individuals &&\\
-$N$ & Total Population && 30,000\\
-$m$ & Number of colonies&& 10\\
-$n$ & Colony starting size && 3,000\\
-$a$ & Area & km$^2$& 10,000\\
-$\beta$ & Transmission rate & Per year per individual& 2, 5, 10\\
-$\gamma$ & Recovery rate & Per year per individual. & 1\\
-$\lambda$ & Dispersal & Per day per individual& 0.001--0.1\\
-$\Lambda$ & Birth rate & Per year per individual& 0.05\\
-$\mu$ & Death rate & Per year per individual & 0.05\\
-%$d_I$ & Infectious death rate & Additional deaths per day per individual&\\
-$\rho$ & No. pathogens && 2\\
-$p$ &  Pathogen index \emph{i.e.} $p\in\{1,2\}$ for pathogens 1 and 2 & &\\
-$q$ & Disease class \emph{i.e.}, $q\in\{1,2,12\}$&\\
-%$\mathcal{V}$ & Neighbourhood of a node &&\\
-$t, t^\prime$ & Time and time plus waiting time \emph{i.e.}, $t+\delta$ & Days&\\
-$k_i$ & Degree of node $i$ &&\\
-$\delta$ & Waiting time until next event & Days&\\
-$\alpha$ & Cross immunity & Proportion& 0.1\\
-$n, m$ & Colony index &&\\
-%$\bm{A}_{mn}$ & Adjacency matrix. & Distance &\\
-%$\mu$ & Maximum distance for edge to exist & km& 40, 100\\
-$\sigma$ & Invading pathogen seed size & & 10\\
-$r_i$ & The rate that event $i$ occurs. & Days$^{-1}$&\\
-\bottomrule
-\end{tabular}
-
-\label{t:params}
-\end{table}
-
-
-
-
-\subsection{Metapopulation model}
-
-
-
-
-\subsubsection{Two pathogen SIR model}
-
-I examine a multipathogen SIR model with vital dynamics. 
-This is a compartment model with individuals being classed as susceptible, infected or recovered with immunity (Figure~\ref{f:sir}).
-Susceptible individuals are counted in class $S$.
-There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with pathogen 1, pathogen 2 or both respectively.
-Recovered individuals, $R$, are immune to both pathogens, even if they have only been infected with one.
-Furthermore, recovery from one pathogen moves an individual straight into the recovered class, even if the individual is infected with both pathogen.
-This modelling choice allows the model to be easily expanded to include more than two pathogens.
-The assumption of immediate recovery from all other diseases is likely to be quite accurate for very closely related pathogens as is being studied here as once an acquired immune response is activated, all infections are likely to be cleared quickly.
-
-The coinfection rate (the rate at which an infected individual is infected with a second pathogen) is adjusted compared to the infection rate by a factor $\alpha$ (here I used $\alpha = 0.1$ which means coinfection happens at a tenth the rate of first infections).
-In the application of long term existence of pathogens it is vital to include vital dynamics (births and deaths) as the SIR without vital dynamics has no endemic state.
-Birth and death rates are assumed to be equal, $\mu = \Lambda$ (see Table~\ref{t:params} for a list of symbols and values used).
-The time scale of the simulations are set by setting $\mu$ = 0.05 per year, yielding an average host generation time of 20 years.
-Infection is assumed to cause no extra mortality as for a number of viruses, bats show no clinical signs of infection \cite{halpin2011pteropid, deThoisy2016bioecological}.
-
-
-\subsubsection{Metapopulation}
-
-
-The population is divided into a number of subpopulations.
-This metapopulation is modelled as a network with subpopulations being nodes and dispersal between subpopulations being indicated by edges (Figure~\ref{f:net}).
-Individuals within a subpopulation interact randomly so that the subpopulation is fully mixed.
-Dispersal between subpopulations occurs at a rate $\lambda$.
-Individuals can only disperse to subpopulations connected to theirs in the network.
-The rate of dispersal is not affected by the number of edges a subpopulation has (the degree of the subpopulation).
-So the dispersal rate from a subpopulation $m$ with degree $k_m$ to subpopulation $n$ is $\frac{\lambda}{k_m}$.
-Note this rate is independent of the degree of subpopulation $n$.
-
-
-
-
-
-\subsubsection{Stochastic simulations}
-
-I examine this model using stochastic, continuous time simulations (using the Gillespie algorithm) implemented in R \cite{R}.
-At each step in the simulation we calculate the rate that each possible event might occur.
-One event is then randomly chosen, weighted by it's rate
-\begin{align}
-  p(\text{event } i) = \frac{r_i}{\sum_i r_i}
-\end{align}
-where $r_i$ is the rate that event $i$ occurs.
-Finally, the length of the time step, $\delta$, is drawn from an exponential distribution 
-\begin{align}
-  \delta \sim \operatorname{Exp}\left(\sum_i r_i  \right).
-\end{align}
-This means that the total length of each simulation is stochastic. 
-We define the number of events we wish to simulate instead.
-
-
-
-We can now write down the rates of all events. 
-I defined $I^+_p$ to be the sum of all classes that are infectious with pathogen $p$, for example $I^+_1 = I_1 + I_{12}$. 
-Assuming asexual reproduction, that all classes reproduce at the same rate and that individuals are born into the susceptible class we get
-\begin{align}
-  P\left( S_{nt^\prime} = S_{nt} +1\right) &= \Lambda\left( S_{nt}+\sum_q I_{qnt} + R_{nt}\right) 
-\end{align}
-where $P\left( S_{nt^\prime} = S_{nt} +1\right)$ is the probability that the number of susceptibles in subpopulation $n$ will increase by 1 (a single birth) in the time interval $t$ to $t^\prime$ and $\sum_q I_{qnt}$ is the sum of all infection classes $q \in {1, 2, 12}$.
-The rates of death, given a death rate $d$ are given by
-\begin{align}
-  P\left( S_{nt^\prime} = S_{nt}-1 \right) &= \mu S_{nt}, \\
-  P\left( I_{qnt^\prime} = I_{qnt}-1 \right) &= \mu I_{qnt},\\
-  P\left( R_{nt^\prime} = R_{nt}-1 \right) &= \mu R_{nt}.
-\end{align}
-I modelled transmission as density-dependant.
-This assumption was more suitable than frequency-dependant transmission as I am modelling a disease transmitted by saliva or urine in highly dense populations confined to caves, building or potentially a small number of tree roosts.
-I was notably not modelling an STD as these diseases are not expected to be commonly zoonotic.
-Infection of a susceptible with either pathogen 1 or 2, $S \rightarrow I_p$ where $p\in \{1,2\}$, is therefore given by
-\begin{align}
-  P\left( I_{pnt^\prime} = I_{pnt}+1, S_{nt^\prime} = S_{nt}-1 \right) &= \beta S_{nt}I^+_{pnt},
-\end{align}
-while coinfection, given a crossimmunity factor $\alpha$, is given by
-\begin{align}
-  P\left( I_{12,nt^\prime} = I_{12,nt}+1,\: I_{1nt^\prime} = I_{1nt}-1\right) = &\alpha\beta I_{1nt}I^+_{2nt},\\
-  P\left( I_{12,nt^\prime} = I_{12,nt}+1,\: I_{2nt^\prime} = I_{2nt}-1\right) = &\alpha\beta I_{2nt}I^+_{1nt}.
-\end{align}
-The probability of migration from colony $m$ (with degree $k_m$) to colony $n$, given a dispersal rate $\lambda$ is given by
-\begin{align}
-  P\left(S_{nt^\prime}=S_{nt}+1,\: S_{mt^\prime} = S_{mt}-1\right) &= \frac{\lambda S_{mt}}{k_m-1},\\
-  P\left(I_{qnt^\prime}=I_{qnt}+1,\: I_{qmt^\prime} = I_{qmt}-1\right) &= \frac{\lambda I_{qmt}}{k_m-1},\\
-  P\left(R_{nt^\prime}=S_{nt}+1,\: R_{mt^\prime} = R_{mt}-1\right) &= \frac{\lambda R_{mt}}{k_m-1}.
-\end{align}
-Finally, recovery from any infectious class occurs at a rate $\gamma$
-\begin{align}
-  P\left( I_{qnt^\prime} = I_{qnt}-1,\: R_{nt^\prime} = R_{nt}+1 \right) &= \gamma I_{qnt}.
-\end{align}
-
-
-
-In each simulation the population is seeded with 20 individuals infected with pathogen 1 in each colony. 
-Pathogen 1 is then allowed to spread and reach equilibrium. 
-Visual inspection of preliminary simulations was used to decide on \rinline{invadeT} as being long enough for the epidemic to reach an equilibrium state.
-After \rinline{invadeT} events, 5 individuals infected with pathogen 2 are added to one randomly selected colony. 
-After another \rinline{nEvent - invadeT} events the invasion of pathogen 2 is considered successful if any individuals with pathogen 2 still remain.
-Again visual inspection of preliminary simulations was used to determine that after \rinline{nEvent - invadeT} events, if an invading pathogen was still present, it was well established. 
-
-\subsection{Dependant variables}
-
-Three dependant variables were varied: colony size, number of colonies and area.
-From these parameters, population size and population density can be calculated.
-The default values of these parameters was a population size of 8000 individuals split into 20 colonies of 400.
-The default area of the simulations was \rinline{dep3[3]}km$^2$ (space is given in square kilometres for simplicity even though they are in fact arbitrary units).
-
-Three sets of simulations were run.
-First, colony size was varied using values \rinline{dep1[-5]} and \rinline{dep1[5]}.
-The number of colonies was kept constant and so population size varied with colony size.
-Area was scaled to keep population density constant. 
-Secondly, number of colonies (and therefore population size) was varied and again area was varied to keep density constant.
-\rinline{dep2[-5]} and \rinline{dep2[5]} colonies were used.
-Finally, colony size and number of colonies were kept constant (therefore keeping population size constant) and area was varied alone to alter population density. 
-The values of area used were \rinline{dep3[-5]} and \rinline{dep3[5]}km$^2$ which gave density values of \rinline{depDens[-5]} and \rinline{depDens[5]}animals$\cdot\text{km}^{-2}$.
-
-The affects of area occur through changing the metapopulation network.
-The metapopulation structure was created for each simulation by randomly placing colonies in space (Figure~\ref{fig:colonyNetworkPlots}).
-The spatial scale of the simulations vary between \rinline{min(area)} and \rinline{max(area)} km$^2$.
-This corresponds to square areas with sides of \rinline{sqrt(min(area))} to \rinline{sqrt(max(area))}km.
-Dispersal can only occur between two colonies if they are within 100 kilometres of each other \emph{i.e.} they are connected nodes in the metapopulation network.
-The number of connections each colony has is called its degree, $k$.
-How well connected the metapopulation network is overall is measured by the mean degree, $\bar{k}$.
-This does not guarantee that the population is fully connected but as the endemic pathogen is seeded in all colonies, the invading pathogen cannot be seeded into a fully susceptible colony.
-This was considered more realistic than repeatedly resampling the population until a fully connected population occurred.
-The threshold of 100 kilometres was arbitrary but I aimed to maximise the range  of $\bar{k}$ (Figure~\ref{fig:plotK}) while not having many simulations with networks that were not fully connected.
-Given this setup, simulations with low densities had relatively unconnected metapopulation networks while high density populations had fully connected networks.
-
-
-
-\subsection{Other Parameters}
-
-
-The fixed parameters used are chosen to roughly reflect realistic wild bat populations. 
-The death rate $\Lambda$ is set as 0.05 per year giving a generation time of 20 years.
-The birth rate is set to be equal to $\mu$ so that the population size is stable.
-The recovery rate $\gamma$ is set to 1 giving a average infection duration of 1 years. 
-This is therefore a long lasting infection but not a chronic infection. 
-It is very difficult to directly estimate infection durations in wild populations but it seems that these infections might sometimes be long lasting \cite{peel2012henipavirus, plowright2015ecological}.
-However, other studies have found much shorter infectious periods \cite{amengual2007temporal}.
-These shorter lived not infections are studied further here.
-
-Cross immunity is set to 0.1 so that an individual infected with one pathogen is 90\% less likely to be infected with another.
-This is a rather arbitrary value.
-However, the rationale of the model is that the invading species might be a newly speciated strain of the endemic species.
-Furthermore, the model assumes complete cross immunity after recovery from infection.
-Therefore cross immunity to coinfection is likely to be very strong as well.
-
-Three values of the transmission rate $\beta$ are used, 0.1, 0.2 and 0.3.
-All simulations are run under all three transmission rates as this is a fundamental parameter that changes the broad dynamics of the pathogens.
-
-
-\subsection{Statistical comparisons}
-
-I tested two hypotheses.
-Firstly I tested the hypothesis that an increase in population size creates a stronger increase in invasion probability (of the second pathogen) than an equal increase in population density.
-Secondly, I tested the hypothesis that an increase in colony size creates a stronger increase in invasion probability than an equal increase in number of colonies.
-To statistically test these hypotheses I combined the results from different simulations and fitted multiple logistic regressions, centering and scaling the dependant variables.
-Specifically, I fitted the model 
-\begin{align}
-  \text{invasion} = b_1 d + b_2 n + b_3 m + c + \epsilon
-\end{align}
-where $d, n$ and $m$ are density, colony size and number of colonies respectively and $b_i$ are the regression coefficients. 
-$c$ is a fitted intercept, $\epsilon$ is a binomially distributed error term.
-To test the first hypothesis I compared the size (and 95\% confidence intervals) of $b_1$ to $b_2$ and $b_3$.
-To test the second hypothesis I compared $b_2$ to $b_3$.
-
-
-
-
-\subsection{Comparative Analysis}
-
-To test for an association between pathogen richness I have performed multiple regression using a model selection framework to establish whether or not two measures of pathogen richness are likely to be in a `best model' and therefore important.
-As species cannot be considered independant due to shared evolutionary history, phylogeny was controlled for in all regressions.
-A number of other factors that have previously been found to be important were included as additional independant variables: body mass \cite{kamiya2014determines, turmelle2009correlates, gay2014parasite, maganga2014bat, han2015infectious}, range size \cite{kamiya2014determines, turmelle2009correlates, maganga2014bat} and study effort \cite{turmelle2009correlates, gay2014parasite, maganga2014bat}.
-This was to attempt to avoid spurious positive results occuring simply due to correlation between pathogen richness and a different, causal factor.
-Despite commonly being associated with pathogen richness \cite{arneberg2002host, kamiya2014determines, nunn2003comparative}, population density is not included in the analysis as there is very little data for bat densities---however Chapter~\ref{ch:sims2} examines the relationship between density and population structure and Chapter~\ref{ch:grem} presents a method that allows the estimation of density from acoustic surveys.
-I used both the number of subspecies a bat species has and estimates of gene flow (analysed separately) as measures of population structure.
-All analyses were run in R \cite{R}
-
-\subsection{Pathogen richness}
-
-To measure pathogen richness I used data from \cite{luis2013comparison}. 
-These simply include known infections of a bat species with a pathogen species. 
-Only species with at least one pathogen were included in the analysis.
-Rows with host species that were not identified to species level were removed.
-Many viruses were not identified to species level or their specified species names were not in the ICTV virus taxonomy \cite{ICTV}.
-I counted a virus if it was the only virus, for that host species, in the lowest taxonomic level (present in the ICTV taxonomy) identified.
-That is, if a host carries an unknown Paramyxoviridae virus, then it must carry at least one Paramyxoviridae virus.
-If a host carries an unknown Paramyxoviridae virus and a known Paramyxoviridae virus, then it is hard to confirm that the unknown virus is not another record of the known virus.
-In this case, this would be counted as one virus species.
-
-
-
-\subsection{Other independant variables}
-
-To control for study bias I collected the number of Pubmed and Google Scholar citations for each bat species name including synonyms from ITIS \cite{itis} via the taxize package \cite{chamberlain2013taxize}.
-The counts were scraped using the rvest package \cite{rvest}.
-I log transformed these variables as they were strongly right skewed.
-%The log number of citations on Pubmed and Google scholar were highly correlated (pgls: $t$ = \rinline{studyEffortCor$coefficients['log(pubmedRefs + 1)', 't value']}, df = \rinline{studyEffortCor$df[2]}, $p$ = \rinline{studyEffortCor$coefficients['log(pubmedRefs + 1)', 'Pr(>|t|)']}).
-As this correlation is strong, the results here are for analyses using only Google Scholar citations.
-%See the appendix for analyses run using Pubmed citations.
-
-Measures of body mass are taken from Pantheria \cite{jones2009pantheria} and primary literature \cite{canals2005relative, arita1993rarity, lopez2014echolocation, orr2013does, lim2001bat, aldridge1987turning, ma2003dietary, owen2003home, henderson2008movements, heaney2012nyctalus, oleksy2015high, zhang2009recent}. 
-\emph{Pipistrellus pygmaeus} was assigned the same mass as \emph{P. pipistrellus} as they are indistinguishable by mass.
-Body mass measurements were log transformed as they were strongly right skewed.
-Distribution size was estimated by downloading range maps for all species from IUCN \cite{iucn} and were also logged due to right skew.
-
-
-
-\subsection{Phylogenetic nonindependance}
-
-To control for phylogenetic nonindependance I used the best-supported phylogeny from \textcite{fritz2009geographical} (shown in Figure~\ref{fig:treePlot}) which is the supertree from \cite{bininda2007delayed} with names updated to match the Wilson \& Reeder taxonomy \cite{wilson2005mammal}.
-Phylogenetic manipulation was performed using the ape package \cite{ape}.
-The importance of the phylogeny on each variable separately (the $\lambda$ parameter of the variable regressed against an intercept) was estimated and tested against the null of $\lambda = 0$ with log-likelihood ratio tests using caper \cite{caper}.
-I also performed the analysis using the tree from \cite{jones2005bats} as this has some broad changes with families in different places.
-However the phylogeny did not affect the analysis.
-
-%$F_{ST}$ studies are conducted at a range of spatial scales, but $F_{ST}$ often increases with distance studied \cite{burland1999population, hulva2010mechanisms, o2015genetic, vonhof2015range}.
-%To minimise the effects of this I only used data from studies that cover \rinline{rangeUseable * 100}\% of the diameter of the species range.
-%This is a largely arbitrary value that could be considered to reflect a ``global'' estimate of $F_{ST}$ while keeping a reasonable number of datapoints available.
-%I calculated the diameter of the species range by finding the furthest apart points in the IUCN species range \cite{iucn} even if the range is split into multiple polygons.
-%The width covered by each study was the distance between the most distant sampling sites.
-%When this was not explicit in the paper, the centre of the lowest level of geographic area was used.
-
-
-
-\subsection{Statistical analysis}
-
-Statistical analysis for both dependant variables was conducted using a information theoretical/model averaging approach \cite{burnham2002model} specifically following \cite{whittingham2005habitat, whittingham2006we}.
-I chose a credible set of models including all combinations of independent variables and a model with just an intercept.
-In the analysis using the number of subspecies dependant variable I also included an interaction term between study effort and number of subspecies.
-This interaction was included as I believed \emph{a priori} that this interaction may be present as subspecies in well studied species are more likely to be identified.
-The interaction was only included in models with both study effort and number of subspecies as individual terms.
-
-I fitted phylogenetic regressions of all models using nlme \cite{nlme}.
-The independant variables were centered and scaled to allow direct comparison of the coefficients \cite{schielzeth2010simple}.
-In each case I simultaneously fitted the $\lambda$ parameter as this avoids mispecifying the model \cite{revell2010phylogenetic}.
-$\kappa$ and $\delta$ parameters were constrained to one as they are more concerned with when along a branch evolution occurs and because fitting multiple parameters makes interpretation difficult. 
-
-To establish the importance of variables I calculated the probability, $Pr$, that each variable would be in the best model if the data were recollected.
-For each variable the mean of it's coefficient, $\beta$, in all models that contained that variable was also calculated to determine the direction and strength of the variables.
-In the subspecies analysis, this mean of $\beta$ was calculated for all models, only models with a interaction term and only models without an interaction.
-As the interaction term greatly affects the estimated value of $\beta$, considering these value seperately aids interpretation.
-Following \cite{whittingham2005habitat} I included a uniformally random variable as a null variable as even unimportant variables can have Akaiki weights notably greater than zero.
-The whole analysis was run \rinline{nBoots} times, resampling the random variable each time.
-I calculated AICc for each model.
-I calculated the average AICc, $\bar{\text{AICc}}$, by averaging AICc scores within models.
-$\Delta\text{AICc}$ was calculated as $\text{min}(\bar{\text{AICc}}) - \bar{\text{AICc}}$, not the mean of the individual $\Delta\text{AICc}$ scores, to guarantee that the best model has $\Delta\text{AICc} = 0$.
-From these $\Delta\text{AICc}$ I calculated Akaiki weights, $w$.
-This value can be interpreted as the probability that a model would be the best model if the data were recollected.
-For each variable, the sum of the Akaiki weights of models containing that variable are summed to give $Pr$.
-This value can be interpreted as the probability that the given variable is in the best model.
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\section{Results}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%     Results text    %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Simulation Results}
-
-At the default parameter settings, the probability of invasion and establishment of the second pathogen, $P(I)$,  was rare ($\beta = 0.1,\: P(I) = \rinline{meanDefault$mean[1]};\: \beta = 0.2,\: P(I) = \rinline{meanDefault$mean[2]};\: \beta = 0.3,\: P(I) = \rinline{meanDefault$mean[3]}$).
-Although there is no clear, directional relationship, these proportions are significantly different ($\chi^2$ test: $\chi^2 = \rinline{transTest$statistic},\: \text{df} = \rinline{transTest$parameter},\: p = \rinline{transTest$p.value}$).
+At the default parameter settings, the probability of invasion and establishment of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~\ref{C-pop} -- \ref{C-dens2}).
+These proportions significantly increased with transmission rate (GLM: $b$ = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
 
 In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
-This did not depend on transmission rate ($\chi^2$ test: $\chi^2 = \rinline{transExtinctTest$statistic},\: \text{df} = \rinline{transExtinctTest$parameter},\: p = \rinline{transExtinctTest$p.value}$).
-However they were all either in simulations with the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or with the fewest colonies (5 colonies, \rinline{fewAllExtinct} simulations).
-These simulations were ignored in further analyses.
+The number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: $b$ = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
+However all of the simulations with extinction of both pathogens had either the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or the fewest number of colonies (5 colonies, \rinline{fewAllExtinct} simulations).
+Results from these simulations were removed before further analyses.
 
 
 
-\subsection{Population density or size}
+\subsection{Host population size or density}
 
-To test whether population density or size has a stronger affect on invasion probability I compared the regression coefficients of the multiple regressions fitted to simulation results (Figure~\ref{fig:plotValueChangeMeans}).
-Increasing population size, either by increasing colony size or number of colonies, increases the probability of invasion (Table~\ref{t:regrCoefs}).
+To test whether host population size or density had a stronger effect on invasion probability I compared the regression coefficients of the multiple regressions fitted to simulation results (Figure~\ref{fig:plotValueChangeMeans}).
+Increasing host population size, either by increasing colony size or number of colonies, increased the probability of invasion (Table~\ref{t:regrCoefs}).
 The relationship between colony size and invasion is strong and significant at all transmission rates, while the relationship between colony number and invasion is weaker and more marginally significant.
-In contrast, varying population density does not alter invasion probability.
-Therefore the simulations support the hypothesis that population size affects invasion more strongly than population density.
+In contrast, varying host density does not alter invasion probability.
+Therefore the simulations support the hypothesis that population size affects invasion more strongly than host density.
 
 
 \subsection{Colony size or number of groups}
 
 To test whether colony size or the number of colonies is the more important component of population size, I compared the regression coefficients, $b_2$ and $b_3$, of the multiple regressions fitted to simulation results (Figure~\ref{fig:plotTransMeans}).
-Increasing colony size or the number of colonies increases the probability of invasion but this affect is much stronger and more statistically significant, for colony size (Table~\ref{t:regrCoefs}).
-Therefore the simulations support the hypothesis that colony size is the more important component of population size, though colony number does still increase the probability of invasion.
+Increasing either colony size or the number of colonies increased the probability of invasion but this effect was much stronger and more statistically significant for colony size (Table~\ref{t:regrCoefs}).
+Therefore the simulations support the hypothesis that colony size is the more important component of population size.
 
 
-\subsection{Comparative analysis results}
 
 
 \begin{table}
 
 \caption[Regression results]{
-Regression results comparing affects of colony size, colony number and area.
-Coefficients are from multiple logistic regressions with invasion as the dependant variable and all independant variables being scaled and centred.
-Colony size and colony number were varied while keeping density equal while density was varied by changing area while keeping population size equal.
-$p$ is for test against the null hypothesis that  $b = 0$.
+Regression results comparing effects of colony size, colony number and density.
+Coefficients are from multiple logistic regressions with invasion as the dependent variable and all independent variables being scaled and centred.
+Colony size and colony number were varied while keeping density equal while density was varied by changing range size while keeping population size equal.
+$p$ is for the test against the null hypothesis that  $b = 0$.
 }
 \label{t:regrCoefs}
 \centering
 \begin{tabular}{@{}rlrrr@{}}
 \toprule
-$\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\% \emph{CI}) & $p$\\
+$\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\ \emph{CI}) & $p$\\
 \midrule
 0.1   &    Intercept     & \rinline{combModel$estimate[1]} & (\rinline{combModel$conf.low[1]}, \rinline{combModel$conf.high[1]}) & $< 10^{-5}$ \\
       &    Colony Size   & \rinline{combModel$estimate[2]} & (\rinline{combModel$conf.low[2]}, \rinline{combModel$conf.high[2]}) & $< 10^{-5}$ \\
@@ -2336,7 +1179,7 @@ $\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\% \emph{CI}) & $p$\\
       &    Density       & \rinline{combModel$estimate[4]} & (\rinline{combModel$conf.low[4]}, \rinline{combModel$conf.high[4]}) & \rinline{combModel$p.value[4]} \\[1em]
 0.2   &    Intercept     & \rinline{combModel$estimate[5]} & (\rinline{combModel$conf.low[5]}, \rinline{combModel$conf.high[5]}) & $< 10^{-5}$ \\
       &    Colony Size   & \rinline{combModel$estimate[6]} & (\rinline{combModel$conf.low[6]}, \rinline{combModel$conf.high[6]}) & $< 10^{-5}$ \\
-      &    Colony Number & \rinline{combModel$estimate[7]} & (\rinline{combModel$conf.low[7]}, \rinline{combModel$conf.high[7]}) & \rinline{combModel$p.value[7]} \\
+      &    Colony Number & \rinline{combModel$estimate[7]} & (\rinline{combModel$conf.low[7]}, \rinline{combModel$conf.high[7]}) & \rinline{sprintf('.3f', combModel$p.value[7])} \\
       &    Density       & \rinline{combModel$estimate[8]} & (\rinline{combModel$conf.low[8]}, \rinline{combModel$conf.high[8]}) & \rinline{combModel$p.value[8]} \\[1em]
 0.3   &    Intercept     & \rinline{combModel$estimate[9]} & (\rinline{combModel$conf.low[9]}, \rinline{combModel$conf.high[9]}) & $< 10^{-5}$ \\
       &    Colony Size   & \rinline{combModel$estimate[10]} & (\rinline{combModel$conf.low[10]}, \rinline{combModel$conf.high[10]}) & $< 10^{-5}$ \\
@@ -2359,81 +1202,84 @@ $\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\% \emph{CI}) & $p$\\
 
 \tmpsection{Restate results}
 
-Overall, my results suggest that population size promotes pathogen richness significantly more than population density in the context of metapopulations or group living.
-Furthermore, the component of population size that is important is group size.
+Overall, my results suggest that population size promotes pathogen richness significantly more than host density in the context of metapopulations or group living.
+Furthermore, the results suggest that the most important component of population size is colony size; a large population made up of large colonies rather than many, small colonies promotes pathogen invasion to the greatest degree.
 
 These results lead to a number of other conclusions.
-All else being equal, increasing range size (with density remaining constant) will not increase pathogen richness significantly unless the increased range size promotes larger groups.
-Furthermore, social species that live in large groups are likely to harbour more pathogen species, even if sociality promotes reduced interactions between groups due to territory defence or simply because of larger distances between groups due to groups needing larger home ranges than solitary individuals.
-
+All else being equal, increasing range size (with density remaining constant) will not strongly increase pathogen richness unless the increased range size promotes larger groups.
+Furthermore, social species that live in large groups are likely to harbour more pathogen species, even if 
+the larger groups require more space and therefore dispersal between groups is reduced.
 
 \tmpsection{Why are these results like that? What do they mean?}
 
-For related, strongly competing strains, the factor that allows new pathogens to invade is the number of susceptible individuals in the local group.
-As long as there are enough susceptible individuals that the new pathogen species persists through the stochastic, early stages of the epidemic, the new pathogen will persist.
+The results suggest that, for related, strongly competing strains, the factor that most strongly allows new pathogens to invade is the number of susceptible individuals in the local group.
+As long as there are enough susceptible individuals that the new pathogen species does not go extinct during the stochastic, early stages of the epidemic, the new pathogen will persist.
 As dispersal is a very slow process compared to infection, the global pool of susceptibles is not important. 
-This is why increasing the number of number of colonies does not increase pathogen invasion as quickly as the size of a colony does.
-Similarly, the density---at the global scale---of the species has little affect.
-In these simulations, increasing density without increasing population size implies a reduction in range size, which simply increases the number of colonies which are connected to the colony experiencing the invading pathogen.
-This increases the pool of susceptibles that are within one dispersal of the invading pathogen.
-However, again, this affect is very weak compared to the strong changes in local disease dynamics caused by increasing colony size.
+This is probably why increasing the number of colonies did not increase pathogen invasion rate as quickly as the size of a colony did.
+Similarly, the global host density of the species had little effect on pathogen invasion rate.
+In these simulations, increasing density without increasing population size was only achieved by reducing range size; this simply increased the number of connections between colonies in the metapopulation network.
+This, in turn, increased the pool of susceptibles that were within one dispersal of the invading pathogen.
+However, again, this effect was very weak compared to the strong changes in local disease dynamics caused by increasing colony size.
 
 
 
 \subsection{Global change}
 
-It is clear that many species are suffering strong population changes due to climate change \cite{thomas2004extinction}.
+It is clear that many species are suffering strong population changes due to global change \cite{thomas2004extinction}.
 However these changes might affect range size \cite{thomas2004extinction}, population size \cite{craigie2010large}, population connectivity \cite{wasserman2013population, rivera2015habitat, fonturbel2014forest} or group size \cite{lehmann2010apes, zunino2007habitat, manor2003impact, atwood2006influence} to different extents.
-My results suggest that pathogen communities will response differently depending on the change although it should be noted that the mechanism here---invasion of a new pathogen---is possibly more relevant over longer, multi-generation time scales than decadely time scales.
-In short, species suffering reductions in groups size \cite{lehmann2010apes, zunino2007habitat, manor2003impact, atwood2006influence} are predicted to experience decreases in pathogen richness in the long term.
-Species that are experiencing increases in group size \cite{lehmann2010apes} would be expected gain new pathogen species more quickly.
+My results suggest that pathogen communities will respond differently depending on which factors are most strongly affected by global change.
+In short, species suffering reductions in groups size \cite{lehmann2010apes, zunino2007habitat, manor2003impact, atwood2006influence} are predicted to experience decreases in pathogen richness in the long term and there is some evidence that this process is occurring \cite{altizer2007threatened, turmelle2009correlates}.
+Species that are experiencing increases in group size \cite{lehmann2010apes} would be expected to gain new pathogen species.
 In contrast, species suffering range contractions \cite{thomas2004extinction} and decreases in population size \cite{craigie2010large} are expected to experience smaller changes in pathogen richness.
-
+However, it should be noted that these conclusions apply only to the specific mechanism studied here; that is, the invasion of newly evolved pathogens.
 
 \subsection{Comparative studies}
 
-Many comparative studies measure some aspect of a species population size or structure, yet it is rarely discussed how these relate.
-Instead most studies use the data that are available, without considering how it may depend on other factors.
-Population density is often measured \cite{morand1998density, lindenfors2007parasite, nunn2003comparative, arneberg2002host} yet density is directly associated with population size.
-This study suggests that it is in fact population size that is important (in the context of social species as studied here).
-Therefore, the density measures in these comparative studies are more likely to be proxies for population size than the true causal factor.
-Similarly, this study suggests that host range size does not promote pathogen richness by the mechanism studied here yet a number of studies have found a relationship \cite{kamiya2014determines, nunn2003comparative}.
-This suggests that either the relationship found in comparative studies is in fact due to a correlation with another factor, or that mechanisms other than rate of invasion of new pathogens are important.
-Range size has been suggested to affect pathogen richness by a number of mechanisms such as increasing the diversity of sympatric species and these other mechanisms should be specifically tested.
+Many comparative studies measure some aspect of a species population size or structure, yet it is rarely discussed how these are related.
+Instead most studies use the data that are available, without considering \emph{a priori} how the explanatory variables are causally related (though statistical correlations between independent variables are usually considered and dealt with using PCA or by removing collinear variables).
+Host density is often measured \cite{morand1998density, lindenfors2007parasite, nunn2003comparative, arneberg2002host} yet density is directly associated with population size.
+My results suggest that it is in fact population size that is important (in the context of social species as studied here).
+This leads to the suggestion that the density measures in these comparative studies are in fact proxies for population size rather than the true causal factor.
+Similarly, my results suggest that host range size does not promote pathogen richness by the mechanism studied here, yet a number of studies have found evidence of this relationship \cite{kamiya2014determines, nunn2003comparative}.
+These differences suggest that either the relationship found in comparative studies is in fact due to a correlation with another factor, or that mechanisms other than probability of invasion of new pathogens are important.
+Range size has been suggested to affect pathogen richness by a number of mechanisms such as increasing the number of sympatric species and these other mechanisms should be specifically tested \cite{luis2013comparison}.
 
-The studies that have tested specifically the affect of group size have in fact found both positive \cite{vitone2004body} and negative associations \cite{gay2014parasite} or no relationship \cite{ezenwa2006host}.
-Metaanalyses suggest that the relationship between social group size and pathogen richness is weak \cite{rifkin2012animals}.
-This suggests that the mechanism studied here---invasion of recently evolved pathogens---is not the major cause of pathogen richness in wild populations.
+The studies that have specifically tested the effect of group size have in fact found both positive \cite{vitone2004body} and negative associations \cite{gay2014parasite} or no relationship \cite{ezenwa2006host}.
+Meta-analyses suggest that the relationship between social group size and pathogen richness is weak \cite{rifkin2012animals}.
+However, I have found that group size is the most important population factor.
+This suggests that the mechanism studied here --- invasion of recently evolved pathogens --- may not be the major mechanism by which pathogen richness is created in wild populations.
 
 
 
 \subsection{Assumptions and limitation}
 
-Being based on the same model as Chapter~\ref{ch:sims2}, the work presented here relies on many of the same assumptions.
-Furthermore, as a comparison is being made between the affects of area and population size, the exact specifications of how the metapopulation is affected by area is important.
+Being based on the same model as used earlier, the work presented here relies on many of the same assumptions (see Section~\ref{s:sims1Disc}).
+Furthermore, as a comparison is being made between the effects of range size and population size, the exact specifications of how the metapopulation is affected by range size is important.
 I have conducted this study at one rate of dispersal, 0.01 dispersals per individual per year.
-In practice this related to only a 20 percent of individuals dispersing at all.
-This low rate of dispersal is expected to exaggerate the affect of area; at high rates of dispersal the population is essentially well-mixed, despite the metapopulion.
+In practice this relates to only 17\% of individuals dispersing in their lifetime.
+This low rate of dispersal is expected to exaggerate the effect of range size; at high rates of dispersal the population is essentially well-mixed, despite the metapopulation.
 
+Furthermore, there is evidence that as groups become bigger, the within-group structure increases \cite{nunn2015infectious}.
+This has not been modelled here; instead the subpopulations are assumed to be fully mixed regardless of size.
 Also, I have assumed that dispersal only occurs between colonies a certain distance apart.
-Based on \emph{a priori} considerations such as the time and energy required to disperse long distances this is a reasonable assumption.
+Based on \emph{a priori} considerations such as the time and energy required to disperse long distances, this is a reasonable assumption.
 The exact threshold was chosen to attempt to maximise the range of $\bar{k}$ studied (Figure~\ref{fig:plotK}).
 However, a similar assumption could be made in other ways.
-Instead of a threshold distance, individuals could be expected to disperse in a random direction and stop at the first colony they encounter; this could create some long distance links in the network and increase network connectivity, potentially reducing the affects of area.
-Alternatively, the metapopulation could have been modelled as a weighted network with dispersal occuring at a higher rate to nearby colonies.
-Depending on the parameterisation of this distance-dispersal relationship this could serve to increase the affect of area---by exaggerating dispersal to very nearby colonies---or decrease the affect of area by allowing rare, but significant, global dispersal creating a small-world network structure.
-Ultimately, the modelling choices could increase or decrease the affects of area relative to colony size and the number of colonies but I have aimed to make the effect of area as strong as possible.
+Instead of a threshold distance, individuals could be expected to disperse in a random direction and stop at the first colony they encounter; this could create some long distance links in the network and increase network connectivity, potentially reducing the effects of range size.
+Alternatively, the metapopulation could have been modelled as a weighted network with dispersal occurring at a higher rate to nearby colonies.
+Depending on the parameterisation of this distance-dispersal relationship, this could serve to increase the effect of range size --- by exaggerating dispersal to very nearby colonies --- or decrease the effect of range size by allowing rare, but significant, global dispersal creating a small-world network structure.
+Ultimately, the modelling choices could increase or decrease the effects of range size relative to colony size and the number of colonies but I have aimed to make the effect of range size as strong as possible.
 
 
 
 
 \tmpsection{Further correlations between factors}
 
-I have used the simple relationships between demographic factors---density = population size / area for example---to illustrate that these are tightly linked.
-In order to isolate the affects of these factors I have assumed these simple relationships hold; to examine density without altering population size I have fixed population size and manipulated area.
-However in reality these are likely to covary both within species across time and between species.
-Therefore, while these quantities are certainly linked, they cannot be assumed to have simple linear relationships and should not be used as proxies of each other without further examination.
-For example, rates and distances of dispersal---which affect the influence of space---may be related to local density \cite{marjamaki2013local}.
+I have used the simple relationships between demographic factors --- $d = N / a$ for example --- to illustrate that these are tightly linked.
+In order to isolate the effects of these factors I have assumed that there are no further correlations between factors; to examine density without altering population size, I fixed population size and manipulated range size.
+However, in reality, these factors are likely to covary in more complex ways, both within species across time and also between species.
+Therefore, while these factors are certainly linked, they cannot be assumed to have simple, linear relationships and should not be used as proxies of each other without further examination.
+For example, rates and distances of dispersal --- which affect the influence of space --- may be related to local density \cite{marjamaki2013local}.
 Similarly it is unlikely that a species whose range size decreases will not experience a decrease in total population size as well; the range contraction is likely to occur over generations rather than a simple squeezing of the existing individuals into a smaller area.
 
 
@@ -2441,10 +1287,9 @@ Similarly it is unlikely that a species whose range size decreases will not expe
 
 \subsection{Conclusions}
 
-Overall I have shown that while a number of demographic factors are intrinsically linked, they have different affects on the rate at which new pathogens will invade.
+Overall I have shown that while a number of demographic factors are intrinsically linked, they have different effects on the rate at which new pathogens will invade.
 I found that population size, not density, has the stronger impact on the ability of a pathogen to invade.
 Furthermore, species with large groups are likely to harbour more pathogens than species with many, smaller groups.
-Due to the correlations between these factors, they are particularly hard to study within a comparative framework; this highlights the utility of mechanistic models.
 
 
 
@@ -2452,58 +1297,4 @@ Due to the correlations between these factors, they are particularly hard to stu
 
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%\section{Appendix}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\begin{table}[b!]
-%
-%\begin{tabular}{lp{5.6cm}p{4.3cm}l}
-% & Explanation & Units&Value\\
-%\hline
-%$S$ & Susceptible individuals &&\\
-%$I_q$ & Infectious with diseases $q$ &&\\
-%$I^+_p$ & Sum of classes infected with pathogen $p$ &\\
-%$N$ & Number of colonies&& 10\\
-%$\bar{n}$ & Mean colony starting size && 3000\\
-%$\beta$ & Transmission rate & Transmission events per year per individual& 2, 5, 10\\
-%$\gamma$ & Recovery rate & Recovery events per year. & 0.1\\
-%$\lambda$ & Dispersal & Dispersal events per day per individual& 0.001--0.1\\
-%$b$ & Birth rate & Births per year per individual& 0.05\\
-%$d$ & Death rate & Deaths per year per individual & 0.05\\
-%$d_I$ & Infectious death rate & Additional deaths per day per individual&\\
-%$\rho$ & No. pathogens && 2\\
-%$p$ &  Pathogen index i.e. $p\in\{1,2\}$ for pathogens 1 and 2 & &\\
-%$q$ & Disease class i.e., $q\in\{1,2,12\}$&\\
-%$\mathcal{V}$ & Neighbourhood of a node &&\\
-%$t, t^\prime$ & Time and time plus waiting time i.e., $t+\delta$ & Days&\\
-%$k_i$ & Degree of node $i$ &&\\
-%$\delta$ & Waiting time until next event & Days&\\
-%$\alpha$ & Cross immunity & Proportion& 0.1\\
-%$n, m$ & Colony index &&\\
-%%$\bm{A}_{mn}$ & Adjacency matrix. & Distance &\\
-%$\mu$ & Maximum distance for edge to exist & km& 40, 100\\
-%$\sigma$ & Invading pathogen seed size & & 10\\
-%$r_i$ & The rate that event $i$ occurs. & Days$^{-1}$&\\
-%&&&\\
-%\end{tabular}
-%\caption{All symbols used.}
-%\label{t:params2}
-%\end{table}
-%
-%
-
-
-
-
-
-
-\small
-\printbibliography 
-
-\end{document}
 
