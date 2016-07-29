@@ -23,7 +23,7 @@ runAllSims <- TRUE
 # Save raw simulation output
 # This will take ~10GB or so.
 # If false, summary statistics of each simulation are saved instead.
-saveData <- FALSE
+saveData <- TRUE
 
 # Display extra figures in final documents?
 extraFigs <- 'hide'
@@ -282,10 +282,12 @@ I found that population size has a much stronger affect on the invasion of a new
 
   # These apply to both topo and disp sims. And probably should apply to extinction sims if I include them.
   # How long should the simulation last?
-  nEvent <- 1e6
+  nEvent <- 1.2e6
   # When should the invading pathogen be added.
-  invadeT <- 7e5
+  invadeT <- 6e5
 
+  # Total time 
+  TotalTime <- 75
   
   # Sims per parameter set.
   each <- 100
@@ -339,19 +341,19 @@ set.seed(seed)
 
 # If we want to save the data, make a directory for it.
 if(saveData){
-  dir.create('data/Chapter4/')
+  dir.create('Data/fullsimoutput/')
 }
 
 # Run sims.
-z <- mclapply(1:nDensSims, . %>% fullSim, mc.preschedule = FALSE, mc.cores = nCores)
+z <- mclapply(1:nDensSims, . %>% fullSim1, mc.preschedule = FALSE, mc.cores = nCores)
 
 z <- do.call(rbind, z)
 
 # Save summary data.
-write.csv(z, file = 'data/Chapter4/DensSims.csv')
+write.csv(z, file = 'Data/DensSims.csv')
 
 %%end.rcode
-C4\/7h0n
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Constant density 2. 
@@ -395,18 +397,14 @@ C4\/7h0n
 seed <- 2
 set.seed(seed)
 
-# If we want to save the data, make a directory for it.
-if(saveData){
-  dir.create('data/Chapter4/')
-}
 
 # Run sims.
-z <- mclapply(1:nDens2Sims, . %>% fullSim, mc.preschedule = FALSE, mc.cores = nCores)
+z <- mclapply(1:nDens2Sims, . %>% fullSim2, mc.preschedule = FALSE, mc.cores = nCores)
 
 z <- do.call(rbind, z)
 
 # Save summary data.
-write.csv(z, file = 'data/Chapter4/Dens2Sims.csv')
+write.csv(z, file = 'Data/Dens2Sims.csv')
 
 %%end.rcode
 
@@ -452,18 +450,14 @@ write.csv(z, file = 'data/Chapter4/Dens2Sims.csv')
 seed <- 3
 set.seed(seed)
 
-# If we want to save the data, make a directory for it.
-if(saveData){
-  dir.create('data/Chapter4/')
-}
 
 # Run sims.
-z <- mclapply(1:nPopSims, . %>% fullSim, mc.preschedule = FALSE, mc.cores = nCores)
+z <- mclapply(1:nPopSims, . %>% fullSim3, mc.preschedule = FALSE, mc.cores = nCores)
 
 z <- do.call(rbind, z)
 
 # Save summary data.
-write.csv(z, file = 'data/Chapter4/PopSims.csv')
+write.csv(z, file = 'Data/PopSims.csv')
 
 %%end.rcode
 
@@ -598,7 +592,7 @@ mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, family = 'Lato', at = -22)
 %%begin.rcode calcMeans
 # Constant density, altered colony size
 
-dens1 <- read.csv('data/Chapter4/DensSims.csv') %>% dplyr::select(-X)
+dens1 <- read.csv('Data/DensSims.csv') %>% dplyr::select(-X)
 
 dens1Means <- dens1 %>%
                 filter(nExtantDis > 0) %>%
@@ -621,7 +615,7 @@ dens1Model <- dens1 %>%
 
 # Constant density, altered colony number
 
-dens2 <- read.csv('data/Chapter4/Dens2Sims.csv') %>% dplyr::select(-X)
+dens2 <- read.csv('Data/Dens2Sims.csv') %>% dplyr::select(-X)
 
 dens2Means <- dens2 %>%
                 filter(nExtantDis > 0) %>%
@@ -642,7 +636,7 @@ dens2Model <- dens2 %>%
 
 # Constant population, altered area
 
-pop <- read.csv('data/Chapter4/PopSims.csv') %>% dplyr::select(-X)
+pop <- read.csv('Data/PopSims.csv') %>% dplyr::select(-X)
 
 popMeans <- pop %>%
                 filter(nExtantDis > 0) %>%

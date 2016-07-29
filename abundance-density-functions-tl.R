@@ -1,7 +1,7 @@
 
 # Function like findDisDistr in MetapopEpi
 #   However finds the distr a certain time since invasion
-findDisDistrAtTime <- function(pop, final = 100, invadeT, time = 30){
+findDisDistrAtTime <- function(pop, final = 1, invadeT, time = 30){
     is.count(final)
 
     invadeTime <- cumsum(pop$sampleWaiting)[invadeT / pop$parameters["sample"]]
@@ -29,7 +29,7 @@ findDisDistrAtTime <- function(pop, final = 100, invadeT, time = 30){
 
 
 # Define our simulation function.
-fullSim <- function(x){
+fullSim1 <- function(x){
 
   # Set seed (this is set within each parallel simulation to prevent reusing random numbers).
   simSeed <- paste0(seed, x)
@@ -73,14 +73,14 @@ fullSim <- function(x){
   p <- runSim(p, start = invadeT + 1, end = 'end')
 
   # Was the invasion succesful?
-  invasion <- findDisDistrAtTime(p, final = 2, invadeT, time = 6)[1] > 0
+  invasion <- findDisDistrAtTime(p, final = 10, invadeT, time = TotalTime)[1] > 0
 
   # Save summary stats
   d <- data.frame(transmission = NA)
 
   d$transmission <- p$parameters['transmission']
   d$dispersal <- p$parameters['dispersal']
-  d$nExtantDis <- sum(findDisDistrAtTime(p, final = 2, invadeT, time = 6) > 0)
+  d$nExtantDis <- sum(findDisDistrAtTime(p, final = 2, invadeT, time = TotalTime) > 0)
   d$nPathogens <- p$parameters['nPathogens']
   d$meanK <- sum(p$adjacency != 0 )/p$parameters['nColonies']
   d$maxDistance <- p$parameters['maxDistance']
@@ -90,14 +90,17 @@ fullSim <- function(x){
   d$pop <- p$parameters['meanColonySize'] * p$parameters['nColonies']
   d$area <- p$parameters['space']^2
   d$dens <- d$pop / d$area
+  d$longenough <- sum(pop$sampleWaiting) < invadeTime + time
 
-  d$nEvents <- p$parameters['events']
   #d$path2 <- sum(p$sample[c(2, 4), , dim(p$sample)[3]])
 
-  # Time until extinction
-  invadePath <- colSums(p$sample[2,  , (2 + invadeT / sample):(dim(p$sample)[3])]) + 
-                  colSums(p$sample[4,  , (2 + invadeT / sample):(dim(p$sample)[3])])
+  d$invadeTime <- cumsum(p$sampleWaiting)[invadeT / p$parameters["sample"]]
 
+  # Time until extinction
+  invadePath <- colSums(p$sample[2,  , (2 + invadeT / sample):(which(cumsum(p$sampleWaiting) > TotalTime)[1])]) + 
+                  colSums(p$sample[4,  , (2 + invadeT / sample):(which(cumsum(p$sampleWaiting) > TotalTime)[1])])
+
+  d$invadeTime <- cumsum(p$sampleWaiting)[(2 + invadeT / sample)]
   d$extinctionTime <- cumsum(p$sampleWaiting)[min(which(invadePath == 0)) + (2 + invadeT / sample)]
   d$totalTime <- sum(p$sampleWaiting)
   d$survivalTime <- d$extinctionTime - cumsum(p$sampleWaiting)[(2 + invadeT / sample)]
@@ -107,20 +110,21 @@ fullSim <- function(x){
   message(paste0("finished ", x, ". Invasion: ", invasion ))
   message(paste('trans:', d$transmission, 'nColonies:', d$colonyNumber, 
     'colonySize:', d$colonySize, 'dens:', d$dens, 'pop:', d$pop))
+
+  message(paste(names(d), collapse = ', '))
+  message(paste(d, collapse = ', '))
+
   
   if(saveData){ 
-    file <- paste0('data/Chapter4/DensSim_', formatC(x, width = 4, flag = '0'), '.RData')
+    file <- paste0('data/DensSim_', formatC(x, width = 4, flag = '0'), '.RData')
     save(p, file = file)
   }
 
-  rm(p)
+  #rm(p)
 
   return(d)
 
 }
-
-
-
 
 
 
@@ -132,7 +136,7 @@ fullSim <- function(x){
   #################################
 
 # Define our simulation function.
-fullSim <- function(x){
+fullSim2 <- function(x){
 
   # Set seed (this is set within each parallel simulation to prevent reusing random numbers).
   simSeed <- paste0(seed, x)
@@ -155,7 +159,7 @@ fullSim <- function(x){
                infectDeath = 0,
                maxDistance = 100)
 
-  p$I[1, , 1] <- colonySize - 20
+  p$I[1, , 1] <- colonySize[x] - 20
 
   # Seed endemic pathogen.
   p$I[3, , 1] <- 20
@@ -176,14 +180,14 @@ fullSim <- function(x){
   p <- runSim(p, start = invadeT + 1, end = 'end')
 
   # Was the invasion succesful?
-  invasion <- findDisDistr(p, 2)[1] > 0
+  invasion <- findDisDistrAtTime(p, final = 10, invadeT, time = TotalTime)[1] > 0
 
   # Save summary stats
   d <- data.frame(transmission = NA)
 
   d$transmission <- p$parameters['transmission']
   d$dispersal <- p$parameters['dispersal']
-  d$nExtantDis <- sum(findDisDistr(p, 2) > 0)
+  d$nExtantDis <- sum(findDisDistrAtTime(p, final = 2, invadeT, time = TotalTime) > 0)
   d$nPathogens <- p$parameters['nPathogens']
   d$meanK <- sum(p$adjacency != 0 )/p$parameters['nColonies']
   d$maxDistance <- p$parameters['maxDistance']
@@ -193,18 +197,36 @@ fullSim <- function(x){
   d$pop <- p$parameters['meanColonySize'] * p$parameters['nColonies']
   d$area <- p$parameters['space']^2
   d$dens <- d$pop / d$area
+  d$longenough <- sum(pop$sampleWaiting) < invadeTime + time
+  #d$path2 <- sum(p$sample[c(2, 4), , dim(p$sample)[3]])
+
+  d$invadeTime <- cumsum(p$sampleWaiting)[invadeT / p$parameters["sample"]]
+
+  # Time until extinction
+  invadePath <- colSums(p$sample[2,  , (2 + invadeT / sample):(which(cumsum(p$sampleWaiting) > TotalTime)[1])]) + 
+                  colSums(p$sample[4,  , (2 + invadeT / sample):(which(cumsum(p$sampleWaiting) > TotalTime)[1])])
+
+  d$invadeTime <- cumsum(p$sampleWaiting)[(2 + invadeT / sample)]
+  d$extinctionTime <- cumsum(p$sampleWaiting)[min(which(invadePath == 0)) + (2 + invadeT / sample)]
+  d$totalTime <- sum(p$sampleWaiting)
+  d$survivalTime <- d$extinctionTime - cumsum(p$sampleWaiting)[(2 + invadeT / sample)]
+
 
 
   message(paste0("finished ", x, ". Invasion: ", invasion ))
   message(paste('trans:', d$transmission, 'nColonies:', d$colonyNumber, 
     'colonySize:', d$colonySize, 'dens:', d$dens, 'pop:', d$pop))
 
+  message(paste(names(d), collapse = ', '))
+  message(paste(d, collapse = ', '))
+
+  
   if(saveData){ 
-    file <- paste0('data/Chapter4/DensSim_', formatC(x, width = 4, flag = '0'), '.RData')
+    file <- paste0('data/DensSim_', formatC(x, width = 4, flag = '0'), '.RData')
     save(p, file = file)
   }
 
-  rm(p)
+  #rm(p)
 
   return(d)
 
@@ -222,7 +244,7 @@ fullSim <- function(x){
 
 
 # Define our simulation function.
-fullSim <- function(x){
+fullSim3 <- function(x){
 
   # Set seed (this is set within each parallel simulation to prevent reusing random numbers).
   simSeed <- paste0(seed, x)
@@ -245,7 +267,7 @@ fullSim <- function(x){
                infectDeath = 0,
                maxDistance = 100)
 
-  p$I[1, , 1] <- colonySize - 20
+  p$I[1, , 1] <- colonySize[x] - 20
 
   # Seed endemic pathogen.
   p$I[3, , 1] <- 20
@@ -266,15 +288,14 @@ fullSim <- function(x){
   p <- runSim(p, start = invadeT + 1, end = 'end')
 
   # Was the invasion succesful?
-  invasion <- findDisDistr(p, 2)[1] > 0
+  invasion <- findDisDistrAtTime(p, final = 10, invadeT, time = TotalTime)[1] > 0
 
   # Save summary stats
   d <- data.frame(transmission = NA)
 
-
   d$transmission <- p$parameters['transmission']
   d$dispersal <- p$parameters['dispersal']
-  d$nExtantDis <- sum(findDisDistr(p, 2) > 0)
+  d$nExtantDis <- sum(findDisDistrAtTime(p, final = 2, invadeT, time = TotalTime) > 0)
   d$nPathogens <- p$parameters['nPathogens']
   d$meanK <- sum(p$adjacency != 0 )/p$parameters['nColonies']
   d$maxDistance <- p$parameters['maxDistance']
@@ -284,18 +305,36 @@ fullSim <- function(x){
   d$pop <- p$parameters['meanColonySize'] * p$parameters['nColonies']
   d$area <- p$parameters['space']^2
   d$dens <- d$pop / d$area
+  d$longenough <- sum(pop$sampleWaiting) < invadeTime + time
+  #d$path2 <- sum(p$sample[c(2, 4), , dim(p$sample)[3]])
+
+  d$invadeTime <- cumsum(p$sampleWaiting)[invadeT / p$parameters["sample"]]
+
+  # Time until extinction
+  invadePath <- colSums(p$sample[2,  , (2 + invadeT / sample):(which(cumsum(p$sampleWaiting) > TotalTime)[1])]) + 
+                  colSums(p$sample[4,  , (2 + invadeT / sample):(which(cumsum(p$sampleWaiting) > TotalTime)[1])])
+
+  d$invadeTime <- cumsum(p$sampleWaiting)[(2 + invadeT / sample)]
+  d$extinctionTime <- cumsum(p$sampleWaiting)[min(which(invadePath == 0)) + (2 + invadeT / sample)]
+  d$totalTime <- sum(p$sampleWaiting)
+  d$survivalTime <- d$extinctionTime - cumsum(p$sampleWaiting)[(2 + invadeT / sample)]
+
 
 
   message(paste0("finished ", x, ". Invasion: ", invasion ))
   message(paste('trans:', d$transmission, 'nColonies:', d$colonyNumber, 
     'colonySize:', d$colonySize, 'dens:', d$dens, 'pop:', d$pop))
+
+  message(paste(names(d), collapse = ', '))
+  message(paste(d, collapse = ', '))
+
   
   if(saveData){ 
-    file <- paste0('data/Chapter4/PopSim_', formatC(x, width = 4, flag = '0'), '.RData')
+    file <- paste0('data/PopSim_', formatC(x, width = 4, flag = '0'), '.RData')
     save(p, file = file)
   }
 
-  rm(p)
+  #rm(p)
 
   return(d)
 
