@@ -5,7 +5,7 @@
 %---------------------------------------------------------------------------------------------------------------------------------%
 
 
-
+%As a rough guide, this means that to avoid these charges, articles submitted should be no more than 4000 words and not contain more than 2-4 figures
 
 \documentclass[a4paper,10pt,reqno]{amsart}
 
@@ -47,6 +47,8 @@
 \usepackage{verbatim, geometry, fancyhdr,  graphicx, xcomment, microtype, array}
 %\usepackage{amsmath}
 
+
+\usepackage{lineno}
 
 % no "In: "
 \renewbibmacro{in:}{%
@@ -598,37 +600,37 @@ axSz <- 4
 par(mfrow = c(2,2))
 
 
-plotColonyNet(p1, area = side[5], cex = 0.25, mar = c(bigx, bigy, 3, 2))
-axis(2, col = 'grey', cex.axis = axSz, at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), col.axis = '#a4a4a4', family = 'Lato', font = 2)
+plotColonyNet(p1, area = side[5], cex = 0.25, mar = c(bigx, bigy, 3, 2), lwd = 4)
+axis(2, col = 'grey', cex.axis = axSz, at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), col.axis = '#a4a4a4', family = 'sans', font = 2)
 axis(1, col = 'grey', labels = FALSE)
-title(main = bquote(italic(bar(k)) ~ '='~ .(k1)), cex.main = titleSz, family = 'Lato',  line = 0.5)
-mtext(side = 2,  line = 7.8, text = 'Longitude', cex = labSz, family = 'Lato')
+title(main = bquote(italic(bar(k)) ~ '='~ .(k1)), cex.main = titleSz, family = 'sans',  line = 0.5)
+mtext(side = 2,  line = 7.8, text = 'Longitude', cex = labSz, family = 'sans')
 lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
-mtext(side = 3,  line = -0.3, text = 'A)', cex = 1, family = 'Lato', at = -62)
+mtext(side = 3,  line = -0.3, text = 'A)', cex = 1, family = 'sans', at = -62)
 
 plotColonyNet(p4, area = side[5], cex = 0.25, mar = c(bigx, 6, 3, 2))
 axis(2, col = 'grey', labels = FALSE)
 axis(1, col = 'grey', labels = FALSE)
-title(main = bquote(italic(bar(k)) ~ '='~ .(k4)), cex.main = titleSz, family = 'Lato',  line = 0.5)
-mtext(side = 3,  line = -0.3, text = 'B)', cex = 1, family = 'Lato', at = -22)
+title(main = bquote(italic(bar(k)) ~ '='~ .(k4)), cex.main = titleSz, family = 'sans',  line = 0.5)
+mtext(side = 3,  line = -0.3, text = 'B)', cex = 1, family = 'sans', at = -22)
 
 plotColonyNet(p3, area = side[5], cex = 0.25, mar = c(bigx, bigy, 3, 2))
-axis(2, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), family = 'Lato', font = 2)
+axis(2, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), family = 'sans', font = 2)
 axis(1, col = 'grey', labels = FALSE)
 axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'Lato', font = 2, line = 3, lwd = 0)
-title(main = bquote(italic(bar(k)) ~ '='~ .(k3)), cex.main = titleSz, family = 'Lato',  line = 0.5)
-mtext(side = 2,  line = 7.8, text = 'Longitude', cex = labSz, family = 'Lato')
-mtext(side = 1,  line = 9.8, text = 'Latitude', cex = labSz, family = 'Lato')
+title(main = bquote(italic(bar(k)) ~ '='~ .(k3)), cex.main = titleSz, family = 'sans',  line = 0.5)
+mtext(side = 2,  line = 7.8, text = 'Longitude', cex = labSz, family = 'sans')
+mtext(side = 1,  line = 9.8, text = 'Latitude', cex = labSz, family = 'sans')
 lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
-mtext(side = 3,  line = -0.3, text = 'C)', cex = 1, family = 'Lato', at = -62)
+mtext(side = 3,  line = -0.3, text = 'C)', cex = 1, family = 'sans', at = -62)
 
 plotColonyNet(p2, area = side[5], cex = 0.25, mar = c(bigx, 6, 3, 2))
 axis(1, col = 'grey', labels = FALSE)
 axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'Lato', font = 2, line = 3, lwd = 0)
 axis(2, col = 'grey', labels = FALSE)
-title(main = bquote(italic(bar(k)) ~ '='~ .(k2)), cex.main = titleSz, family = 'Lato',  line = 0.5)
-mtext(side = 1,  line = 9.8, text = 'Latitude', cex = labSz, family = 'Lato')
-mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, family = 'Lato', at = -22)
+title(main = bquote(italic(bar(k)) ~ '='~ .(k2)), cex.main = titleSz, family = 'sans',  line = 0.5)
+mtext(side = 1,  line = 9.8, text = 'Latitude', cex = labSz, family = 'sans')
+mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, family = 'sans', at = -22)
 
 
 
@@ -1044,7 +1046,7 @@ Given this setup, populations with low densities had relatively unconnected meta
 
 \begin{figure}[t]
 \centering
-  \includegraphics[width=0.5\textwidth]{figure/SIRoption1.pdf}
+  \includegraphics[width=0.5\textwidth]{figure/SIRoption1}
   \caption[Schematic of the SIR model used]{
   Schematic of the SIR model used. 
   Individuals are in one of five classes, susceptible (orange, $S$), infected with Pathogen 1, Pathogen 2 or both (blue, $I_1, I_2, I_{12}$) or recovered and immune from further infection (green, $R$).

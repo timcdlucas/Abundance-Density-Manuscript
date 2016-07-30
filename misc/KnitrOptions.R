@@ -9,7 +9,7 @@ opts_chunk$set(
   echo = FALSE, 
   error = FALSE,
   cache = TRUE, 
-  dev = 'cairo_pdf', 
+  dev = 'postscript', 
   warning = FALSE,
   results = 'hide',
   message = FALSE,
