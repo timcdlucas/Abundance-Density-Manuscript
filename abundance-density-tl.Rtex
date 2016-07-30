@@ -37,13 +37,11 @@
 
 \usepackage{siunitx}
 
-\addbibresource{../epilit.bib}
+\addbibresource{epilit.bib}
 % This has to go below fontenc for some reason
-\input{../KnitrSettings}
+
 
 \usepackage{graphicx}
-
-\graphicspath{{../}}
 
 \usepackage{caption}
 \usepackage{verbatim, geometry, fancyhdr,  graphicx, xcomment, microtype, array}
