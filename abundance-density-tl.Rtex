@@ -11,10 +11,6 @@
 
 \usepackage[T1]{fontenc}
 
-\usepackage[bitstream-charter]{mathdesign}
-\usepackage{tgheros}  %  the advanced helvet as it was nice.
-
-
 
 % Redefine cite so that we get references in footnotes.
 
@@ -29,13 +25,13 @@
   dashed=false, %
 	maxcitenames=2, 
   terseinits=true,
-  maxbibnames=99,
+  maxbibnames=10,
   sortcites=true
 ]{biblatex}
 %\renewcommand{\cite}[1]{\footcite{#1}}
 \renewcommand{\cite}[1]{\parencite{#1}}
 
-\usepackage{siunitx}
+
 
 \addbibresource{epilit.bib}
 % This has to go below fontenc for some reason
@@ -235,8 +231,6 @@ It is well known that population-level factors such as host density, range size 
 However, the relative importance of these factors in controlling pathogen richness is largely unknown.
 
 
-%Global change is strongly perturbing wild animal populations \cite{thomas2004extinction, craigie2010large}, but without good mechanistic models of how these populations maintain pathogen species richness, we can not predict how pathogen communities, and the risks of zoonotic outbreaks, will change in the coming decades.
-
 
 
 \tmpsection{Specific Intro}
@@ -245,10 +239,9 @@ However, the relative importance of these factors in controlling pathogen richne
 % comprehensible to scientists in related disciplines.
 
 
-%2. review the evidence for comparative studies for size and other interrelated variables first as that is the order you do it in other chapters
 
 \tmpsection{Density/size/structure in comparative research}
-With the increase of novel zoonotic pathogens \cite{jones2008global} much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species (Chapter~\ref{ch:empirical}, \cites{poulin2000diversity, kamiya2014determines, luis2013comparison}).
+With the increase of novel zoonotic pathogens \cite{jones2008global} much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity, kamiya2014determines, luis2013comparison}.
 Many comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}.
 However, factors related to host population biology are also expected to affect disease dynamics and therefore affect pathogen richness.
 
@@ -256,7 +249,7 @@ Host density is commonly included in comparative studies and seems to promote hi
 In contrast, host population size has rarely been directly studied as a predictor of pathogen richness.
 Studies also often test for correlations between pathogen richness and range size \cite{lindenfors2007parasite, nunn2003comparative, turmelle2009correlates, huang2015parasite, kamiya2014determines}.
 Overall it seems that species with larger geographic range sizes have higher pathogen richness \cite{kamiya2014determines}.
-While host population structure can be difficult to define and measure, a number of studies have found that increased population structure is associated with increased pathogen richness (Chapter~\ref{ch:empirical}, \cites{maganga2014bat, turmelle2009correlates}).
+While host population structure can be difficult to define and measure, a number of studies have found that increased population structure is associated with increased pathogen richness \cite{maganga2014bat, turmelle2009correlates}.
 Finally, many studies have tested for correlations between pathogen richness and group size, though results are equivocal \cite{vitone2004body, gay2014parasite, ezenwa2006host, rifkin2012animals, nunn2003comparative}.
 
 
@@ -858,7 +851,7 @@ Infection and coinfection were assumed to cause no extra mortality as for a numb
 
 \begin{table}[tb]
 \centering
-\caption[All symbols used in Chapters~\ref{ch:sims1} and \ref{ch:sims2}]{A summary of all symbols used along with their units and default values.
+\caption{A summary of all symbols used along with their units and default values.
 The justifications for parameter values are given in Section~\ref{s:paramSelect}.}
 
 \begin{tabular}{@{}lp{6cm}p{2.9cm}r@{}}
@@ -900,7 +893,7 @@ This evidence comes from the existence of subspecies, measurements of genetic di
 Therefore a fully mixed population is a large oversimplification.
 However, trying to study the contact network relies on detailed knowledge of individual behaviour which is rarely available.		
 
-The metapopulation is modelled as a network with colonies being nodes and dispersal between colonies being indicated by edges (Figure~\ref{f:net}).
+The metapopulation is modelled as a network with colonies being nodes and dispersal between colonies being indicated by edges (Figure~\ref{fig:colonyNetworkPlots}).
 Individuals within a colony interact randomly so that the colony is fully mixed.
 Dispersal between colonies occurs at a rate $\xi$.
 Individuals can only disperse to colonies connected to theirs by an edge in the network.
@@ -989,7 +982,7 @@ The death rate $\mu$ was set as 0.05 per year giving a generation time of 20 yea
 The birth rate $\Lambda$ was set to be equal to $\mu$.
 This yields a population that does not systematically increase or decrease.
 However, the size of each colony changes as a random walk.
-Given the length of the simulations, colonies were very unlikely to go extinct (Figure~\ref{fig:plotsNoInvade2}).
+Given the length of the simulations, colonies were very unlikely to go extinct (Figure~S\ref{fig:plotsNoInvade2}).
 The starting size of each colony was set to 3000.
 This is appropriate for many bat species \cite{jones2009pantheria}, especially the large, frugivorous \emph{Pteropodidae} that have been particularly associated with recent zoonotic diseases.
 
@@ -1014,9 +1007,9 @@ Specifically, I let two identical pathogens compete: an endemic pathogen (Pathog
 I used persistence (coded as 1) or extinction (coded as 0) of Pathogen 2 as a binomial response variable.
 I tested whether host population size is more important than host density.
 I then tested whether colony size or the number of colonies is the more important component of population size.
-I used the same fixed parameters as Chapter~\ref{ch:sims1} (Table~\ref{t:params}) except I used only three values of the transmission rate $\beta$,  0.1, 0.2 and 0.3.
+I used three values of the transmission rate $\beta$,  0.1, 0.2 and 0.3.
 All simulations were run under all three transmission rates.
-The code used for running all simulations is available at \url{https://github.com/timcdlucas/PhDThesis/blob/master/Chapter4.Rtex}.
+
 
 In each simulation the host population was seeded with 20 individuals infected with Pathogen 1 in each colony. 
 Pathogen 1 was then allowed to spread and reach equilibrium. 
@@ -1370,7 +1363,7 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 %%%     Results text    %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-At the default parameter settings, the probability of invasion and establishment of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~\ref{C-pop} -- \ref{C-dens2}).
+At the default parameter settings, the probability of invasion and establishment of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S\ref{C-pop} -- \ref{C-dens2}).
 These proportions significantly increased with transmission rate (GLM: $b$ = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
 
 In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
