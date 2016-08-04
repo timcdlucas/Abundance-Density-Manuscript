@@ -22,3 +22,22 @@ As a rough guide, this means that to avoid these charges, articles submitted sho
  
 
 
+All figures will be published in colour online (the version of record), but will be reproduced in black and white in the print version of the journal by default.
+Certainly need to change main figure then.
+
+
+
+Title page
+This should contain full names and affiliations for each author as well as the email address of the corresponding author.
+ 
+
+Abstract
+**The abstract should be no more than 200 words and should not contain references or unexplained abbreviations or acronyms. Your abstract should be concise and informative and should read well as a standalone piece. The general scope of the article as well as the main results and conclusions should be summarised. Please also ensure that your abstract contains all likely search terms, to assist indexers (e.g. PubMed) which scan only the title and abstract of articles. If possible, it is beneficial to have all your keywords written into the abstract.**
+ 
+
+Keywords
+Please include at least three and up to six keywords.
+
+
+
+
