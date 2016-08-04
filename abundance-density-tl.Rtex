@@ -119,7 +119,7 @@ nCores <- 8
 ##########################
 
 
-opts_chunk$set(cache.path = 'abundanceCache/')
+opts_chunk$set(cache.path = '.abundanceCache/')
 
 source('misc/theme_tcdl.R')
 source('misc/KnitrOptions.R')
