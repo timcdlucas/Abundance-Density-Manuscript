@@ -20,17 +20,17 @@
   useprefix=true,%
 	uniquename=false, 
   uniquelist=false, %
-	style=authoryear, 
+	style=numeric-comp, 
   firstinits=true, 
-  dashed=false, %
+  %dashed=false, %
 	maxcitenames=2, 
-  terseinits=true,
-  maxbibnames=10,
-  sortcites=true
+  %terseinits=true,
+  maxbibnames=10
 ]{biblatex}
 %\renewcommand{\cite}[1]{\footcite{#1}}
 \renewcommand{\cite}[1]{\parencite{#1}}
 
+\renewcommand*{\multicitedelim}{\addcomma}
 
 
 \addbibresource{epilit.bib}
