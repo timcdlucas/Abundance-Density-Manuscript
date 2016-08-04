@@ -39,10 +39,11 @@
 
 \usepackage{graphicx}
 
-\usepackage{caption}
+\usepackage[width = 0.5\textwidth]{caption}
 \usepackage{verbatim, geometry, fancyhdr,  graphicx, xcomment, microtype, array}
 %\usepackage{amsmath}
 
+\geometry{margin=1in}
 
 \usepackage{lineno}
 
@@ -85,7 +86,8 @@
 \date{}
 
 \maketitle
-%\tableofcontents
+\tableofcontents
+
 
 
 
@@ -121,7 +123,7 @@ opts_chunk$set(cache.path = 'abundanceCache/')
 
 source('misc/theme_tcdl.R')
 source('misc/KnitrOptions.R')
-theme_set(theme_grey() + theme_tcdl)
+theme_set(theme_grey() + theme_pub)
 
 
 
@@ -510,8 +512,8 @@ The mean number of connections per subpopulation, $\\bar{k}$, is shown for each 
 
 %%end.rcode
 
-%%begin.rcode colonyNetworkPlots, fig.height = 5, fig.cap = colonyNetCapt, fig.scap = colonyNetTitle, out.width = '0.9\\textwidth', fig.showtext = TRUE
-font.add.google('Lato', regular.wt = 300)
+%%begin.rcode colonyNetworkPlots, fig.height = 5, fig.cap = colonyNetCapt, fig.scap = colonyNetTitle, out.width = '0.4\\textwidth', fig.showtext = TRUE
+
 
 set.seed(3)
 
@@ -570,46 +572,46 @@ p4 <- makePop(space = side[5],
 k4 <- sum(p4$adjacency != 0 )/p4$parameters['nColonies']
 
 
-labSz <- 1
-bigy <- 11.4
-bigx <- 10.6
-titleSz <- 4
-axSz <- 4
+labSz <- 2
+bigy <- 16
+bigx <- 12
+titleSz <- 6
+axSz <- 5
 
 par(mfrow = c(2,2))
 
 
-plotColonyNet(p1, area = side[5], cex = 0.25, mar = c(bigx, bigy, 3, 2), lwd = 4)
+plotColonyNet(p1, area = side[5], cex = 0.25, mar = c(bigx, bigy, 6, 2), alpha = 1)
 axis(2, col = 'grey', cex.axis = axSz, at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), col.axis = '#a4a4a4', family = 'sans', font = 2)
 axis(1, col = 'grey', labels = FALSE)
 title(main = bquote(italic(bar(k)) ~ '='~ .(k1)), cex.main = titleSz, family = 'sans',  line = 0.5)
 mtext(side = 2,  line = 7.8, text = 'Longitude', cex = labSz, family = 'sans')
 lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
-mtext(side = 3,  line = -0.3, text = 'A)', cex = 1, family = 'sans', at = -62)
+mtext(side = 3,  line = -0.3, text = 'A)', cex = 2, family = 'sans', at = -62)
 
-plotColonyNet(p4, area = side[5], cex = 0.25, mar = c(bigx, 6, 3, 2))
+plotColonyNet(p4, area = side[5], cex = 0.25, mar = c(bigx, 6, 6, 2), alpha = 1)
 axis(2, col = 'grey', labels = FALSE)
 axis(1, col = 'grey', labels = FALSE)
 title(main = bquote(italic(bar(k)) ~ '='~ .(k4)), cex.main = titleSz, family = 'sans',  line = 0.5)
-mtext(side = 3,  line = -0.3, text = 'B)', cex = 1, family = 'sans', at = -22)
+mtext(side = 3,  line = -0.3, text = 'B)', cex = 2, family = 'sans', at = -22)
 
-plotColonyNet(p3, area = side[5], cex = 0.25, mar = c(bigx, bigy, 3, 2))
+plotColonyNet(p3, area = side[5], cex = 0.25, mar = c(bigx, bigy, 3, 2), alpha = 1)
 axis(2, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), family = 'sans', font = 2)
 axis(1, col = 'grey', labels = FALSE)
-axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'Lato', font = 2, line = 3, lwd = 0)
+axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'sans', font = 2, line = 3, lwd = 0)
 title(main = bquote(italic(bar(k)) ~ '='~ .(k3)), cex.main = titleSz, family = 'sans',  line = 0.5)
 mtext(side = 2,  line = 7.8, text = 'Longitude', cex = labSz, family = 'sans')
 mtext(side = 1,  line = 9.8, text = 'Latitude', cex = labSz, family = 'sans')
 lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
-mtext(side = 3,  line = -0.3, text = 'C)', cex = 1, family = 'sans', at = -62)
+mtext(side = 3,  line = -0.3, text = 'C)', cex = 2, family = 'sans', at = -62)
 
-plotColonyNet(p2, area = side[5], cex = 0.25, mar = c(bigx, 6, 3, 2))
+plotColonyNet(p2, area = side[5], cex = 0.25, mar = c(bigx, 6, 3, 2), alpha = 1)
 axis(1, col = 'grey', labels = FALSE)
-axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'Lato', font = 2, line = 3, lwd = 0)
+axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'sans', font = 2, line = 3, lwd = 0)
 axis(2, col = 'grey', labels = FALSE)
 title(main = bquote(italic(bar(k)) ~ '='~ .(k2)), cex.main = titleSz, family = 'sans',  line = 0.5)
 mtext(side = 1,  line = 9.8, text = 'Latitude', cex = labSz, family = 'sans')
-mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, family = 'sans', at = -22)
+mtext(side = 3,  line = -0.3, text = 'D)', cex = 2, family = 'sans', at = -22)
 
 
 
@@ -696,24 +698,6 @@ popModel <- pop %>%
 
 
 
-%%begin.rcode plotKDistrs, show.figs = extraFigs
-
-
-#  ggplot(dens2, aes(x = factor(colonyNumber), y = meanK)) +
-#    geom_boxplot() 
-
-
-#  ggplot(dens2, aes(x = factor(area), y = meanK)) +
-#    geom_boxplot() 
-
-#  ggplot(dens1, aes(x = factor(area), y = meanK)) +
-#    geom_boxplot() 
-
-
-#  ggplot(pop, aes(x = factor(area), y = meanK)) +
-#    geom_boxplot() 
-
-%%end.rcode
 
 %%begin.rcode plotKcapt
 
@@ -727,7 +711,7 @@ All simulations had 20 colonies, meaning 19 is the maximum value of $\\bar{k}$.
 plotKtitle <- 'Change in average network degree with increasing range size'
 
 
-%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, out.width = '\\textwidth', cache = FALSE, plot.height = 2.3
+%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, out.width = '0.4\\textwidth', cache = FALSE, plot.height = 2.3, fig.show = 'hide'
 
 ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
   geom_boxplot(outlier.size = 1, size = 0.3, outlier.colour = grey(0.3), 
@@ -744,59 +728,6 @@ ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
 
 
 %%end.rcode
-
-
-
-
-%%begin.rcode plotMeans, show.figs = extraFigs
-
-
-
-#ggplot(dens1Means, aes(x = factor(transmission), y = mean, fill = factor(colonySize))) +
-#  geom_bar(stat = 'identity', position=position_dodge()) +
-#  geom_errorbar(aes(ymin = lower, ymax = upper),
-#                width=.2,                   
-#                position = position_dodge(.9)) +
-#  xlab('Transmission') + 
-#  ylab('Prop. Invasions') +
-#  ylim(0, 1) +
-#  scale_fill_poke(name="Colony Size", 
-#                 #labels=c('0.001', '0.01', '0.1'), 
-#                 pokemon = 'Swampert',
-#                 spread = 5)
-
-
-
-#ggplot(dens2Means, aes(x = factor(transmission), y = mean, fill = factor(colonyNumber))) +
-#  geom_bar(stat = 'identity', position=position_dodge()) +
-#  geom_errorbar(aes(ymin = lower, ymax = upper),
-#                width=.2,                   
-#                position = position_dodge(.9)) +
-#  ylim(0, 1) +
-#  xlab('Transmission') + 
-#  ylab('Prop. Invasions') +
-#  scale_fill_poke(name="Colony Number", 
-#                 #labels=c('0.001', '0.01', '0.1'), 
-#                 pokemon = 'Swampert',
-#                 spread = 5)
-
-
-#ggplot(popMeans, aes(x = factor(transmission), y = mean, fill = factor(area))) +
-#  geom_bar(stat = 'identity', position=position_dodge()) +
-#  geom_errorbar(aes(ymin = lower, ymax = upper),
-#                width=.2,                   
-#                position = position_dodge(.9)) +
-#  xlab('Transmission') + 
-#  ylab('Prop. Invasions') +
-#  ylim(0, 1) +
-#  scale_fill_poke(name="Area", 
-#                 #labels=c('0.001', '0.01', '0.1'), 
-#                 pokemon = 'Swampert',
-#                 spread = 5) 
-
-%%end.rcode
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -830,46 +761,46 @@ Birth and death rates ($\Lambda$ and $\mu$) are set as being equal meaning the p
 The population size does however change as a random walk.
 New born individuals enter the susceptible class.
 Infection and coinfection were assumed to cause no extra mortality as for a number of viruses, bats show no clinical signs of infection \cite{halpin2011pteropid, deThoisy2016bioecological}.
-%In humans, coinfection generally worsens health \cite{griffiths2011nature} but as there are 
 
+
+%\begin{table}[tb]
+%\centering
+%\caption{A summary of all symbols used along with their units and default values.
+%The justifications for parameter values are given in Section~\ref{s:paramSelect}.}
+%
+%\begin{tabular}{@{}lp{6cm}p{2.9cm}r@{}}
+%\toprule
+%Symbol & Explanation & Units & Value\\
+%\midrule
+%$\rho$ & Number of pathogens && 2\\
+%$x, y$ & Colony index &&\\
+%$p$ &  Pathogen index i.e.\ $p\in\{1,2\}$ for pathogens 1 and 2 & &\\
+%$q$ & Disease class i.e.\ $q\in\{1,2,12\}$&\\
+%$S_x$ & Number of susceptible individuals in colony $x$ &&\\
+%$I_{qx}$ & Number of individuals infected with disease(s) $q \in \{1, 2, 12\}$ in colony $x$ &&\\
+%$R_x$ & Number of individuals in colony $x$ in the recovered with immunity class  &&\\
+%$N$ & Total Population size && 30,000\\
+%$m$ & Number of colonies&& 10\\
+%$n$ & Colony size && 3,000\\
+%$a$ & Area & km\textsuperscript{2}& 10,000\\
+%$\beta$ & Transmission rate &  & 0.1 -- 0.4\\
+%$\alpha$ & Coinfection adjustment factor  & & 0.1\\
+%$\gamma$ & Recovery rate & year$^{-1}.$individual$^{-1}$ & 1\\
+%$\xi$ & Dispersal rate & year$^{-1}.$individual$^{-1}$ & 0.001--0.1\\
+%$\Lambda$ & Birth rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
+%$\mu$ & Death rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
+%$k_x$ & Degree of node $x$ (number of colonies that individuals from colony $x$ can disperse to). &&\\
+%$\delta$ & Waiting time until next event & years &\\
+%
+%$e_i$ & The rate at which event $i$ occurs & year$^{-1}$&\\
+%\bottomrule
+%\end{tabular}
+%
+%\label{t:params}
+%\end{table}
 \tmpsection{Metapopulation}
 
 
-\begin{table}[tb]
-\centering
-\caption{A summary of all symbols used along with their units and default values.
-The justifications for parameter values are given in Section~\ref{s:paramSelect}.}
-
-\begin{tabular}{@{}lp{6cm}p{2.9cm}r@{}}
-\toprule
-Symbol & Explanation & Units & Value\\
-\midrule
-$\rho$ & Number of pathogens && 2\\
-$x, y$ & Colony index &&\\
-$p$ &  Pathogen index i.e.\ $p\in\{1,2\}$ for pathogens 1 and 2 & &\\
-$q$ & Disease class i.e.\ $q\in\{1,2,12\}$&\\
-$S_x$ & Number of susceptible individuals in colony $x$ &&\\
-$I_{qx}$ & Number of individuals infected with disease(s) $q \in \{1, 2, 12\}$ in colony $x$ &&\\
-$R_x$ & Number of individuals in colony $x$ in the recovered with immunity class  &&\\
-$N$ & Total Population size && 30,000\\
-$m$ & Number of colonies&& 10\\
-$n$ & Colony size && 3,000\\
-$a$ & Area & km\textsuperscript{2}& 10,000\\
-$\beta$ & Transmission rate &  & 0.1 -- 0.4\\
-$\alpha$ & Coinfection adjustment factor  & & 0.1\\
-$\gamma$ & Recovery rate & year$^{-1}.$individual$^{-1}$ & 1\\
-$\xi$ & Dispersal rate & year$^{-1}.$individual$^{-1}$ & 0.001--0.1\\
-$\Lambda$ & Birth rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
-$\mu$ & Death rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
-$k_x$ & Degree of node $x$ (number of colonies that individuals from colony $x$ can disperse to). &&\\
-$\delta$ & Waiting time until next event & years &\\
-
-$e_i$ & The rate at which event $i$ occurs & year$^{-1}$&\\
-\bottomrule
-\end{tabular}
-
-\label{t:params}
-\end{table}
 
 
 The population is modelled as a metapopulation, being divided into a number of subpopulations (colonies).
@@ -975,7 +906,7 @@ The recovery rate $\gamma$ was set to one, giving an average infection duration 
 This is therefore a long lasting infection but not a chronic infection. 
 It is very difficult to directly estimate infection durations in wild populations but it seems that these infections might sometimes be long lasting \cite{peel2012henipavirus, plowright2015ecological}.
 However, other studies have found much shorter infectious periods \cite{amengual2007temporal}.
-These shorter infections are not studied further here. %todo consider readding this. " as preliminary simulations found that they could not persist in the relatively small populations being modelled here."
+These shorter infections are not studied further here. 
 
 The coinfection adjustment parameter, $\alpha$, was set to 0.1 so that an individual infected with one pathogen is 90\% less likely to be infected with another.
 This is a rather arbitrary value.
@@ -983,12 +914,12 @@ However, the rationale of the model was that the invading species might be a new
 Furthermore, the model assumes complete cross-immunity after recovery from infection.
 Therefore cross-immunity to coinfection is likely to be very strong as well.
 Some pairs of closely related bat viruses have been found to coinfect individual bats less than would be expected by chance \cite{anthony2013strategy}.
-This indicates a level of cross-immunity between these pairs of viruses. %todo I'm sure there was a marburg ebola paper...
+This indicates a level of cross-immunity between these pairs of viruses. 
 
 
 \subsection{Experimental setup}
 
-Specifically, we let two identical pathogens compete: an endemic pathogen (Pathogen 1) and an invading pathogen (Pathogen 2).
+We let two identical pathogens compete: an endemic pathogen (Pathogen 1) and an invading pathogen (Pathogen 2).
 We used persistence (coded as 1) or extinction (coded as 0) of Pathogen 2 as a binomial response variable.
 We tested whether host population size is more important than host density.
 We then tested whether colony size or the number of colonies is the more important component of population size.
@@ -1024,7 +955,7 @@ Given this setup, populations with low densities had relatively unconnected meta
 
 \begin{figure}[t]
 \centering
-  \includegraphics[width=0.5\textwidth]{figure/SIRoption1}
+  \includegraphics[width=0.4\textwidth]{figure/SIRoption1}
   \caption[Schematic of the SIR model used]{
   Schematic of the SIR model used. 
   Individuals are in one of five classes, susceptible (orange, $S$), infected with Pathogen 1, Pathogen 2 or both (blue, $I_1, I_2, I_{12}$) or recovered and immune from further infection (green, $R$).
@@ -1141,7 +1072,7 @@ valueChangeMeansTitle <- 'Comparison of the effect of colony size, number of col
 
 %%end.rcode
 
-%%begin.rcode plotValueChangeMeans, fig.cap = valueChangeMeansCapt, fig.scap = valueChangeMeansTitle, out.width = '\\textwidth', cache = FALSE
+%%begin.rcode plotValueChangeMeans, fig.cap = valueChangeMeansCapt, fig.scap = valueChangeMeansTitle, out.width = '0.4\\textwidth', cache = FALSE, fig.height =  5
 
 # Convert to percentage change in density, colonysize or colony number.
 
@@ -1217,7 +1148,8 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary)) +
   scale_x_continuous(breaks = c(0.25, 0.5, 1, 2, 4), 
                      labels = c(0.25, 0.5, 1, 2, 4), 
                      trans = 'log10') +
-  facet_grid(transmission ~ ., labeller = label_parsed) 
+  facet_grid(transmission ~ ., labeller = label_parsed) +
+  theme(legend.position = 'bottom')
 
 
 %%end.rcode
@@ -1269,7 +1201,7 @@ transMeansTitle <- 'Comparison of the probability of the affect of colony size a
 
 %%end.rcode
 
-%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '\\textwidth', fig.show = TRUE, cache = FALSE
+%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.4\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.show = 'hide'
 
 d2 <- rbind(dens1Means, dens2Means)
 d2$transmission <- factor(d2$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
@@ -1470,8 +1402,7 @@ This suggests that the mechanism studied here --- invasion of recently evolved p
 
 \subsection{Assumptions and limitation}
 
-Being based on the same model as used earlier, the work presented here relies on many of the same assumptions (see Section~\ref{s:sims1Disc}).
-Furthermore, as a comparison is being made between the effects of range size and population size, the exact specifications of how the metapopulation is affected by range size is important.
+As a comparison is being made between the effects of range size and population size, the exact specifications of how the metapopulation is affected by range size is important.
 We conducted this study at one rate of dispersal, 0.01 dispersals per individual per year.
 In practice this relates to only 17\% of individuals dispersing in their lifetime.
 This low rate of dispersal is expected to exaggerate the effect of range size; at high rates of dispersal the population is essentially well-mixed, despite the metapopulation.
