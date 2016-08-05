@@ -32,7 +32,7 @@
 
 
 \title{A mechanistic model to compare the importance of interrelated population measures: host population size, density and colony size}
-\author{Tim Lucas, Hilde Herbots and Kate Jones \today}
+\author{Tim Lucas, Hilde Herbots and Kate Jones}
 \date{}
 
 \maketitle
@@ -59,6 +59,43 @@ theme_set(theme_grey() + theme_tcdl)
 library(xtable)
 
 %%end.rcode
+
+
+\begin{table}[tb]
+\centering
+\caption{A summary of all symbols used along with their units and default values.
+The justifications for parameter values are given in the main manuscript.}
+
+\begin{tabular}{@{}lp{6cm}p{2.9cm}r@{}}
+\toprule
+Symbol & Explanation & Units & Value\\
+\midrule
+$\rho$ & Number of pathogens && 2\\
+$x, y$ & Colony index &&\\
+$p$ &  Pathogen index i.e.\ $p\in\{1,2\}$ for pathogens 1 and 2 & &\\
+$q$ & Disease class i.e.\ $q\in\{1,2,12\}$&\\
+$S_x$ & Number of susceptible individuals in colony $x$ &&\\
+$I_{qx}$ & Number of individuals infected with disease(s) $q \in \{1, 2, 12\}$ in colony $x$ &&\\
+$R_x$ & Number of individuals in colony $x$ in the recovered with immunity class  &&\\
+$N$ & Total Population size && 30,000\\
+$m$ & Number of colonies&& 10\\
+$n$ & Colony size && 3,000\\
+$a$ & Area & km\textsuperscript{2}& 10,000\\
+$\beta$ & Transmission rate &  & 0.1 -- 0.4\\
+$\alpha$ & Coinfection adjustment factor  & & 0.1\\
+$\gamma$ & Recovery rate & year$^{-1}.$individual$^{-1}$ & 1\\
+$\xi$ & Dispersal rate & year$^{-1}.$individual$^{-1}$ & 0.001--0.1\\
+$\Lambda$ & Birth rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
+$\mu$ & Death rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
+$k_x$ & Degree of node $x$ (number of colonies that individuals from colony $x$ can disperse to). &&\\
+$\delta$ & Waiting time until next event & years &\\
+
+$e_i$ & The rate at which event $i$ occurs & year$^{-1}$&\\
+\bottomrule
+\end{tabular}
+
+\label{t:params}
+\end{table}
 
 
 
@@ -215,6 +252,124 @@ print(xtable(dens2Means,
 
 %%end.rcode
 
+
+
+
+%%begin.rcode plotKcapt
+
+plotKcapt <- '
+Change in average metapopulation network degree ($\\bar{k}$) with increasing range size. 
+Bars show the median, boxes show the interquartile range, vertical lines show the range and grey dots indicate outlier values.
+Notches indicate the 95\\% confidence interval of the median.
+All simulations had 20 colonies, meaning 19 is the maximum value of $\\bar{k}$.
+'
+
+plotKtitle <- 'Change in average network degree with increasing range size'
+
+
+%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, out.width = '0.4\\textwidth', cache = FALSE, plot.height = 2.3, fig.show = TRUE, out.width = '0.9\\textwidth'
+
+ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
+  geom_boxplot(outlier.size = 1, size = 0.3, outlier.colour = grey(0.3), 
+    notch = TRUE, width = 0.4, notchwidth = 0.6) +
+  scale_colour_manual(values = pokepal('vileplume')[4]) +
+  scale_fill_manual(values = pokepal('vileplume')[7]) +
+  stat_summary(geom = "crossbar", width = 0.2, fatten = 2, 
+    fun.data = function(x){ return(c(y = median(x), ymin = median(x), ymax = median(x))) }) +
+  theme(legend.position = 'none', panel.grid.major.x = element_blank()) + 
+  scale_x_discrete(labels = c('2500', '5000', '10000', '20000', '40000')) +
+  xlab(expression(paste('Area ', (km^2)))) +
+  ylab(expression(paste('Mean degree, ', italic(bar(k))))) +
+  ylim(0, 20)
+
+
+%%end.rcode
+
+
+%%begin.rcode transMeansCapt
+
+
+transMeansCapt <- '
+Comparison of the effect of host population size on probability of invasion when population size is altered by changing colony size or colony number.
+Relationships are shown separately for each transmission value, $\\beta$.
+It can be seen that changes in colony size give a much greater increase in invasion probability than changes in colony number.
+Note that this is the same data as Figure~\\ref{fig:plotValueChangeMeans} but with the $x$-axis scaled by population size, rather than relative parameter change.
+'
+
+transMeansTitle <- 'Comparison of the probability of the affect of colony size and number of colonies on probability of invasion'
+
+%%end.rcode
+
+%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.9\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.show = TRUE
+
+
+dens1 <- read.csv('Data/DensSims.csv') %>% dplyr::select(-X)
+
+dens1Means <- dens1 %>%
+                filter(nExtantDis > 0) %>%
+                group_by(transmission, colonySize, colonyNumber) %>%
+                summarise(success = sum(nExtantDis == 2), sampleSize = n(), pop = mean(as.numeric(as.character(pop))))
+
+
+dens1Means <- dens1Means %>%
+                cbind(., vary = 'colonySize', binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
+
+# fit glms to each transmission value
+
+dens1Model <- dens1 %>%
+               filter(nExtantDis > 0) %>%
+               mutate(invasion = as.numeric(nExtantDis == 2)) %>%
+               group_by(transmission) %>%
+               do(fit = glm(invasion ~ pop, data = ., family = 'binomial')) %>%
+               mutate(vary = 'colonySize')
+
+
+# Constant density, altered colony number
+
+dens2 <- read.csv('Data/Dens2Sims.csv') %>% dplyr::select(-X)
+
+dens2Means <- dens2 %>%
+                filter(nExtantDis > 0) %>%
+                group_by(transmission, colonySize, colonyNumber) %>%
+                summarise(success = sum(nExtantDis == 2), sampleSize = n(), pop = mean(as.numeric(as.character(pop))))
+
+
+dens2Means <- dens2Means %>%
+                cbind(., vary = 'colonyNumber',  binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
+
+# Fit glms to each transmission value
+dens2Model <- dens2 %>%
+               filter(nExtantDis > 0) %>%
+               mutate(invasion = as.numeric(nExtantDis == 2)) %>%
+               group_by(transmission) %>%
+               do(fit = glm(invasion ~ pop, data = ., family = 'binomial')) %>%
+               mutate(vary = 'colonyNumber')
+
+
+
+d2 <- rbind(dens1Means, dens2Means)
+d2$transmission <- factor(d2$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
+densPreds$transmission <- factor(densPreds$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
+
+
+ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
+  geom_line(data = densPreds, aes(x = pop, y = pred, colour = vary)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = lower, ymax = upper),
+              width=.2) +
+  ylab('Prop. Invasions') +
+  xlab('Population size') +
+  ylim(0, 1) +
+  scale_colour_manual(name = "Focal Pop. factor", 
+                      labels = c('Colony Size', 'Colony Number'), 
+                      values = pokepal('Swampert', spread = 3)[2:1]) +
+  scale_y_continuous(breaks = c(0, 0.5, 1), labels = c('0.0', '0.5', '1.0')) +
+  scale_x_continuous(limits = c(0, 32000), 
+                     breaks = c(0, 1e4, 2e4, 3e4), 
+                     label = c('0', '10000', '20000', '30000')) +
+  facet_grid(transmission ~ ., labeller = label_parsed) 
+
+%%end.rcode
 
 
 \end{document}
