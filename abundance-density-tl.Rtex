@@ -1,6 +1,6 @@
 %--------------------------------------------------------------------------------------------------------------------------------%
 % Code and text for "A mechanistic model to compare the importance of interrelated population measures: population size, population density and colony size"
-% by Tim CD Lucas
+% by Tim CD Lucas, Hilde Herbots and Kate Jones
 %
 %---------------------------------------------------------------------------------------------------------------------------------%
 
@@ -65,7 +65,7 @@
 
 
 \title{A mechanistic model to compare the importance of interrelated population measures: host population size, density and colony size}
-\author{Tim Lucas. \today}
+\author{Tim Lucas, Hilde Herbots and Kate Jones}
 \date{}
 
 \maketitle
@@ -714,58 +714,14 @@ This modelling choice allows the model to be easily expanded to include more tha
 The assumption of immediate recovery from all other diseases is likely to be reasonable.
 Any up-regulation of innate immune response will affect both pathogens equally.
 Furthermore, as the pathogens are identical, any acquired immunity would also affect both pathogens equally.
-
 The coinfection rate (the rate at which an infected individual is infected with a second pathogen) is adjusted compared to the infection rate by a factor $\alpha$.
-As in \textcite{castillo1989epidemiological}, low values of $\alpha$ imply lower rates of coinfection.
-In particular, $\alpha = 0$ indicates no coinfections, $\alpha = 1$ indicates that coinfections happen at the same rate as first infections while $\alpha > 1$ indicates that coinfections occur more readily than first infections.
 
 
 
 In the application of long term existence of pathogens it is necessary to include vital dynamics (births and deaths) as the SIR model without vital dynamics has no endemic state.
 Birth and death rates ($\Lambda$ and $\mu$) are set as being equal meaning the population does not systematically increase or decrease.
-The population size does however change as a random walk.
 New born individuals enter the susceptible class.
 Infection and coinfection were assumed to cause no extra mortality as for a number of viruses, bats show no clinical signs of infection \cite{halpin2011pteropid, deThoisy2016bioecological}.
-
-
-%\begin{table}[tb]
-%\centering
-%\caption{A summary of all symbols used along with their units and default values.
-%The justifications for parameter values are given in Section~\ref{s:paramSelect}.}
-%
-%\begin{tabular}{@{}lp{6cm}p{2.9cm}r@{}}
-%\toprule
-%Symbol & Explanation & Units & Value\\
-%\midrule
-%$\rho$ & Number of pathogens && 2\\
-%$x, y$ & Colony index &&\\
-%$p$ &  Pathogen index i.e.\ $p\in\{1,2\}$ for pathogens 1 and 2 & &\\
-%$q$ & Disease class i.e.\ $q\in\{1,2,12\}$&\\
-%$S_x$ & Number of susceptible individuals in colony $x$ &&\\
-%$I_{qx}$ & Number of individuals infected with disease(s) $q \in \{1, 2, 12\}$ in colony $x$ &&\\
-%$R_x$ & Number of individuals in colony $x$ in the recovered with immunity class  &&\\
-%$N$ & Total Population size && 30,000\\
-%$m$ & Number of colonies&& 10\\
-%$n$ & Colony size && 3,000\\
-%$a$ & Area & km\textsuperscript{2}& 10,000\\
-%$\beta$ & Transmission rate &  & 0.1 -- 0.4\\
-%$\alpha$ & Coinfection adjustment factor  & & 0.1\\
-%$\gamma$ & Recovery rate & year$^{-1}.$individual$^{-1}$ & 1\\
-%$\xi$ & Dispersal rate & year$^{-1}.$individual$^{-1}$ & 0.001--0.1\\
-%$\Lambda$ & Birth rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
-%$\mu$ & Death rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
-%$k_x$ & Degree of node $x$ (number of colonies that individuals from colony $x$ can disperse to). &&\\
-%$\delta$ & Waiting time until next event & years &\\
-%
-%$e_i$ & The rate at which event $i$ occurs & year$^{-1}$&\\
-%\bottomrule
-%\end{tabular}
-%
-%\label{t:params}
-%\end{table}
-\tmpsection{Metapopulation}
-
-
 
 
 The population is modelled as a metapopulation, being divided into a number of subpopulations (colonies).
@@ -781,78 +737,10 @@ Dispersal between colonies occurs at a rate $\xi$.
 Individuals can only disperse to colonies connected to theirs by an edge in the network.
 The rate of dispersal is not affected by the number of edges a colony has (known as the degree of the colony and denoted $k$).
 Therefore, the dispersal rate from a colony $y$ with degree $k_y$ to colony $x$ is $\xi / k_y$.
-Note this rate is not affect by the degree and size of colony $x$.
+Note this rate is not affected by the degree and size of colony $x$.
 
-
-
-\tmpsection{Stochastic simulations}
-
-We examined this model using stochastic, continuous-time simulations implemented in \emph{R} \cite{R}.
+We examined the model using stochastic, continuous-time simulations implemented in \emph{R} \cite{R}.
 The implementation is available as an \emph{R} package on GitHub \cite{metapopepi}.
-The model can be written as a continuous-time Markov chain.
-The Markov chain contains the random variables $((S_x)_{x = 1\ldots m}, (I_{x, q})_{x =1\ldots m,\:q \in \{1, 2, 12\}}, (R_x)_{x = 1\ldots m})$.
-Here, $(S_x)_{x = 1\ldots m}$ is a length $m$ vector of the number of susceptibles in each colony.
-$(I_{x, q})_{x =1\ldots m, q \in \{1, 2, 12\}}$ is a length $m \times 3$ vector describing the number of individuals of each disease class ($q \in \{1, 2, 12\}$) in each colony.
-Finally, $(R_x)_{x = 1\ldots m}$ is a length $m$ vector of the number of individuals in the recovered class.
-The model is a Markov chain where extinction of both pathogen species and extinction of the host species are absorbing states.
-The expected time for either host to go extinct is much larger than the duration of the simulations.
-
-At any time, suppose the system is in state $((s_x), (i_{x,q}), (r_x))$.
-At each step in the simulation we calculate the rate at which each possible event might occur.
-One event is then randomly chosen, weighted by its rate
-\begin{align}
-  p(\text{event } i) = \frac{e_i}{\sum_j e_j},
-\end{align}
-where $e_i$ is the rate at which event $i$ occurs and $\sum_j e_j$ is the sum of the rates of all possible events.
-Finally, the length of the time step, $\delta$, is drawn from an exponential distribution 
-\begin{align}
-  \delta \sim \operatorname{Exp}\left(\sum_j e_j  \right).
-\end{align}
-
-
-We can now write down the rates of all events. 
-Assuming asexual reproduction, that all classes reproduce at the same rate and that individuals are born into the susceptible class we get
-\begin{align}
-  s_x \rightarrow s_x + 1 \;\;\;\text{at a rate of}\;\; \Lambda\left( s_{x}+\sum_q i_{qx} + r_{x}\right) 
-\end{align}
-where $s_x \rightarrow s_x + 1$ is the event that the number of susceptibles in colony $x$ will increase by 1 (a single birth) and $\sum_q i_{qx}$ is the sum of all infection classes $q~\in~\{1, 2, 12\}$.
-The rates of death, given a death rate $\mu$, and no increased mortality due to infection, are given by
-\begin{align}
-  s_x \rightarrow s_x-1  &\;\;\;\text{at a rate of}\;\; \mu s_x, \\
-  i_{qx}  \rightarrow i_{qx}-1 &\;\;\text{at a rate of}\;\; \mu i_{qx},\\
-  r_x  \rightarrow r_x-1 &\;\;\;\text{at a rate of}\;\; \mu r_x.
-\end{align}
-
-
-
-We modelled transmission as being density-dependent.
-This assumption was more suitable than frequency-dependent transmission as we were modelling a disease transmitted by saliva or urine in highly dense populations confined to caves, buildings or potentially a small number of tree roosts.
-We were notably not modelling a sexually transmitted disease (STD) as spillover of STDs from bats to humans is likely to be rare.
-Infection of a susceptible with either Pathogen 1 or 2 is therefore given by
-\begin{align}
-  i_{1x} \rightarrow i_{1x}+1,\;\;\; s_x \rightarrow s_x-1 &\;\;\text{at a rate of}\;\; \beta s_x\left(i_{1x} + i_{12x}\right),\\
-  i_{2x} \rightarrow i_{2x}+1,\;\;\; s_x \rightarrow s_x-1  &\;\;\text{at a rate of}\;\; \beta s_x\left(i_{2x} + i_{12x}\right),
-\end{align}
-while coinfection, given the coinfection adjustment factor $\alpha$, is given by
-\begin{align}
-  i_{12,x} \rightarrow i_{12,x}+1,\;\;\; i_{1x} \rightarrow i_{1x}-1 &\;\;\text{at a rate of}\;\; \alpha\beta i_{1x}\left(i_{2x} + i_{12x}\right),\\
-  i_{12,x} \rightarrow i_{12,x}+1,\;\;\; i_{2x} \rightarrow i_{2x}-1 &\;\;\text{at a rate of}\;\; \alpha\beta i_{2x}\left(i_{1x} + i_{12x}\right).
-\end{align}
-Note that lower values of $\alpha$ give lower rates of infection as in \textcite{castillo1989epidemiological}.
-
-
-The rate of migration from colony $y$ (with degree $k_y$) to colony $x$, given a dispersal rate $\xi$ is given by
-\begin{align}
-  s_x \rightarrow s_x+1,\;\;\; s_y \rightarrow s_y-1 &\;\;\text{at a rate of}\;\; \frac{\xi s_y}{k_y},\\
-  i_{qx} \rightarrow i_{qx}+1,\;\;\; i_{qy} \rightarrow i_{qy}-1 &\;\;\text{at a rate of}\;\; \frac{\xi i_{qy}}{k_y},\\
-  r_x \rightarrow r_x+1,\;\;\; r_y \rightarrow r_y-1 &\;\;\text{at a rate of}\;\; \frac{\xi r_y}{k_y}.
-\end{align}
-Note that the dispersal rate does not change with infection.
-As above, this is due to the low virulence of bat viruses.
-Finally, recovery from any infectious class occurs at a rate $\gamma$
-\begin{align}
-  i_{qx} \rightarrow i_{qx}-1,\;\; r_x \rightarrow r_x+1  \;\;\text{at a rate of}\;\; \gamma i_{qx}.
-\end{align}
 
 
 \subsection{Parameter selection}
@@ -1365,24 +1253,24 @@ This suggests that the mechanism studied here --- invasion of recently evolved p
 
 
 
-\subsection{Assumptions and limitation}
+%\subsection{Assumptions and limitation}
 
-As a comparison is being made between the effects of range size and population size, the exact specifications of how the metapopulation is affected by range size is important.
-We conducted this study at one rate of dispersal, 0.01 dispersals per individual per year.
-In practice this relates to only 17\% of individuals dispersing in their lifetime.
-This low rate of dispersal is expected to exaggerate the effect of range size; at high rates of dispersal the population is essentially well-mixed, despite the metapopulation.
-
-Furthermore, there is evidence that as groups become bigger, the within-group structure increases \cite{nunn2015infectious}.
-This has not been modelled here; instead the subpopulations are assumed to be fully mixed regardless of size.
-Also, we assumed that dispersal only occurs between colonies a certain distance apart.
-Based on \emph{a priori} considerations such as the time and energy required to disperse long distances, this is a reasonable assumption.
-The exact threshold was chosen to attempt to maximise the range of $\bar{k}$ studied (Figure~\ref{fig:plotK}).
-However, a similar assumption could be made in other ways.
-Instead of a threshold distance, individuals could be expected to disperse in a random direction and stop at the first colony they encounter; this could create some long distance links in the network and increase network connectivity, potentially reducing the effects of range size.
-Alternatively, the metapopulation could have been modelled as a weighted network with dispersal occurring at a higher rate to nearby colonies.
-Depending on the parameterisation of this distance-dispersal relationship, this could serve to increase the effect of range size --- by exaggerating dispersal to very nearby colonies --- or decrease the effect of range size by allowing rare, but significant, global dispersal creating a small-world network structure.
-Ultimately, the modelling choices could increase or decrease the effects of range size relative to colony size and the number of colonies but we aimed to make the effect of range size as strong as possible.
-
+%As a comparison is being made between the effects of range size and population size, the exact specifications of how the metapopulation is affected by range size is important.
+%We conducted this study at one rate of dispersal, 0.01 dispersals per individual per year.
+%In practice this relates to only 17\% of individuals dispersing in their lifetime.
+%This low rate of dispersal is expected to exaggerate the effect of range size; at high rates of dispersal the population is essentially well-mixed, despite the metapopulation.
+%
+%Furthermore, there is evidence that as groups become bigger, the within-group structure increases \cite{nunn2015infectious}.
+%This has not been modelled here; instead the subpopulations are assumed to be fully mixed regardless of size.
+%Also, we assumed that dispersal only occurs between colonies a certain distance apart.
+%Based on \emph{a priori} considerations such as the time and energy required to disperse long distances, this is a reasonable assumption.
+%The exact threshold was chosen to attempt to maximise the range of $\bar{k}$ studied (Figure~\ref{fig:plotK}).
+%However, a similar assumption could be made in other ways.
+%Instead of a threshold distance, individuals could be expected to disperse in a random direction and stop at the first colony they encounter; this could create some long distance links in the network and increase network connectivity, potentially reducing the effects of range size.
+%Alternatively, the metapopulation could have been modelled as a weighted network with dispersal occurring at a higher rate to nearby colonies.
+%Depending on the parameterisation of this distance-dispersal relationship, this could serve to increase the effect of range size --- by exaggerating dispersal to very nearby colonies --- or decrease the effect of range size by allowing rare, but significant, global dispersal creating a small-world network structure.
+%Ultimately, the modelling choices could increase or decrease the effects of range size relative to colony size and the number of colonies but we aimed to make the effect of range size as strong as possible.
+%
 
 
 
