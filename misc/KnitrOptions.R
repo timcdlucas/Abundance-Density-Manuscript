@@ -28,38 +28,6 @@ options(digits = 2)
 
 
 
-# Try and get knitr to plot numbers nicely without manually tuning each number
-
-# Write a function for pvalues
-p <- function(x, eps = 1e-3){
-
-      if(x > 0.95){
-          return("1.00")
-        } else if(x > eps){
-          if(round(x, 2) == round(x, 1)){
-            return(sprintf("%.2f", x)) 
-          } else {
-            return(x)
-          }
-
-        } else  {
-          return(10^(ceiling(log10(x))))
-        }
-      }
-
-p <- function(x) return(x)
-
-
 options('scipen' = -1)
-
-
-
-# syntax highlighting.
-# This is only used for echo = TRUE which won't be in the final thesis at all.
-
-#knit_theme$set("camo")
-
-
-
 
   
