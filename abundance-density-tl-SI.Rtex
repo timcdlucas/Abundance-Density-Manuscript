@@ -47,7 +47,8 @@
 \usepackage[pdftex,hidelinks]{hyperref}
 
 
-
+\renewcommand\thefigure{S\arabic{figure}}    
+\renewcommand\thetable{S\arabic{table}}    
 
 \begin{document}
 
@@ -78,7 +79,10 @@ theme_set(theme_grey() + theme_tcdl)
 
 
 library(xtable)
-
+library(palettetown)
+library(binom)
+library(ggplot2)
+library(dplyr)
 %%end.rcode
 
 \section{Supplementary methods}
@@ -444,6 +448,16 @@ dens2Model <- dens2 %>%
                do(fit = glm(invasion ~ pop, data = ., family = 'binomial')) %>%
                mutate(vary = 'colonyNumber')
 
+
+
+popPred <- seq(min(dens2$pop), max(dens2$pop), length.out = 200)
+
+densPreds <- rbind(dens1Model, dens2Model) %>%
+               apply(., 1, 
+                 function(m) predict(m['fit'][[1]], newdata = data.frame(pop = popPred), type = 'response') %>%
+                               data.frame(pred = ., pop = popPred, transmission = m$transmission, vary = m$vary)
+               ) %>%
+               do.call(rbind, .)
 
 
 d2 <- rbind(dens1Means, dens2Means)
