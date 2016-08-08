@@ -210,7 +210,7 @@ Finally, many studies have tested for correlations between pathogen richness and
 
 However, the intrinsic relationships between these population-level factors are rarely discussed or accounted for in comparative studies.
 There are two particularly clear relationships between these factors.
-Firstly, host density, $d$, host population size, $N$, and geographic range size, $a$, are, by definition, linked by $d = N / a$ (See Table~\ref{t:params} for all parameters used).
+Firstly, host density, $d$, host population size, $N$, and geographic range size, $a$, are, by definition, linked by $d = N / a$ (see Table~S1 for all parameters used).
 The relationship, $N \propto a$, has broad empirical support \cite{blackburn2006variations, borregaard2010causality}.
 Secondly, host population size can be decomposed into two components, the number of groups, $m$, and the average size of a group, $n$, with $N = n$.
 While less clear, geographic range size and host population structure are also related.
@@ -706,7 +706,7 @@ ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
 \subsection{Two pathogen SIR model}
 
 We developed a multipathogen, SIR compartment model with individuals being classed as susceptible, infected or recovered with immunity (Figure~\ref{f:sir}).
-Susceptible individuals are counted in class $S$ (see Table~\ref{t:params} for a list of symbols and values used).
+Susceptible individuals are counted in class $S$ (see Table~S1 for a list of symbols and values used).
 There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen 1, Pathogen 2 or both respectively.
 Recovered individuals, $R$, are immune to both pathogens, even if they have only been infected with one (i.e.\ there is complete cross-immunity).
 Furthermore, recovery from one pathogen moves an individual straight into the recovered class, even if the individual is infected with both pathogens (Figure~\ref{f:sir}).
@@ -740,6 +740,7 @@ Therefore, the dispersal rate from a colony $y$ with degree $k_y$ to colony $x$ 
 Note this rate is not affected by the degree and size of colony $x$.
 
 We examined the model using stochastic, continuous-time simulations implemented in \emph{R} \cite{R}.
+The full details of the model are given in Supplementary Methods~S1.
 The implementation is available as an \emph{R} package on GitHub \cite{metapopepi}.
 
 
@@ -751,7 +752,7 @@ The death rate $\mu$ was set as 0.05 per year giving a generation time of 20 yea
 The birth rate $\Lambda$ was set to be equal to $\mu$.
 This yields a population that does not systematically increase or decrease.
 However, the size of each colony changes as a random walk.
-Given the length of the simulations, colonies were very unlikely to go extinct (Figure~S\ref{fig:plotsNoInvade2}).
+Given the length of the simulations, colonies were very unlikely to go extinct.
 The starting size of each colony was set to 3000.
 This is appropriate for many bat species \cite{jones2009pantheria}, especially the large, frugivorous \emph{Pteropodidae} that have been particularly associated with recent zoonotic diseases.
 
@@ -800,8 +801,8 @@ As Pathogen 1 was seeded in all colonies, Pathogen 2 could not be seeded into a 
 To ensure connected metapopulation networks would have required repeatedly resampling of the colony locations until a connected metapopulation population occurred.
 However, this would bias $\bar{k}$.
 Therefore, it was considered preferential to keep the unconnected networks.
-The threshold of 100 km was arbitrary but we aimed to maximise the range  of $\bar{k}$ (Figure~\ref{fig:plotK}) while not having many simulations with networks that were unconnected.
-Given this setup, populations with low densities had relatively unconnected metapopulation networks while high density populations had fully connected networks (Figure~\ref{fig:plotK}).
+The threshold of 100 km was arbitrary but we aimed to maximise the range  of $\bar{k}$ (Figure~S1) while not having many simulations with networks that were unconnected.
+Given this setup, populations with low densities had relatively unconnected metapopulation networks while high density populations had fully connected networks.
 
 
 
@@ -1133,7 +1134,7 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 %%%     Results text    %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-At the default parameter settings, the probability of invasion and establishment of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S\ref{C-pop} -- \ref{C-dens2}).
+At the default parameter settings, the probability of invasion and establishment of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S2--4).
 These proportions significantly increased with transmission rate (GLM: $b$ = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
 
 In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
@@ -1154,7 +1155,7 @@ Therefore the simulations support the hypothesis that population size affects in
 
 \subsection{Colony size or number of groups}
 
-To test whether colony size or the number of colonies is the more important component of population size, we compared the regression coefficients, $b_2$ and $b_3$, of the multiple regressions fitted to simulation results (Figure~\ref{fig:plotTransMeans}).
+To test whether colony size or the number of colonies is the more important component of population size, we compared the regression coefficients, $b_2$ and $b_3$, of the multiple regressions fitted to simulation results (Figure~S2).
 Increasing either colony size or the number of colonies increased the probability of invasion but this effect was much stronger and more statistically significant for colony size (Table~\ref{t:regrCoefs}).
 Therefore the simulations support the hypothesis that colony size is the more important component of population size.
 
