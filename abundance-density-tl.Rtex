@@ -64,12 +64,38 @@
 \begin{document}
 
 
-\title{A mechanistic model to compare the importance of interrelated population measures: host population size, density and colony size}
-\author{Tim Lucas, Hilde Herbots and Kate Jones}
+\title[A mechanistic model to compare the importance of interrelated population measures]{A mechanistic model to compare the importance of interrelated population measures: host population size, density and colony size}
+\author{Tim Lucas\textsuperscript{1}, Hilde Herbots\textsuperscript{2} and Kate Jones\textsuperscript{3}}
 \date{}
 
 \maketitle
 %\tableofcontents
+
+
+
+\subsection*{ Running title: A mechanistic model to compare the importance of interrelated population measures}
+
+\subsection*{ Word count:} 4365
+
+
+\subsection*{ Addresses:\\}
+1 The Big Data Institute, University of Oxford
+2 Department of Statistical Science, University College London, Gower Street, London, WC1E 6BT, UK\\ 
+3 Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, UK\\ 
+
+\subsection*{ Corresponding authors:\\}
+
+\noindent 
+Tim C.D. Lucas,\\
+The Big Data Institute, \\
+The Peter Medawar Building,\\
+University of Oxford,\\
+South Parks Road,\\
+OX1 3SY, UK\\
+timcdlucas@gmail.com\\
+
+\subsection*{Keywords} %max keywords/phrase 3--6 - current 3
+Multipathogen competition, zoonotic disease, metapopulation, epidemiology, bat pathogens, emerging infectious disease
 
 
 
@@ -224,10 +250,9 @@ The amount of movement between groups is at least partially dependent on the dis
 Collinearity between explanatory variables is a common problem in correlative studies.
 However, this issue is exacerbated when there are clear, causal relationships between explanatory variables (e.g.,\ an increase in host density will directly cause an increase in host population size).
 Therefore, correlative comparative studies will be especially poor at identifying which of these factors are closely correlated with pathogen richness.
-If the aim of correlative studies is to create predictive models for estimating pathogen richness of wild animal species, these relationships are not an issue.
-In each of the above relationships ($d = N / a$ and $N = mn$), as long as two of three variables are included in a statistical model, all the variance in the third variable will also be captured.
-
-However, if the aim is to know which factors are causally affecting pathogen richness, and the mechanisms by which they control pathogen richness, correlative approaches are less useful.
+%If the aim of correlative studies is to create predictive models for estimating pathogen richness of wild animal species, these relationships are not an issue.
+%In each of the above relationships ($d = N / a$ and $N = mn$), as long as two of three variables are included in a statistical model, all the variance in the third variable will also be captured.
+If the aim is to know which factors are causally affecting pathogen richness, and the mechanisms by which they control pathogen richness, correlative approaches are less useful.
 Correlative models are unable to definitively select the causal factor out of correlated factors.
 Furthermore, understanding the mechanisms by which population factors can affect pathogen richness has a number of important benefits.
 Firstly, mechanistic models provide a deeper understanding of the system than correlative approaches.
@@ -600,7 +625,7 @@ All simulations were run under all three transmission rates.
 In each simulation the host population was seeded with 20 individuals infected with Pathogen 1 in each colony. 
 Pathogen 1 was then allowed to spread and reach equilibrium. 
 After \rinline{invadeT} events, five hosts individuals infected with Pathogen 2 were added to one randomly selected colony. 
-The simulation was then run for until a further \rinline{TotalTime} years had elapsed.
+The simulation was then run until a further \rinline{TotalTime} years had elapsed.
 The invasion of Pathogen 2 was considered successful if any individuals infected with Pathogen 2 remained at the end of the simulation.
 
 
@@ -1292,9 +1317,18 @@ We found that population size, not density, has the stronger impact on the abili
 Furthermore, species with large groups are likely to harbour more pathogens than species with many, smaller groups.
 
 
+\section*{Data accessibility}
+All code and simulation output data is available on GitHub %to do
 
 
+\section*{Competing interests}
+We have no competing interests
 
+
+\section*{Author's contributions}
+
+
+\section*{Funding}
 
 \small
 \printbibliography 
