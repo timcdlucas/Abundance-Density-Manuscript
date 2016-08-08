@@ -477,6 +477,134 @@ The mean number of connections per subpopulation, $\\bar{k}$, is shown for each 
 
 %%end.rcode
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Methods}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{figure}[t]
+\centering
+  \includegraphics[width=0.4\textwidth]{figure/SIRoption1}
+  \caption[Schematic of the SIR model used]{
+  Schematic of the SIR model used. 
+  Individuals are in one of five classes, susceptible (orange, $S$), infected with Pathogen 1, Pathogen 2 or both (blue, $I_1, I_2, I_{12}$) or recovered and immune from further infection (green, $R$).
+  Transitions between epidemiological classes occur as indicated by solid arrows.
+  Vital dynamics (births and deaths) are indicated by dashed arrows.
+  Parameter symbols for transitions are indicated.
+  Note that individuals in $I_{12}$ move into $R$, not back to $I_1$ or $I_2$. 
+  That is, recovery from one pathogen causes immediate recovery from the other pathogen.
+  }
+\label{f:sir}
+\end{figure}
+
+
+\subsection{Two pathogen SIR model}
+
+
+We developed a multipathogen, SIR compartment model with individuals being classed as susceptible, infected or recovered with immunity (Figure~\ref{f:sir}).
+Susceptible individuals are counted in class $S$ (see Table~S1 for a list of symbols and values used).
+There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen 1, Pathogen 2 or both respectively.
+Recovered individuals, $R$, are immune to both pathogens, even if they have only been infected with one (i.e.\ there is complete cross-immunity).
+Furthermore, recovery from one pathogen moves an individual straight into the recovered class, even if the individual is infected with both pathogens (Figure~\ref{f:sir}).
+This modelling choice allows the model to be easily expanded to include more than two pathogens, though this study is restricted to two pathogens.
+The assumption of immediate recovery from all other diseases is likely to be reasonable.
+Any up-regulation of innate immune response will affect both pathogens equally.
+Furthermore, as the pathogens are identical, any acquired immunity would also affect both pathogens equally.
+The coinfection rate (the rate at which an infected individual is infected with a second pathogen) is adjusted compared to the infection rate by a factor $\alpha$.
+
+
+
+In the application of long term existence of pathogens it is necessary to include vital dynamics (births and deaths) as the SIR model without vital dynamics has no endemic state.
+Birth and death rates ($\Lambda$ and $\mu$) are set as being equal meaning the population does not systematically increase or decrease.
+New born individuals enter the susceptible class.
+Infection and coinfection were assumed to cause no extra mortality as for a number of viruses, bats show no clinical signs of infection \cite{halpin2011pteropid, deThoisy2016bioecological}.
+
+
+The population is modelled as a metapopulation, being divided into a number of subpopulations (colonies).
+This model is an intermediate level of complexity between fully-mixed populations and contact networks.
+There is ample evidence that bat populations are structured to some extent.
+This evidence comes from the existence of subspecies, measurements of genetic dissimilarity and ecological studies \cite{kerth2011bats, mccracken1981social, burns2014correlates, wilson2005mammal}.
+Therefore a fully mixed population is a large oversimplification.
+However, trying to study the contact network relies on detailed knowledge of individual behaviour which is rarely available.		
+
+The metapopulation is modelled as a network with colonies being nodes and dispersal between colonies being indicated by edges (Figure~\ref{fig:colonyNetworkPlots}).
+Individuals within a colony interact randomly so that the colony is fully mixed.
+Dispersal between colonies occurs at a rate $\xi$.
+Individuals can only disperse to colonies connected to theirs by an edge in the network.
+The rate of dispersal is not affected by the number of edges a colony has (known as the degree of the colony and denoted $k$).
+Therefore, the dispersal rate from a colony $y$ with degree $k_y$ to colony $x$ is $\xi / k_y$.
+Note this rate is not affected by the degree and size of colony $x$.
+
+We examined the model using stochastic, continuous-time simulations implemented in \emph{R} \cite{R}.
+The full details of the model are given in Supplementary Methods~S1.
+The implementation is available as an \emph{R} package on GitHub \cite{metapopepi}.
+
+
+\subsection{Parameter selection}
+\label{s:paramSelect}
+
+The fixed parameters were chosen to roughly reflect realistic wild bat populations. 
+The death rate $\mu$ was set as 0.05 per year giving a generation time of 20 years.
+The birth rate $\Lambda$ was set to be equal to $\mu$.
+This yields a population that does not systematically increase or decrease.
+However, the size of each colony changes as a random walk.
+Given the length of the simulations, colonies were very unlikely to go extinct.
+The starting size of each colony was set to 3000.
+This is appropriate for many bat species \cite{jones2009pantheria}, especially the large, frugivorous \emph{Pteropodidae} that have been particularly associated with recent zoonotic diseases.
+
+The recovery rate $\gamma$ was set to one, giving an average infection duration of one year. 
+This is therefore a long lasting infection but not a chronic infection. 
+It is very difficult to directly estimate infection durations in wild populations but it seems that these infections might sometimes be long lasting \cite{peel2012henipavirus, plowright2015ecological}.
+However, other studies have found much shorter infectious periods \cite{amengual2007temporal}.
+These shorter infections are not studied further here. 
+
+The coinfection adjustment parameter, $\alpha$, was set to 0.1 so that an individual infected with one pathogen is 90\% less likely to be infected with another.
+This is a rather arbitrary value.
+However, the rationale of the model was that the invading species might be a newly speciated strain of the endemic species.
+Furthermore, the model assumes complete cross-immunity after recovery from infection.
+Therefore cross-immunity to coinfection is likely to be very strong as well.
+Some pairs of closely related bat viruses have been found to coinfect individual bats less than would be expected by chance \cite{anthony2013strategy}.
+This indicates a level of cross-immunity between these pairs of viruses. 
+
+\subsection{Population factors}
+
+The effect of range size on disease dynamics occurred through changes in the metapopulation network.
+The metapopulation network was created for each simulation by randomly placing colonies in a square space (Figure~\ref{fig:colonyNetworkPlots}).
+This square space was considered to be the species geographic range, the size of which was varied.
+Range size was varied between \rinline{min(area)} and \rinline{max(area)}km\textsuperscript{2}.
+This corresponds to square areas with sides of \rinline{sqrt(min(area))} to \rinline{sqrt(max(area))}km.
+Dispersal was only allowed to occur between two colonies if they were within 100km of each other i.e.\ they were then counted as connected nodes in the metapopulation network.
+The number of connections each colony has is called its degree, $k$.
+The mean degree, $\bar{k}$ is a measure of how well connected the metapopulation network is overall.
+The metapopulation network was not necessarily connected (i.e.\ made up of a single connected component) as the network was created by randomly placing colonies and only connecting colonies within 100 km of each other.
+To ensure connected metapopulation networks would have required repeatedly resampling of the colony locations until a connected metapopulation population occurred.
+However, this would bias $\bar{k}$.
+Therefore, it was considered preferential to keep the unconnected networks.
+The threshold of 100 km was arbitrary but we aimed to maximise the range  of $\bar{k}$ (Figure~S1) while not having many simulations with networks that were unconnected.
+Given this setup, populations with low densities had relatively unconnected metapopulation networks while high density populations had fully connected networks.
+
+\subsection{Experimental setup}
+
+We let two identical pathogens compete: an endemic pathogen (Pathogen 1) and an invading pathogen (Pathogen 2).
+We used persistence (coded as 1) or extinction (coded as 0) of Pathogen 2 as a binomial response variable.
+We tested whether host population size is more important than host density.
+We then tested whether colony size or the number of colonies is the more important component of population size.
+We used three values of the transmission rate $\beta$,  0.1, 0.2 and 0.3.
+All simulations were run under all three transmission rates.
+
+
+In each simulation the host population was seeded with 20 individuals infected with Pathogen 1 in each colony. 
+Pathogen 1 was then allowed to spread and reach equilibrium. 
+After \rinline{invadeT} events, five hosts individuals infected with Pathogen 2 were added to one randomly selected colony. 
+The simulation was then run until \rinline{TotalTime} years in total had elapsed.
+The invasion of Pathogen 2 was considered successful if any individuals infected with Pathogen 2 remained at the end of the simulation.
+
+
+
 %%begin.rcode colonyNetworkPlots, fig.height = 5, fig.cap = colonyNetCapt, fig.scap = colonyNetTitle, out.width = '0.4\\textwidth', fig.showtext = TRUE
 
 
@@ -694,136 +822,6 @@ ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
 
 %%end.rcode
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\section{Methods}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\subsection{Two pathogen SIR model}
-
-We developed a multipathogen, SIR compartment model with individuals being classed as susceptible, infected or recovered with immunity (Figure~\ref{f:sir}).
-Susceptible individuals are counted in class $S$ (see Table~S1 for a list of symbols and values used).
-There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen 1, Pathogen 2 or both respectively.
-Recovered individuals, $R$, are immune to both pathogens, even if they have only been infected with one (i.e.\ there is complete cross-immunity).
-Furthermore, recovery from one pathogen moves an individual straight into the recovered class, even if the individual is infected with both pathogens (Figure~\ref{f:sir}).
-This modelling choice allows the model to be easily expanded to include more than two pathogens, though this study is restricted to two pathogens.
-The assumption of immediate recovery from all other diseases is likely to be reasonable.
-Any up-regulation of innate immune response will affect both pathogens equally.
-Furthermore, as the pathogens are identical, any acquired immunity would also affect both pathogens equally.
-The coinfection rate (the rate at which an infected individual is infected with a second pathogen) is adjusted compared to the infection rate by a factor $\alpha$.
-
-
-
-In the application of long term existence of pathogens it is necessary to include vital dynamics (births and deaths) as the SIR model without vital dynamics has no endemic state.
-Birth and death rates ($\Lambda$ and $\mu$) are set as being equal meaning the population does not systematically increase or decrease.
-New born individuals enter the susceptible class.
-Infection and coinfection were assumed to cause no extra mortality as for a number of viruses, bats show no clinical signs of infection \cite{halpin2011pteropid, deThoisy2016bioecological}.
-
-
-The population is modelled as a metapopulation, being divided into a number of subpopulations (colonies).
-This model is an intermediate level of complexity between fully-mixed populations and contact networks.
-There is ample evidence that bat populations are structured to some extent.
-This evidence comes from the existence of subspecies, measurements of genetic dissimilarity and ecological studies \cite{kerth2011bats, mccracken1981social, burns2014correlates, wilson2005mammal}.
-Therefore a fully mixed population is a large oversimplification.
-However, trying to study the contact network relies on detailed knowledge of individual behaviour which is rarely available.		
-
-The metapopulation is modelled as a network with colonies being nodes and dispersal between colonies being indicated by edges (Figure~\ref{fig:colonyNetworkPlots}).
-Individuals within a colony interact randomly so that the colony is fully mixed.
-Dispersal between colonies occurs at a rate $\xi$.
-Individuals can only disperse to colonies connected to theirs by an edge in the network.
-The rate of dispersal is not affected by the number of edges a colony has (known as the degree of the colony and denoted $k$).
-Therefore, the dispersal rate from a colony $y$ with degree $k_y$ to colony $x$ is $\xi / k_y$.
-Note this rate is not affected by the degree and size of colony $x$.
-
-We examined the model using stochastic, continuous-time simulations implemented in \emph{R} \cite{R}.
-The full details of the model are given in Supplementary Methods~S1.
-The implementation is available as an \emph{R} package on GitHub \cite{metapopepi}.
-
-
-\subsection{Parameter selection}
-\label{s:paramSelect}
-
-The fixed parameters were chosen to roughly reflect realistic wild bat populations. 
-The death rate $\mu$ was set as 0.05 per year giving a generation time of 20 years.
-The birth rate $\Lambda$ was set to be equal to $\mu$.
-This yields a population that does not systematically increase or decrease.
-However, the size of each colony changes as a random walk.
-Given the length of the simulations, colonies were very unlikely to go extinct.
-The starting size of each colony was set to 3000.
-This is appropriate for many bat species \cite{jones2009pantheria}, especially the large, frugivorous \emph{Pteropodidae} that have been particularly associated with recent zoonotic diseases.
-
-The recovery rate $\gamma$ was set to one, giving an average infection duration of one year. 
-This is therefore a long lasting infection but not a chronic infection. 
-It is very difficult to directly estimate infection durations in wild populations but it seems that these infections might sometimes be long lasting \cite{peel2012henipavirus, plowright2015ecological}.
-However, other studies have found much shorter infectious periods \cite{amengual2007temporal}.
-These shorter infections are not studied further here. 
-
-The coinfection adjustment parameter, $\alpha$, was set to 0.1 so that an individual infected with one pathogen is 90\% less likely to be infected with another.
-This is a rather arbitrary value.
-However, the rationale of the model was that the invading species might be a newly speciated strain of the endemic species.
-Furthermore, the model assumes complete cross-immunity after recovery from infection.
-Therefore cross-immunity to coinfection is likely to be very strong as well.
-Some pairs of closely related bat viruses have been found to coinfect individual bats less than would be expected by chance \cite{anthony2013strategy}.
-This indicates a level of cross-immunity between these pairs of viruses. 
-
-
-\subsection{Experimental setup}
-
-We let two identical pathogens compete: an endemic pathogen (Pathogen 1) and an invading pathogen (Pathogen 2).
-We used persistence (coded as 1) or extinction (coded as 0) of Pathogen 2 as a binomial response variable.
-We tested whether host population size is more important than host density.
-We then tested whether colony size or the number of colonies is the more important component of population size.
-We used three values of the transmission rate $\beta$,  0.1, 0.2 and 0.3.
-All simulations were run under all three transmission rates.
-
-
-In each simulation the host population was seeded with 20 individuals infected with Pathogen 1 in each colony. 
-Pathogen 1 was then allowed to spread and reach equilibrium. 
-After \rinline{invadeT} events, five hosts individuals infected with Pathogen 2 were added to one randomly selected colony. 
-The simulation was then run for another \rinline{nEvent - invadeT} events.
-The invasion of Pathogen 2 was considered successful if any individuals infected with Pathogen 2 remained at the end of the simulation.
-
-The effect of range size on disease dynamics occurred through changes in the metapopulation network.
-The metapopulation network was created for each simulation by randomly placing colonies in a square space (Figure~\ref{fig:colonyNetworkPlots}).
-This square space was considered to be the species geographic range, the size of which was varied.
-Range size was varied between \rinline{min(area)} and \rinline{max(area)}km\textsuperscript{2}.
-This corresponds to square areas with sides of \rinline{sqrt(min(area))} to \rinline{sqrt(max(area))}km.
-Dispersal was only allowed to occur between two colonies if they were within 100km of each other i.e.\ they were then counted as connected nodes in the metapopulation network.
-The number of connections each colony has is called its degree, $k$.
-The mean degree, $\bar{k}$ is a measure of how well connected the metapopulation network is overall.
-
-The metapopulation network was not necessarily connected (i.e.\ made up of a single connected component) as the network was created by randomly placing colonies and only connecting colonies within 100 km of each other.
-As Pathogen 1 was seeded in all colonies, Pathogen 2 could not be seeded into a fully susceptible colony.
-To ensure connected metapopulation networks would have required repeatedly resampling of the colony locations until a connected metapopulation population occurred.
-However, this would bias $\bar{k}$.
-Therefore, it was considered preferential to keep the unconnected networks.
-The threshold of 100 km was arbitrary but we aimed to maximise the range  of $\bar{k}$ (Figure~S1) while not having many simulations with networks that were unconnected.
-Given this setup, populations with low densities had relatively unconnected metapopulation networks while high density populations had fully connected networks.
-
-
-
-
-\begin{figure}[t]
-\centering
-  \includegraphics[width=0.4\textwidth]{figure/SIRoption1}
-  \caption[Schematic of the SIR model used]{
-  Schematic of the SIR model used. 
-  Individuals are in one of five classes, susceptible (orange, $S$), infected with Pathogen 1, Pathogen 2 or both (blue, $I_1, I_2, I_{12}$) or recovered and immune from further infection (green, $R$).
-  Transitions between epidemiological classes occur as indicated by solid arrows.
-  Vital dynamics (births and deaths) are indicated by dashed arrows.
-  Parameter symbols for transitions are indicated.
-  Note that individuals in $I_{12}$ move into $R$, not back to $I_1$ or $I_2$. 
-  That is, recovery from one pathogen causes immediate recovery from the other pathogen.
-  }
-\label{f:sir}
-\end{figure}
-
-
-\subsection{Population factors}
 
 Three sets of simulations were run.
 This set of three simulations was used to compare two pairs of population factors: \emph{i}) population size and host density, \emph{ii}) colony size and the number of colonies.
