@@ -12,7 +12,9 @@
 \usepackage[T1]{fontenc}
 
 
-% Redefine cite so that we get references in footnotes.
+% ------------------------------------------ %
+%       References preamble                  %                  
+% ------------------------------------------ %
 
 \usepackage[
   backend=biber, 
@@ -21,19 +23,31 @@
 	uniquename=false, 
   uniquelist=false, %
 	style=numeric-comp, 
+  sorting=none,
   firstinits=true, 
 	maxcitenames=2, 
   terseinits=true,
   maxbibnames=10
 ]{biblatex}
-%\renewcommand{\cite}[1]{\footcite{#1}}
+
 \renewcommand{\cite}[1]{\parencite{#1}}
 
 \renewcommand*{\multicitedelim}{\addcomma}
 
+% no "In: "
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
+
 
 \addbibresource{epilit.bib}
 % This has to go below fontenc for some reason
+
+
+% ------------------------------------------ %
+%       End References preamble              %                  
+% ------------------------------------------ %
+
+
 
 
 \usepackage{graphicx}
@@ -46,26 +60,20 @@
 
 \usepackage{lineno}
 
-% no "In: "
-\renewbibmacro{in:}{%
-  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
-
-
 \usepackage{booktabs}
+\PassOptionsToPackage{hyphens}{url}
 \usepackage[pdftex,hidelinks]{hyperref}
 
 
 
 
 
-\newcommand{\tmpsection}[1]{}
-
 
 \begin{document}
 
 
-\title[A mechanistic model to compare the importance of interrelated population measures]{A mechanistic model to compare the importance of interrelated population measures: host population size, density and colony size}
-\author{Tim Lucas\textsuperscript{1}, Hilde Herbots\textsuperscript{2} and Kate Jones\textsuperscript{3}}
+\title[A comparison of the importance of population measures on pathogen richness]{A mechanistic model to compare the importance of interrelated population measures on pathogen richness: host population size, density and colony size}
+\author{Tim C.D. Lucas\textsuperscript{1$\ast$}, Hilde M. Herbots\textsuperscript{2} and Kate E. Jones\textsuperscript{3}}
 \date{}
 
 \maketitle
@@ -73,29 +81,17 @@
 
 
 
-\subsection*{ Running title: A mechanistic model to compare the importance of interrelated population measures}
 
-\subsection*{ Word count:} 4365
+\subsection*{Word count:} 4365
 
 
-\subsection*{ Addresses:\\}
-1 The Big Data Institute, University of Oxford
-2 Department of Statistical Science, University College London, Gower Street, London, WC1E 6BT, UK\\ 
-3 Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, UK\\ 
+\subsection*{Addresses:}{\ }\\
+1. The Big Data Institute, University of Oxford\\
+2. Department of Statistical Science, University College London, Gower Street, London, WC1E 6BT, UK\\ 
+3. Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, UK\\ 
 
-\subsection*{ Corresponding authors:\\}
-
-\noindent 
-Tim C.D. Lucas,\\
-The Big Data Institute, \\
-The Peter Medawar Building,\\
-University of Oxford,\\
-South Parks Road,\\
-OX1 3SY, UK\\
-timcdlucas@gmail.com\\
-
-\subsection*{Keywords} %max keywords/phrase 3--6 - current 3
-Multipathogen competition, zoonotic disease, metapopulation, epidemiology, bat pathogens, emerging infectious disease
+\subsection*{\textsuperscript{$\ast$}Corresponding authors:}
+Tim C.D. Lucas
 
 
 
@@ -106,6 +102,7 @@ Multipathogen competition, zoonotic disease, metapopulation, epidemiology, bat p
 ####################################
 ### Important simulation options ###
 ####################################
+
 
 # Compilation options
 # Run simulations? This will take many hours
@@ -186,6 +183,9 @@ We found that increased population size increased the chance that a new pathogen
 Furthermore, increased group size increased the probability of invasion more than the number of groups.
 This study helps clarify the inter-relationships between a number of population-level factors affecting pathogen richness. 
 
+\subsection*{Keywords} %max keywords/phrase 3--6 - current 3
+Multipathogen competition, zoonotic disease, metapopulations, epidemiology, bat pathogens, emerging infectious disease
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -197,7 +197,7 @@ This study helps clarify the inter-relationships between a number of population-
 
 
 
-\tmpsection{General Intro}
+%\tmpsection{General Intro}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A basic introduction to the field,
 % comprehensible to a scientist in any discipline.
@@ -212,14 +212,14 @@ However, the relative importance of these factors in controlling pathogen richne
 
 
 
-\tmpsection{Specific Intro}
+%\tmpsection{Specific Intro}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % more detailed background}
 % comprehensible to scientists in related disciplines.
 
 
 
-\tmpsection{Density/size/structure in comparative research}
+%\tmpsection{Density/size/structure in comparative research}
 With the increase of novel zoonotic pathogens \cite{jones2008global} much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity, kamiya2014determines, luis2013comparison}.
 Many comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}.
 However, factors related to host population biology are also expected to affect disease dynamics and therefore affect pathogen richness.
@@ -311,7 +311,7 @@ We found that population size has a much stronger affect on the invasion of a ne
   TotalTime <- 75
   
   # Sims per parameter set.
-  each <- 100
+  each <- 1
   
   # How often should the population be sampled. Only sampled populations are saved.
   sample <- 1000
@@ -490,10 +490,10 @@ colonyNetTitle <- 'Relationship between range size and metapopulation network st
 colonyNetCapt <- '
 The relationship between range size and metapopulation network structure.
 Colonies are shown by circles.
-Colonies that are close enough for animals to disperse between (i.e.\  within 100 km of each other) are joined by a line.
+Colonies that are close enough for animals to disperse between (i.e.\\  within 100 km of each other) are joined by a line.
 Colonies are placed randomly in spaces of various sizes (grey dashed lines).
-A and C) the default range size (10000 km\textsuperscript{2}).
-B and D) the largest range size (40000 km\textsuperscript{2}).
+A and C) the default range size (10000 km\\textsuperscript{2}).
+B and D) the largest range size (40000 km\\textsuperscript{2}).
 A and B) the smallest number of colonies (five).
 C and D) the default number of colonies (20).
 The mean number of connections per subpopulation, $\\bar{k}$, is shown for each metapopulation.
@@ -624,7 +624,7 @@ All simulations were run under all three transmission rates.
 
 In each simulation the host population was seeded with 20 individuals infected with Pathogen 1 in each colony. 
 Pathogen 1 was then allowed to spread and reach equilibrium. 
-After \rinline{invadeT} events, five hosts individuals infected with Pathogen 2 were added to one randomly selected colony. 
+After \rinline{invadeT} events, five host individuals infected with Pathogen 2 were added to one randomly selected colony. 
 The simulation was then run until a further \rinline{TotalTime} years had elapsed.
 The invasion of Pathogen 2 was considered successful if any individuals infected with Pathogen 2 remained at the end of the simulation.
 
@@ -854,7 +854,7 @@ The population parameters that were directly varied were colony size, the number
 In each case these parameters were assigned their default value multiplied by 0.25, 0.5, 1, 2 and 4.
 The default colony size was 400, the default number of colonies was 20 and the default range size was 10000 km\textsuperscript{2}.
 
-\subsubsection{Population size and host density}
+
 In the first set of simulations, host density was varied by keeping population constant while varying range size.
 Colony size was kept at a constant value of 400 while the number of colonies was fixed at 20 giving a population size of 8000.
 The values of range size used were 40000, 20000, 10000, 5000 and \rinline{dep3[5]} km\textsuperscript{2} which gave density values of \rinline{depDens[-5]} and \rinline{depDens[5]} animals per km\textsuperscript{2}.
@@ -870,7 +870,6 @@ The numbers of colonies used were 5, 10, 20, 40 and 80 while range size was set 
 Again, this gave population size values of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
 
 
-\subsubsection{Colony size and the number of colonies}
 
 To compare colony size and the number of colonies, only the second and third set of simulations above were used.
 However, colony size and the number of colonies were directly used as independent variables instead of using the derived values for host population size or density.
@@ -936,7 +935,7 @@ densPreds <- rbind(dens1Model, dens2Model) %>%
 valueChangeMeansCapt <- '
 Comparison of the effect of colony size, number of colonies and host density on probability of invasion.
 The $x$-axis shows the change ($\\times$0.25, 0.5, 1, 2 and $4$) in the each of these factors  relative to the default value.
-Default values are: colony number = 20, colony size = 400 and density = 0.8 animals per km\textsuperscript{2}.
+Default values are: colony number = 20, colony size = 400 and density = 0.8 animals per km\\textsuperscript{2}.
 Red lines: population size is altered by changing colony number.
 Blue lines: population size is altered by changing colony size.
 Yellow lines: population density is altered by changing range size.
@@ -1186,7 +1185,7 @@ Therefore the simulations support the hypothesis that colony size is the more im
 
 
 \begin{table}
-
+\captionsetup{width=0.9\textwidth}
 \caption[Regression results]{
 Regression results comparing effects of colony size, colony number and density.
 Coefficients are from multiple logistic regressions with invasion as the dependent variable and all independent variables being scaled and centred.
@@ -1226,7 +1225,7 @@ $\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\ \emph{CI}) & $p$\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\tmpsection{Restate results}
+%\tmpsection{Restate results}
 
 Overall, my results suggest that population size promotes pathogen richness significantly more than host density in the context of metapopulations or group living.
 Furthermore, the results suggest that the most important component of population size is colony size; a large population made up of large colonies rather than many, small colonies promotes pathogen invasion to the greatest degree.
@@ -1236,7 +1235,7 @@ All else being equal, increasing range size (with density remaining constant) wi
 Furthermore, social species that live in large groups are likely to harbour more pathogen species, even if 
 the larger groups require more space and therefore dispersal between groups is reduced.
 
-\tmpsection{Why are these results like that? What do they mean?}
+%\tmpsection{Why are these results like that? What do they mean?}
 
 The results suggest that, for related, strongly competing strains, the factor that most strongly allows new pathogens to invade is the number of susceptible individuals in the local group.
 As long as there are enough susceptible individuals that the new pathogen species does not go extinct during the stochastic, early stages of the epidemic, the new pathogen will persist.
@@ -1298,7 +1297,7 @@ This suggests that the mechanism studied here --- invasion of recently evolved p
 
 
 
-\tmpsection{Further correlations between factors}
+%\tmpsection{Further correlations between factors}
 
 We used the simple relationships between demographic factors --- $d = N / a$ for example --- to illustrate that these are tightly linked.
 In order to isolate the effects of these factors we assumed that there are no further correlations between factors; to examine density without altering population size, we fixed population size and manipulated range size.
@@ -1318,17 +1317,26 @@ Furthermore, species with large groups are likely to harbour more pathogens than
 
 
 \section*{Data accessibility}
-All code and simulation output data is available on GitHub %to do
+\sloppy
+The implementation of the model is available as an R package on GitHub \cite{metapopepi}. This can be found at \href{https://github.com/timcdlucas/MetapopEpi}{https://github.com/timcdlucas/MetapopEpi}.
+All code and simulation output data is available on GitHub at \href{https://github.com/timcdlucas/Abundance-Density-Manuscript}{https://github.com/timcdlucas/Abundance-Density-Manuscript}.
+\fussy
 
 
 \section*{Competing interests}
-We have no competing interests
+We have no competing interests.
 
 
 \section*{Author's contributions}
 
+TCDL wrote the simulations and performed the analysis.
+TCDL, HMH and KEJ all helped design the study.
+TCDL drafted the manuscript
+TCDL, HMH and KEJ all edited the manuscript and gave final approval for publication.
 
 \section*{Funding}
+This study was funded through a CoMPLEX PhD studentship at University College London supported by BBSRC and EPSRC (TCDL) and The Darwin Initiative (Awards 15003, 161333, EIDPR075), NERC (NE/H525003/1), and The Leverhulme Trust (Philip Leverhulme Prize) for KEJ.
+
 
 \small
 \printbibliography 

@@ -21,6 +21,10 @@
 
 
 
+% ------------------------------------------ %
+%       References preamble                  %                  
+% ------------------------------------------ %
+
 \usepackage[
   backend=biber, 
   bibencoding=utf8, 
@@ -28,19 +32,30 @@
 	uniquename=false, 
   uniquelist=false, %
 	style=numeric-comp, 
+  sorting=none,
   firstinits=true, 
 	maxcitenames=2, 
   terseinits=true,
   maxbibnames=10
 ]{biblatex}
-%\renewcommand{\cite}[1]{\footcite{#1}}
+
 \renewcommand{\cite}[1]{\parencite{#1}}
 
 \renewcommand*{\multicitedelim}{\addcomma}
 
+% no "In: "
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
+
 
 \addbibresource{epilit.bib}
 % This has to go below fontenc for some reason
+
+
+% ------------------------------------------ %
+%       End References preamble              %                  
+% ------------------------------------------ %
+
 
 
 \usepackage{booktabs}
@@ -397,7 +412,7 @@ transMeansCapt <- '
 Comparison of the effect of host population size on probability of invasion when population size is altered by changing colony size or colony number.
 Relationships are shown separately for each transmission value, $\\beta$.
 It can be seen that changes in colony size give a much greater increase in invasion probability than changes in colony number.
-Note that this is the same data as Figure~\\ref{fig:plotValueChangeMeans} but with the $x$-axis scaled by population size, rather than relative parameter change.
+Note that this is the same data as Figure~3 in the main manuscript but with the $x$-axis scaled by population size, rather than relative parameter change.
 '
 
 transMeansTitle <- 'Comparison of the probability of the affect of colony size and number of colonies on probability of invasion'
@@ -485,6 +500,11 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
 
 %%end.rcode
 
+
+
+\clearpage
+\small
+\printbibliography 
 
 \end{document}
 
