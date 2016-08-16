@@ -90,8 +90,7 @@ fullSim1 <- function(x){
   d$pop <- p$parameters['meanColonySize'] * p$parameters['nColonies']
   d$area <- p$parameters['space']^2
   d$dens <- d$pop / d$area
-  d$longenough <- sum(pop$sampleWaiting) < invadeTime + time
-
+  d$longenough <- sum(p$sampleWaiting) > d$invadeTime + TotalTime
   #d$path2 <- sum(p$sample[c(2, 4), , dim(p$sample)[3]])
 
   d$invadeTime <- cumsum(p$sampleWaiting)[invadeT / p$parameters["sample"]]
@@ -106,7 +105,7 @@ fullSim1 <- function(x){
   d$survivalTime <- d$extinctionTime - cumsum(p$sampleWaiting)[(2 + invadeT / sample)]
 
 
-
+  write(paste0("finished ", x, ". Invasion: ", invasion ), runlog.R, append = TRUE)
   message(paste0("finished ", x, ". Invasion: ", invasion ))
   message(paste('trans:', d$transmission, 'nColonies:', d$colonyNumber, 
     'colonySize:', d$colonySize, 'dens:', d$dens, 'pop:', d$pop))
@@ -116,7 +115,7 @@ fullSim1 <- function(x){
 
   
   if(saveData){ 
-    file <- paste0('data/DensSim_', formatC(x, width = 4, flag = '0'), '.RData')
+    file <- paste0('Data/DensSim_', formatC(x, width = 4, flag = '0'), '.RData')
     save(p, file = file)
   }
 
@@ -197,7 +196,7 @@ fullSim2 <- function(x){
   d$pop <- p$parameters['meanColonySize'] * p$parameters['nColonies']
   d$area <- p$parameters['space']^2
   d$dens <- d$pop / d$area
-  d$longenough <- sum(pop$sampleWaiting) < invadeTime + time
+  d$longenough <- sum(p$sampleWaiting) > d$invadeTime + TotalTime
   #d$path2 <- sum(p$sample[c(2, 4), , dim(p$sample)[3]])
 
   d$invadeTime <- cumsum(p$sampleWaiting)[invadeT / p$parameters["sample"]]
@@ -212,7 +211,7 @@ fullSim2 <- function(x){
   d$survivalTime <- d$extinctionTime - cumsum(p$sampleWaiting)[(2 + invadeT / sample)]
 
 
-
+  write(paste0("finished ", x, ". Invasion: ", invasion ), runlog.R, append = TRUE)
   message(paste0("finished ", x, ". Invasion: ", invasion ))
   message(paste('trans:', d$transmission, 'nColonies:', d$colonyNumber, 
     'colonySize:', d$colonySize, 'dens:', d$dens, 'pop:', d$pop))
@@ -222,7 +221,7 @@ fullSim2 <- function(x){
 
   
   if(saveData){ 
-    file <- paste0('data/DensSim_', formatC(x, width = 4, flag = '0'), '.RData')
+    file <- paste0('Data/DensSim_', formatC(x, width = 4, flag = '0'), '.RData')
     save(p, file = file)
   }
 
@@ -305,7 +304,7 @@ fullSim3 <- function(x){
   d$pop <- p$parameters['meanColonySize'] * p$parameters['nColonies']
   d$area <- p$parameters['space']^2
   d$dens <- d$pop / d$area
-  d$longenough <- sum(pop$sampleWaiting) < invadeTime + time
+  d$longenough <- sum(p$sampleWaiting) > d$invadeTime + TotalTime
   #d$path2 <- sum(p$sample[c(2, 4), , dim(p$sample)[3]])
 
   d$invadeTime <- cumsum(p$sampleWaiting)[invadeT / p$parameters["sample"]]
@@ -319,8 +318,7 @@ fullSim3 <- function(x){
   d$totalTime <- sum(p$sampleWaiting)
   d$survivalTime <- d$extinctionTime - cumsum(p$sampleWaiting)[(2 + invadeT / sample)]
 
-
-
+  write(paste0("finished ", x, ". Invasion: ", invasion ), runlog.R, append = TRUE)
   message(paste0("finished ", x, ". Invasion: ", invasion ))
   message(paste('trans:', d$transmission, 'nColonies:', d$colonyNumber, 
     'colonySize:', d$colonySize, 'dens:', d$dens, 'pop:', d$pop))
@@ -330,7 +328,7 @@ fullSim3 <- function(x){
 
   
   if(saveData){ 
-    file <- paste0('data/PopSim_', formatC(x, width = 4, flag = '0'), '.RData')
+    file <- paste0('Data/PopSim_', formatC(x, width = 4, flag = '0'), '.RData')
     save(p, file = file)
   }
 
