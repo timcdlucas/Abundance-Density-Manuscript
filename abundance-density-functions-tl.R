@@ -2,7 +2,7 @@
 # Function like findDisDistr in MetapopEpi
 #   However finds the distr a certain time since invasion
 findDisDistrAtTime <- function(pop, final = 1, invadeT, time = 30){
-    is.count(final)
+    assertthat::is.count(final)
 
     invadeTime <- cumsum(pop$sampleWaiting)[invadeT / pop$parameters["sample"]]
 
@@ -90,10 +90,11 @@ fullSim1 <- function(x){
   d$pop <- p$parameters['meanColonySize'] * p$parameters['nColonies']
   d$area <- p$parameters['space']^2
   d$dens <- d$pop / d$area
+  d$invadeTime <- cumsum(p$sampleWaiting)[invadeT / p$parameters["sample"]]
   d$longenough <- sum(p$sampleWaiting) > d$invadeTime + TotalTime
   #d$path2 <- sum(p$sample[c(2, 4), , dim(p$sample)[3]])
 
-  d$invadeTime <- cumsum(p$sampleWaiting)[invadeT / p$parameters["sample"]]
+
 
   # Time until extinction
   invadePath <- colSums(p$sample[2,  , (2 + invadeT / sample):(which(cumsum(p$sampleWaiting) > TotalTime)[1])]) + 
@@ -105,7 +106,7 @@ fullSim1 <- function(x){
   d$survivalTime <- d$extinctionTime - cumsum(p$sampleWaiting)[(2 + invadeT / sample)]
 
 
-  write(paste0("finished ", x, ". Invasion: ", invasion ), runlog.R, append = TRUE)
+  write(paste0("finished ", x, ". Invasion: ", invasion ), 'runlog.R', append = TRUE)
   message(paste0("finished ", x, ". Invasion: ", invasion ))
   message(paste('trans:', d$transmission, 'nColonies:', d$colonyNumber, 
     'colonySize:', d$colonySize, 'dens:', d$dens, 'pop:', d$pop))
@@ -158,7 +159,7 @@ fullSim2 <- function(x){
                infectDeath = 0,
                maxDistance = 100)
 
-  p$I[1, , 1] <- colonySize[x] - 20
+  p$I[1, , 1] <- colonySize - 20
 
   # Seed endemic pathogen.
   p$I[3, , 1] <- 20
@@ -196,10 +197,11 @@ fullSim2 <- function(x){
   d$pop <- p$parameters['meanColonySize'] * p$parameters['nColonies']
   d$area <- p$parameters['space']^2
   d$dens <- d$pop / d$area
+  d$invadeTime <- cumsum(p$sampleWaiting)[invadeT / p$parameters["sample"]]
   d$longenough <- sum(p$sampleWaiting) > d$invadeTime + TotalTime
   #d$path2 <- sum(p$sample[c(2, 4), , dim(p$sample)[3]])
 
-  d$invadeTime <- cumsum(p$sampleWaiting)[invadeT / p$parameters["sample"]]
+
 
   # Time until extinction
   invadePath <- colSums(p$sample[2,  , (2 + invadeT / sample):(which(cumsum(p$sampleWaiting) > TotalTime)[1])]) + 
@@ -211,7 +213,7 @@ fullSim2 <- function(x){
   d$survivalTime <- d$extinctionTime - cumsum(p$sampleWaiting)[(2 + invadeT / sample)]
 
 
-  write(paste0("finished ", x, ". Invasion: ", invasion ), runlog.R, append = TRUE)
+  write(paste0("finished ", x, ". Invasion: ", invasion ), 'runlog.R', append = TRUE)
   message(paste0("finished ", x, ". Invasion: ", invasion ))
   message(paste('trans:', d$transmission, 'nColonies:', d$colonyNumber, 
     'colonySize:', d$colonySize, 'dens:', d$dens, 'pop:', d$pop))
@@ -266,7 +268,7 @@ fullSim3 <- function(x){
                infectDeath = 0,
                maxDistance = 100)
 
-  p$I[1, , 1] <- colonySize[x] - 20
+  p$I[1, , 1] <- colonySize - 20
 
   # Seed endemic pathogen.
   p$I[3, , 1] <- 20
@@ -304,10 +306,11 @@ fullSim3 <- function(x){
   d$pop <- p$parameters['meanColonySize'] * p$parameters['nColonies']
   d$area <- p$parameters['space']^2
   d$dens <- d$pop / d$area
+  d$invadeTime <- cumsum(p$sampleWaiting)[invadeT / p$parameters["sample"]]
   d$longenough <- sum(p$sampleWaiting) > d$invadeTime + TotalTime
   #d$path2 <- sum(p$sample[c(2, 4), , dim(p$sample)[3]])
 
-  d$invadeTime <- cumsum(p$sampleWaiting)[invadeT / p$parameters["sample"]]
+
 
   # Time until extinction
   invadePath <- colSums(p$sample[2,  , (2 + invadeT / sample):(which(cumsum(p$sampleWaiting) > TotalTime)[1])]) + 
@@ -318,7 +321,7 @@ fullSim3 <- function(x){
   d$totalTime <- sum(p$sampleWaiting)
   d$survivalTime <- d$extinctionTime - cumsum(p$sampleWaiting)[(2 + invadeT / sample)]
 
-  write(paste0("finished ", x, ". Invasion: ", invasion ), runlog.R, append = TRUE)
+  write(paste0("finished ", x, ". Invasion: ", invasion ), 'runlog.R', append = TRUE)
   message(paste0("finished ", x, ". Invasion: ", invasion ))
   message(paste('trans:', d$transmission, 'nColonies:', d$colonyNumber, 
     'colonySize:', d$colonySize, 'dens:', d$dens, 'pop:', d$pop))
