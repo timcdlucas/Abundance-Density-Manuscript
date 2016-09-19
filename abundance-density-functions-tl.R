@@ -7,7 +7,7 @@ findDisDistrAtTime <- function(pop, final = 1, invadeT, time = 30){
     invadeTime <- cumsum(pop$sampleWaiting)[invadeT / pop$parameters["sample"]]
 
     # check that the sim was long enough
-    if(sum(pop$sampleWaiting) < invadeTime + time) stop('Did not run sim for long enough')
+    if(sum(pop$sampleWaiting) < invadeTime + time) warning('Did not run sim for long enough')
     
     # Find which sample index is "time" after invadeTime
     indextoSample <- which(cumsum(pop$sampleWaiting) > (invadeTime + time))[1]

@@ -1,11 +1,10 @@
 %--------------------------------------------------------------------------------------------------------------------------------%
 % Code and text for "A mechanistic model to compare the importance of interrelated population measures: population size, population density and colony size"
 % by Tim CD Lucas, Hilde Herbots and Kate Jones
+% See code chunk "settings" to see important switches (run large simulations or not etc.)
 %
 %---------------------------------------------------------------------------------------------------------------------------------%
 
-
-%As a rough guide, this means that to avoid these charges, articles submitted should be no more than 4000 words and not contain more than 2-4 figures
 
 \documentclass[a4paper,10pt,reqno]{amsart}
 
@@ -65,33 +64,8 @@
 \usepackage[pdftex,hidelinks]{hyperref}
 
 
-
-
-
-
 \begin{document}
 
-
-\title[A comparison of the importance of population measures on pathogen richness]{A mechanistic model to compare the importance of interrelated population measures on pathogen richness: host population size, density and colony size}
-\author{Tim C.D. Lucas\textsuperscript{1$\ast$}, Hilde M. Herbots\textsuperscript{2} and Kate E. Jones\textsuperscript{3}}
-\date{}
-
-\maketitle
-%\tableofcontents
-
-
-
-
-\subsection*{Word count:} 4365
-
-
-\subsection*{Addresses:}{\ }\\
-1. The Big Data Institute, University of Oxford\\
-2. Department of Statistical Science, University College London, Gower Street, London, WC1E 6BT, UK\\ 
-3. Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, UK\\ 
-
-\subsection*{\textsuperscript{$\ast$}Corresponding authors:}
-Tim C.D. Lucas
 
 
 
@@ -106,7 +80,7 @@ Tim C.D. Lucas
 
 # Compilation options
 # Run simulations? This will take many hours
-runAllSims <- FALSE
+runAllSims <- TRUE
 
 # Save raw simulation output
 # This will take ~10GB or so.
@@ -163,9 +137,32 @@ library(palettetown)
 # Get nice fonts in base graphics
 library(showtext)
 
-
+library(assertthat)
 
 %%end.rcode
+
+
+\title[A comparison of the importance of population measures on pathogen richness]{A mechanistic model to compare the importance of interrelated population measures on pathogen richness: host population size, density and colony size}
+\author{Tim C.D. Lucas\textsuperscript{1$\ast$}, Hilde M. Herbots\textsuperscript{2} and Kate E. Jones\textsuperscript{3}}
+\date{}
+
+\maketitle
+%\tableofcontents
+
+
+
+
+\subsection*{Word count:} 4365
+
+
+\subsection*{Addresses:}{\ }\\
+1. The Big Data Institute, University of Oxford\\
+2. Department of Statistical Science, University College London, Gower Street, London, WC1E 6BT, UK\\ 
+3. Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, UK\\ 
+
+\subsection*{\textsuperscript{$\ast$}Corresponding authors:}
+Tim C.D. Lucas
+
 
 
 \section{Abstract}
@@ -303,7 +300,7 @@ We found that population size has a much stronger affect on the invasion of a ne
 
   # These apply to both topo and disp sims. And probably should apply to extinction sims if I include them.
   # How long should the simulation last?
-  nEvent <- 1.2e6
+  nEvent <- 1.4e6
   # When should the invading pathogen be added.
   invadeT <- 6e5
 
@@ -311,7 +308,7 @@ We found that population size has a much stronger affect on the invasion of a ne
   TotalTime <- 75
   
   # Sims per parameter set.
-  each <- 1
+  each <- 100
   
   # How often should the population be sampled. Only sampled populations are saved.
   sample <- 1000
