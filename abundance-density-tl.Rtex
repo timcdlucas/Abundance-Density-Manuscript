@@ -80,7 +80,7 @@
 
 # Compilation options
 # Run simulations? This will take many hours
-runAllSims <- TRUE
+runAllSims <- FALSE
 
 # Save raw simulation output
 # This will take ~10GB or so.
@@ -737,22 +737,26 @@ mtext(side = 3,  line = -0.3, text = 'D)', cex = 1.5, family = 'sans', at = -22)
 
 %%begin.rcode calcMeans
 # Constant density, altered colony size
-
-dens1 <- read.csv('Data/DensSims.csv') %>% dplyr::select(-X)
+# Need to remove rows with errors to auto find classes of columns
+dens1text <- readLines('Data/DensSims.csv')
+rmerrors <- dens1text[!grepl('Error in', dens1text)]
+rmerrors <- rmerrors[nchar(rmerrors) > 3]
+dens1 <- read.csv(text = rmerrors) %>% 
+           dplyr::select(-X) 
 
 dens1Means <- dens1 %>%
-                filter(nExtantDis > 0) %>%
+                dplyr::filter(nExtantDis > 0) %>%
                 group_by(transmission, colonySize, colonyNumber) %>%
                 summarise(success = sum(nExtantDis == 2), sampleSize = n(), pop = mean(as.numeric(as.character(pop))))
 
 
-dens1Means <- dens1Means %>%
+dens1Means <- dens1Means %>% as.data.frame %>%
                 cbind(., vary = 'colonySize', binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
 
 # fit glms to each transmission value
 
 dens1Model <- dens1 %>%
-               filter(nExtantDis > 0) %>%
+               dplyr::filter(nExtantDis > 0) %>%
                mutate(invasion = as.numeric(nExtantDis == 2)) %>%
                group_by(transmission) %>%
                do(fit = glm(invasion ~ pop, data = ., family = 'binomial')) %>%
@@ -761,20 +765,20 @@ dens1Model <- dens1 %>%
 
 # Constant density, altered colony number
 
-dens2 <- read.csv('Data/Dens2Sims.csv') %>% dplyr::select(-X)
+dens2 <- read.csv('Data/Dens2Sims.csv') %>% dplyr::select(-X) %>% as.data.frame
 
 dens2Means <- dens2 %>%
-                filter(nExtantDis > 0) %>%
+                dplyr::filter(nExtantDis > 0) %>%
                 group_by(transmission, colonySize, colonyNumber) %>%
                 summarise(success = sum(nExtantDis == 2), sampleSize = n(), pop = mean(as.numeric(as.character(pop))))
 
 
-dens2Means <- dens2Means %>%
+dens2Means <- dens2Means %>% as.data.frame %>%
                 cbind(., vary = 'colonyNumber',  binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
 
 # Fit glms to each transmission value
 dens2Model <- dens2 %>%
-               filter(nExtantDis > 0) %>%
+               dplyr::filter(nExtantDis > 0) %>%
                mutate(invasion = as.numeric(nExtantDis == 2)) %>%
                group_by(transmission) %>%
                do(fit = glm(invasion ~ pop, data = ., family = 'binomial')) %>%
@@ -782,15 +786,15 @@ dens2Model <- dens2 %>%
 
 # Constant population, altered area
 
-pop <- read.csv('Data/PopSims.csv') %>% dplyr::select(-X)
+pop <- read.csv('Data/PopSims.csv') %>% dplyr::select(-X) %>% as.data.frame
 
 popMeans <- pop %>%
-                filter(nExtantDis > 0) %>%
+                dplyr::filter(nExtantDis > 0) %>%
                 group_by(transmission, area) %>%
                 summarise(success = sum(nExtantDis == 2), sampleSize = n())
 
 
-popMeans <- popMeans %>%
+popMeans <- popMeans %>% as.data.frame %>%
                 cbind(., binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
 
 #popModels <- pop %>%
@@ -801,7 +805,7 @@ popMeans <- popMeans %>%
 
 # fit glms to each transmission value
 popModel <- pop %>%
-               filter(nExtantDis > 0) %>%
+               dplyr::filter(nExtantDis > 0) %>%
                mutate(invasion = as.numeric(nExtantDis == 2)) %>%
                group_by(transmission) %>%
                do(fit = glm(invasion ~ dens, data = ., family = binomial(link = logit))) %>%
