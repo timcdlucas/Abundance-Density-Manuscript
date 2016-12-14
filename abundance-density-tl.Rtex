@@ -156,7 +156,7 @@ library(assertthat)
 
 
 
-\subsection*{Word count:} 4365
+\subsection*{Word count:} 4647
 
 
 \subsection*{Addresses:}{\ }\\
@@ -572,10 +572,11 @@ The full details of the model are given in Supplementary Methods~S1.
 The implementation is available as an \emph{R} package on GitHub \cite{metapopepi}.
 
 
-\subsection{\label{s:determ}}
+\subsection{Determistic model}
+\label{s:determ}
 
-We can get some inition insights into the behaviour of the system by examining a simplified, deterministic model with a single path.
-If we first consider the endemic pathogen (Pathogen 1) we have a typical SIR model with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\Lambda N}{\gamma + \mu}$.
+We can get some initial insights into the behaviour of the system by examining a simplified, deterministic model with a single path.
+If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\Lambda N}{\gamma + \mu}$.
 When Pathogen 2 is introduced, its rate of change can be written as
 \begin{align}
 \frac{dI_2}{dt} = \beta S^\ast I_2 + \alpha\beta I_1^\ast I^2 - (\mu + \gamma)I_2  
@@ -605,13 +606,13 @@ These shorter infections are not studied further here.
 The coinfection adjustment parameter, $\alpha$, was set to 0.1.
 Therefore, an individual with a single infection is 90\% less likely to gain a second infection.
 Given Section \ref{s:determ}, $\alpha = 0$ and $\alpha > 0$ are the two qualitatively different conditions.
-The case where Pathogen 2 does not invade and spread ($\alpha = 0$) is unlikely to be important for pathogen richness so we chose a small, non-zero value for $alpha$.
+The case where Pathogen 2 does not invade and spread ($\alpha = 0$) is unlikely to be important for pathogen richness so we chose a small, non-zero value for $\alpha$.
 
-However, the rationale of the model was that the invading species might be a newly speciated strain of the endemic species.
-Furthermore, the model assumes complete cross-immunity after recovery from infection.
-Therefore cross-immunity to coinfection is likely to be very strong as well.
-Some pairs of closely related bat viruses have been found to coinfect individual bats less than would be expected by chance \cite{anthony2013strategy}.
-This indicates a level of cross-immunity between these pairs of viruses. 
+%However, the rationale of the model was that the invading species might be a newly speciated strain of the endemic species.
+%Furthermore, the model assumes complete cross-immunity after recovery from infection.
+%Therefore cross-immunity to coinfection is likely to be very strong as well.
+%Some pairs of closely related bat viruses have been found to coinfect individual bats less than would be expected by chance \cite{anthony2013strategy}.
+%This indicates a level of cross-immunity between these pairs of viruses. 
 
 \subsection{Population factors}
 
@@ -1203,9 +1204,8 @@ Therefore the simulations support the hypothesis that population size affects in
 To test whether colony size or the number of colonies is the more important component of population size, we compared the regression coefficients, $b_2$ and $b_3$, of the multiple regressions fitted to simulation results (Figure~S2).
 Increasing either colony size or the number of colonies increased the probability of invasion but this effect was much stronger and more statistically significant for colony size (Table~\ref{t:regrCoefs}).
 Therefore the simulations support the hypothesis that colony size is the more important component of population size.
-
-
-
+This is supported by the deterministic model that showed that Pathogen 2 can invade even in a single subpopulation.
+As $R_0$ of the invading pathogen depends on the number of individuals in a subpopulation, invasion probability will increase with colony size.
 
 \begin{table}
 \captionsetup{width=0.9\textwidth}
