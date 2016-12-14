@@ -572,6 +572,18 @@ The full details of the model are given in Supplementary Methods~S1.
 The implementation is available as an \emph{R} package on GitHub \cite{metapopepi}.
 
 
+\subsection{\label{s:determ}}
+
+We can get some inition insights into the behaviour of the system by examining a simplified, deterministic model with a single path.
+If we first consider the endemic pathogen (Pathogen 1) we have a typical SIR model with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\Lambda N}{\gamma + \mu}$.
+When Pathogen 2 is introduced, its rate of change can be written as
+\begin{align}
+\frac{dI_2}{dt} = \beta S^\ast I_2 + \alpha\beta I_1^\ast I^2 - (\mu + \gamma)I_2  
+\end{align}
+which is greater than zero when $\frac{\alpha\Lambda N}{\gamma + \mu} > 0$ or $\alpha R_0 >0$.
+As Pathogen 1 is endemic, and Pathogen 2 is identical to Pathogen 1, this inequality holds as long as $\alpha$ is greater than 0.
+That is, as long as cross-immunity is not complete, Pathogen 2 will always invade in this deterministic model. 
+
 \subsection{Parameter selection}
 \label{s:paramSelect}
 
@@ -590,8 +602,11 @@ It is very difficult to directly estimate infection durations in wild population
 However, other studies have found much shorter infectious periods \cite{amengual2007temporal}.
 These shorter infections are not studied further here. 
 
-The coinfection adjustment parameter, $\alpha$, was set to 0.1 so that an individual infected with one pathogen is 90\% less likely to be infected with another.
-This is a rather arbitrary value.
+The coinfection adjustment parameter, $\alpha$, was set to 0.1.
+Therefore, an individual with a single infection is 90\% less likely to gain a second infection.
+Given Section \ref{s:determ}, $\alpha = 0$ and $\alpha > 0$ are the two qualitatively different conditions.
+The case where Pathogen 2 does not invade and spread ($\alpha = 0$) is unlikely to be important for pathogen richness so we chose a small, non-zero value for $alpha$.
+
 However, the rationale of the model was that the invading species might be a newly speciated strain of the endemic species.
 Furthermore, the model assumes complete cross-immunity after recovery from infection.
 Therefore cross-immunity to coinfection is likely to be very strong as well.
@@ -622,6 +637,7 @@ We used persistence (coded as 1) or extinction (coded as 0) of Pathogen 2 as a b
 We tested whether host population size is more important than host density.
 We then tested whether colony size or the number of colonies is the more important component of population size.
 We used three values of the transmission rate $\beta$,  0.1, 0.2 and 0.3.
+This yields very high values of $R_0$ which was required so that a reasonable number of simulations experienced invasion of Pathogen 2.
 All simulations were run under all three transmission rates.
 
 
