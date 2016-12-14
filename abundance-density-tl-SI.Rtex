@@ -90,6 +90,11 @@ extraFigs <- 'hide'
 opts_chunk$set(cache.path = '.SICache/', fig.path = 'figure/')
 source('misc/KnitrOptions.R')
 
+%%end.rcode
+
+%%begin.rcode libs
+
+
 # ggplot2 theme.
 source('misc/theme_tcdl.R')
 theme_set(theme_grey() + theme_tcdl)
@@ -100,6 +105,7 @@ library(palettetown)
 library(binom)
 library(ggplot2)
 library(dplyr)
+
 %%end.rcode
 
 \section{Supplementary methods}
@@ -264,7 +270,7 @@ popMeans <- pop %>%
                           Invasions = sum(nExtantDis == 2), 
                           Sims = n()) %>%
                 ungroup %>%
-                select(-area, -transmission)
+                dplyr::select(-area, -transmission)
 %%end.rcode
 
 
@@ -422,22 +428,27 @@ transMeansTitle <- 'Comparison of the probability of the affect of colony size a
 
 %%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.9\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.show = TRUE
 
-
-dens1 <- read.csv('Data/DensSims.csv') %>% dplyr::select(-X)
+# Constant density, altered colony size
+# Need to remove rows with errors to auto find classes of columns
+dens1text <- readLines('Data/DensSims.csv')
+rmerrors <- dens1text[!grepl('Error in', dens1text)]
+rmerrors <- rmerrors[nchar(rmerrors) > 3]
+dens1 <- read.csv(text = rmerrors) %>% 
+           dplyr::select(-X) 
 
 dens1Means <- dens1 %>%
-                filter(nExtantDis > 0) %>%
+                dplyr::filter(nExtantDis > 0) %>%
                 group_by(transmission, colonySize, colonyNumber) %>%
                 summarise(success = sum(nExtantDis == 2), sampleSize = n(), pop = mean(as.numeric(as.character(pop))))
 
 
-dens1Means <- dens1Means %>%
+dens1Means <- dens1Means %>% as.data.frame %>%
                 cbind(., vary = 'colonySize', binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
 
 # fit glms to each transmission value
 
 dens1Model <- dens1 %>%
-               filter(nExtantDis > 0) %>%
+               dplyr::filter(nExtantDis > 0) %>%
                mutate(invasion = as.numeric(nExtantDis == 2)) %>%
                group_by(transmission) %>%
                do(fit = glm(invasion ~ pop, data = ., family = 'binomial')) %>%
@@ -446,35 +457,51 @@ dens1Model <- dens1 %>%
 
 # Constant density, altered colony number
 
-dens2 <- read.csv('Data/Dens2Sims.csv') %>% dplyr::select(-X)
+dens2 <- read.csv('Data/Dens2Sims.csv') %>% dplyr::select(-X) %>% as.data.frame
 
 dens2Means <- dens2 %>%
-                filter(nExtantDis > 0) %>%
+                dplyr::filter(nExtantDis > 0) %>%
                 group_by(transmission, colonySize, colonyNumber) %>%
                 summarise(success = sum(nExtantDis == 2), sampleSize = n(), pop = mean(as.numeric(as.character(pop))))
 
 
-dens2Means <- dens2Means %>%
+dens2Means <- dens2Means %>% as.data.frame %>%
                 cbind(., vary = 'colonyNumber',  binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
 
 # Fit glms to each transmission value
 dens2Model <- dens2 %>%
-               filter(nExtantDis > 0) %>%
+               dplyr::filter(nExtantDis > 0) %>%
                mutate(invasion = as.numeric(nExtantDis == 2)) %>%
                group_by(transmission) %>%
                do(fit = glm(invasion ~ pop, data = ., family = 'binomial')) %>%
                mutate(vary = 'colonyNumber')
 
+# Constant population, altered area
+
+pop <- read.csv('Data/PopSims.csv') %>% dplyr::select(-X) %>% as.data.frame
+
+popMeans <- pop %>%
+                dplyr::filter(nExtantDis > 0) %>%
+                group_by(transmission, area) %>%
+                summarise(success = sum(nExtantDis == 2), sampleSize = n())
 
 
-popPred <- seq(min(dens2$pop), max(dens2$pop), length.out = 200)
+popMeans <- popMeans %>% as.data.frame %>%
+                cbind(., binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
 
-densPreds <- rbind(dens1Model, dens2Model) %>%
-               apply(., 1, 
-                 function(m) predict(m['fit'][[1]], newdata = data.frame(pop = popPred), type = 'response') %>%
-                               data.frame(pred = ., pop = popPred, transmission = m$transmission, vary = m$vary)
-               ) %>%
-               do.call(rbind, .)
+#popModels <- pop %>%
+#               mutate(invasion = as.numeric(nExtantDis == 2)) %>%
+#               group_by(transmission) %>%
+#               do(glm(.$invasion ~ .$dens, family = 'binomial') %>% tidy)
+
+
+# fit glms to each transmission value
+popModel <- pop %>%
+               dplyr::filter(nExtantDis > 0) %>%
+               mutate(invasion = as.numeric(nExtantDis == 2)) %>%
+               group_by(transmission) %>%
+               do(fit = glm(invasion ~ dens, data = ., family = binomial(link = logit))) %>%
+               mutate(vary = 'Density')
 
 
 d2 <- rbind(dens1Means, dens2Means)

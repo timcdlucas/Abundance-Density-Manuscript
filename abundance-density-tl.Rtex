@@ -101,14 +101,18 @@ nCores <- 8
 
 opts_chunk$set(cache.path = '.abundanceCache/', fig.path = 'figure/')
 
-source('misc/theme_tcdl.R')
 source('misc/KnitrOptions.R')
-theme_set(theme_grey() + theme_pub)
-
 
 
 %%end.rcode
 
+
+%%begin.rcode ggplot
+source('misc/theme_tcdl.R')
+theme_set(theme_grey() + theme_pub)
+
+
+%%end.rcode
 
 %%begin.rcode libs, cache = FALSE, result = FALSE
 
@@ -527,7 +531,9 @@ The mean number of connections per subpopulation, $\\bar{k}$, is shown for each 
 \subsection{Two pathogen SIR model}
 
 
-We developed a multipathogen, SIR compartment model with individuals being classed as susceptible, infected or recovered with immunity (Figure~\ref{f:sir}).
+We developed a multipathogen, SIR compartment model.
+We examined the ability of a second pathogen to invade into a population given the presence of an identical, endemic pathogen.
+Individuals were classed as susceptible, infected or recovered with immunity (Figure~\ref{f:sir}).
 Susceptible individuals are counted in class $S$ (see Table~S1 for a list of symbols and values used).
 There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen 1, Pathogen 2 or both respectively.
 Recovered individuals, $R$, are immune to both pathogens, even if they have only been infected with one (i.e.\ there is complete cross-immunity).
