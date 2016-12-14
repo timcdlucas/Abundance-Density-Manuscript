@@ -1350,12 +1350,16 @@ All code and simulation output data is available on GitHub at \href{https://gith
 We have no competing interests.
 
 
+
 \section*{Author's contributions}
 
 TCDL wrote the simulations and performed the analysis.
 TCDL, HMH and KEJ all helped design the study.
 TCDL drafted the manuscript
 TCDL, HMH and KEJ all edited the manuscript and gave final approval for publication.
+
+\section*{Acknlowledgements}
+We thank Andy Fenton and David Murrel for comments on the manuscript and help with the analytical model.
 
 \section*{Funding}
 This study was funded through a CoMPLEX PhD studentship at University College London supported by BBSRC and EPSRC (TCDL) and The Darwin Initiative (Awards 15003, 161333, EIDPR075), NERC (NE/H525003/1), and The Leverhulme Trust (Philip Leverhulme Prize) for KEJ.
