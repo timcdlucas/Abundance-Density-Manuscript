@@ -550,9 +550,11 @@ The implementation is available as an \emph{R} package on GitHub \cite{metapopep
 We can get some initial insights into the behaviour of the system by examining a simplified, deterministic model with a single path.
 If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\Lambda N}{\gamma + \mu}$.
 When Pathogen 2 is introduced, its rate of change can be written as
+
 \begin{align}
 \frac{dI_2}{dt} = \beta S^\ast I_2 + \alpha\beta I_1^\ast I^2 - (\mu + \gamma)I_2  
 \end{align}
+
 which is greater than zero when $\frac{\alpha\Lambda N}{\gamma + \mu} > 0$ or $\alpha R_0 >0$.
 As Pathogen 1 is endemic, and Pathogen 2 is identical to Pathogen 1, this inequality holds as long as $\alpha$ is greater than 0.
 That is, as long as cross-immunity is not complete, Pathogen 2 will always invade in this deterministic model. 
@@ -883,9 +885,11 @@ Firstly we tested the hypothesis that an increase in host population size create
 Secondly, we tested the hypothesis that an increase in colony size creates a stronger increase in invasion probability than a proportionally equal increase in number of colonies.
 To statistically test these hypotheses we combined the results from different simulations and fitted multiple logistic regressions, centering and scaling the independent variables.
 Specifically, we fitted the model 
+
 \begin{align}
   \text{Invasion} = b_1 d + b_2 n + b_3 m + c + \epsilon
 \end{align}
+
 where $d, n$ and $m$ are density, colony size and number of colonies respectively and $b_i$ are the regression coefficients. 
 $c$ is a fitted intercept and $\epsilon$ is a binomially distributed error term.
 To test the first hypothesis we compared the size (and 95\% confidence intervals) of $b_1$ to $b_2$ and $b_3$.
