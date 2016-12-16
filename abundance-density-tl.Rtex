@@ -548,13 +548,13 @@ The implementation is available as an \emph{R} package on GitHub \cite{metapopep
 \label{s:determ}
 
 We can get some initial insights into the behaviour of the system by examining a simplified, deterministic model with a single path.
-If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\Lambda N}{\gamma + \mu}$.
+If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\beta \Lambda N}{\gamma + \mu}$.
 When Pathogen 2 is introduced, its rate of change can be written as
 
 \begin{align}
 \frac{dI_2}{dt} = \beta S^\ast I_2 + \alpha\beta I_1^\ast I^2 - (\mu + \gamma)I_2  
 \end{align}
-which is greater than zero when $\frac{\alpha\Lambda N}{\gamma + \mu} > 0$ or $\alpha R_0 >0$ (with $R_0$ being the basic repdroduction number and is equal for the two identical pathogens).
+which is greater than zero when $\frac{\alpha\beta\Lambda N}{\gamma + \mu} > 0$ or $\alpha R_0 >0$ (with $R_0$ being the basic repdroduction number and is equal for the two identical pathogens).
 As $R_0$ is always greater than zero, this inequality holds as long as $\alpha$ is greater than zero.
 That is, as long as cross-immunity is not complete, Pathogen 2 will always invade in this deterministic model. 
 
@@ -567,25 +567,18 @@ The birth rate $\Lambda$ was set to be equal to $\mu$.
 This yields a population that does not systematically increase or decrease.
 However, the size of each colony changes as a random walk.
 Given the length of the simulations, colonies were very unlikely to go extinct.
-The starting size of each colony was set to 3000.
-This is appropriate for many bat species \cite{jones2009pantheria}, especially the large, frugivorous \emph{Pteropodidae} that have been particularly associated with recent zoonotic diseases.
-
 The recovery rate $\gamma$ was set to one, giving an average infection duration of one year. 
 This is therefore a long lasting infection but not a chronic infection. 
 It is very difficult to directly estimate infection durations in wild populations but it seems that these infections might sometimes be long lasting \cite{peel2012henipavirus, plowright2015ecological}.
 However, other studies have found much shorter infectious periods \cite{amengual2007temporal}.
 These shorter infections are not studied further here. 
-
 The coinfection adjustment parameter, $\alpha$, was set to 0.1.
 Therefore, an individual with a single infection is 90\% less likely to gain a second infection.
 Given Section \ref{s:determ}, $\alpha = 0$ and $\alpha > 0$ are the two qualitatively different conditions.
 The case where Pathogen 2 does not invade and spread ($\alpha = 0$) is unlikely to be important for pathogen richness so we chose a small, non-zero value for $\alpha$.
+Finally, the dispersal rate $\xi$ was set to 0.01.
+This relates to 17\% of individuals dispersing in their lifetime.
 
-%However, the rationale of the model was that the invading species might be a newly speciated strain of the endemic species.
-%Furthermore, the model assumes complete cross-immunity after recovery from infection.
-%Therefore cross-immunity to coinfection is likely to be very strong as well.
-%Some pairs of closely related bat viruses have been found to coinfect individual bats less than would be expected by chance \cite{anthony2013strategy}.
-%This indicates a level of cross-immunity between these pairs of viruses. 
 
 \subsection{Population factors}
 
@@ -1156,6 +1149,7 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 
 At the default parameter settings, the probability of invasion and persistence of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S2--4).
 These proportions significantly increased with transmission rate (GLM: $b$ = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
+This contradicts the deterministic model.
 
 In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
 The number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: $b$ = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
@@ -1276,9 +1270,7 @@ This suggests that the mechanism studied here --- invasion of recently evolved p
 %\subsection{Assumptions and limitation}
 
 %As a comparison is being made between the effects of range size and population size, the exact specifications of how the metapopulation is affected by range size is important.
-%We conducted this study at one rate of dispersal, 0.01 dispersals per individual per year.
-%In practice this relates to only 17\% of individuals dispersing in their lifetime.
-%This low rate of dispersal is expected to exaggerate the effect of range size; at high rates of dispersal the population is essentially well-mixed, despite the metapopulation.
+
 %
 %Furthermore, there is evidence that as groups become bigger, the within-group structure increases \cite{nunn2015infectious}.
 %This has not been modelled here; instead the subpopulations are assumed to be fully mixed regardless of size.
