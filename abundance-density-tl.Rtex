@@ -14,8 +14,10 @@
 % line numbers
 \usepackage[running, displaymath, mathlines]{lineno} % running vs pagewise 
 \linenumbers
+\linespread{1.5}
 
-\renewcommand\thesubsection{(\alph{subsection})}
+
+\renewcommand\thesubsection{\textbf{(\alph{subsection})}}
 
 
 % ------------------------------------------ %
@@ -154,7 +156,7 @@ library(assertthat)
 %%end.rcode
 
 
-\title[A comparison of the importance of population measures on pathogen richness]{A mechanistic model to compare the importance of interrelated population measures on pathogen richness: host population size, density and colony size}
+\title[Lucas et al. A comparison of the importance of population measures on pathogen richness]{A mechanistic model to compare the importance of interrelated population measures on pathogen richness: host population size, density and colony size}
 \author[Tim C.D. Lucas, Hilde M. Wilkinson-Herbots and Kate E. Jones]{Tim C.D. Lucas\textsuperscript{1$\ast\dagger$}, Hilde M. Wilkinson-Herbots\textsuperscript{2} and Kate E. Jones\textsuperscript{3$\ast$}}
 \date{}
 
@@ -162,9 +164,8 @@ library(assertthat)
 %\tableofcontents
 
 
+%todo number at bottom
 
-
-\subsection*{Word count:} 4647
 
 
 %\subsection*{Addresses:}{\ }\\
@@ -172,21 +173,20 @@ library(assertthat)
 \textsuperscript{2}Department of Statistical Science, University College London, Gower Street, London, WC1E 6BT, United Kingdom\\ 
 \textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1 4RY, United Kingdon. 0000-0001-5231-3293\\ 
 $^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, United Kingdom. 
+\vspace{3mm}
+\noindent \textsuperscript{$\ast$}Corresponding authors: Tim C.D. Lucas: timcdlucas@gmail.com, Kate E. Jones: kate.e.jones@ucl.ac.uk
 
-\noindent \textsuperscript{$\ast$}Corresponding authors:\\
-Tim C.D. Lucas: timcdlucas@gmail.com\\
-Kate E. Jones: kate.e.jones@ucl.ac.uk
+\clearpage
 
-
-
-
+\subsection*{Word count:} 4647
+\subsection*{Running header:} A comparison of the importance of population measures on pathogen richness
 
 \section*{Abstract}
 
 Zoonotic diseases are an increasingly important source of human infectious diseases, and reservoir host pathogen richness is a critical driver of spill-over risk. 
 Host population-level traits such as population size and density, geographic range size and population structure have all been shown to be important determinants of host pathogen richness. 
 However, empirically identifying the independent influences of these traits has proven difficult as many of these traits directly depend on each other. 
-Here we develop a mechanistic metapopulation susceptible-infected-recovered model to identify the independent life history trait influences on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen, using a case study of bats; a highly social mammalian order. 
+Here we develop a mechanistic metapopulation susceptible-infected-recovered model to identify the independent population-level trait influences on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen, using a case study of bats; a highly social mammalian order. 
 We show that larger population and group sizes had a greater influence on the chances of pathogen invasion and persistence than increased population densities (and therefore decreased population structure) and number of groups. 
 As anthropogenic change affects these traits to different extents, this increased understanding of how traits independently determine pathogen richness will aid in predicting future zoonotic spill-over risk.
 
@@ -218,7 +218,7 @@ Pathogen competition, zoonotic disease, metapopulations, host pathogen richness,
 % Sometimes the definitions are difficults
 % While density been studied, population abundance has not despite being a fundementall characteristic.
 
-
+% todo Don't repeat abstract first line.
 Zoonotic diseases are an increasingly important source of human infectious diseases \cite{jones2008global, woolhouse2006host, taylor2001risk}. 
 The chance that a new zoonotic disease will come from a particular reservoir-host depends on a number of factors including the number of pathogen species it carries \cite{wolfe2000deforestation}. 
 Much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity, kamiya2014determines, luis2013comparison}. 
@@ -490,8 +490,8 @@ The mean number of connections per subpopulation, $\\bar{k}$, is shown for each 
   \caption[Schematic of the SIR model used]{
   Schematic of the SIR model used. 
   Individuals are in one of five classes, susceptible (orange, $S$), infected with Pathogen 1, Pathogen 2 or both (blue, $I_1, I_2, I_{12}$) or recovered and immune from further infection (green, $R$).
-  Transitions between epidemiological classes occur as indicated by solid arrows.
-  Vital dynamics (births and deaths) are indicated by dashed arrows.
+  Transitions between epidemiological classes occur as indicated by solid arrows and depend on transmission rate ($\beta$) and coinfection adjustment factor ($\alpha$).
+  Births ($\Lambda$)  and deaths ($\mu$) are indicated by dashed arrows.
   Parameter symbols for transitions are indicated.
   Note that individuals in $I_{12}$ move into $R$, not back to $I_1$ or $I_2$. 
   That is, recovery from one pathogen causes immediate recovery from the other pathogen.
@@ -499,26 +499,30 @@ The mean number of connections per subpopulation, $\\bar{k}$, is shown for each 
 \label{f:sir}
 \end{figure}
 
+% todo Capital I is hard to see.
+% Dashes are hard to see.
+% Table S1 first in SI.
+% First page of SI should be same as first page of 
 
 \subsection{Two pathogen SIR model}
 
 
-We developed a multipathogen, SIR compartment model.
-We examined the ability of a second pathogen to invade into a population given the presence of an identical, endemic pathogen.
+We developed a multipathogen, susceptible-infected-recovered (SIR) compartment model.
+We examined the ability of a second pathogen to invade and persist into a population given the presence of an identical, endemic pathogen.
 Individuals were classed as susceptible, infected or recovered with immunity (Figure~\ref{f:sir}).
 Susceptible individuals are counted in class $S$ (see Table~S1 for a list of symbols and values used).
-There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen 1, Pathogen 2 or both respectively.
+There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen 1, Pathogen 2 or both, respectively.
 Recovered individuals, $R$, are immune to both pathogens, even if they have only been infected with one (i.e.\ there is complete cross-immunity).
 Furthermore, recovery from one pathogen moves an individual straight into the recovered class, even if the individual is infected with both pathogens (Figure~\ref{f:sir}).
 This modelling choice allows the model to be easily expanded to include more than two pathogens, though this study is restricted to two pathogens.
-The assumption of immediate recovery from all other diseases is likely to be reasonable.
+The assumption of immediate recovery from all other diseases is likely to be reasonable. %todo refs here?
 Any up-regulation of innate immune response will affect both pathogens equally.
 Furthermore, as the pathogens are identical, any acquired immunity would also affect both pathogens equally.
 The coinfection rate (the rate at which an infected individual is infected with a second pathogen) is adjusted compared to the infection rate by a factor $\alpha$.
 
 
 
-In the application of long term existence of pathogens it is necessary to include vital dynamics (births and deaths) as the SIR model without vital dynamics has no endemic state.
+It is necessary to include births and deaths as the SIR model without vital dynamics has no endemic state.
 Birth and death rates ($\Lambda$ and $\mu$) are set as being equal meaning the population does not systematically increase or decrease.
 New born individuals enter the susceptible class.
 Infection and coinfection were assumed to cause no extra mortality as for a number of viruses, bats show no clinical signs of infection \cite{halpin2011pteropid, deThoisy2016bioecological}.
@@ -544,7 +548,7 @@ The full details of the model are given in Supplementary Methods~S1.
 The implementation is available as an \emph{R} package on GitHub \cite{metapopepi}.
 
 
-\subsection{Determistic model}
+\subsection{Deterministic model}
 \label{s:determ}
 
 We can get some initial insights into the behaviour of the system by examining a simplified, deterministic model with a single path.
@@ -881,7 +885,7 @@ Specifically, we fitted the model
 \begin{align}
   \text{Invasion} = b_1 d + b_2 n + b_3 m + c + \epsilon
 \end{align}
-where $d, n$ and $m$ are density, colony size and number of colonies respectively and $b_i$ are the regression coefficients. 
+where $d, n$ and $m$ are density, colony size and number of colonies, respectively, and $b_i$ are the regression coefficients. 
 $c$ is a fitted intercept and $\epsilon$ is a binomially distributed error term.
 To test the first hypothesis we compared the size (and 95\% confidence intervals) of $b_1$ to $b_2$ and $b_3$.
 To test the second hypothesis we compared $b_2$ to $b_3$.
@@ -1237,7 +1241,7 @@ In these simulations, increasing density without increasing population size was 
 This, in turn, increased the pool of susceptibles that were within one dispersal of the invading pathogen.
 However, again, this effect was very weak compared to the strong changes in local disease dynamics caused by increasing colony size.
 
-
+% todo Only two pathogens
 
 \subsection{Global change}
 
