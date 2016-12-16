@@ -223,29 +223,9 @@ Zoonotic diseases are an increasingly important source of human infectious disea
 The chance that a new zoonotic disease will come from a particular reservoir-host depends on a number of factors including the number of pathogen species it carries \cite{wolfe2000deforestation}. 
 Much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity, kamiya2014determines, luis2013comparison}. 
 Many empirical comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}, but factors related to reservoir-host population biology are also expected to affect disease dynamics and therefore affect pathogen richness. 
-Host density is commonly included in empirical comparative studies of pathogen richness across mammals and is found to correlate with high pathogen richness \cite{morand1998density, kamiya2014determines, lindenfors2007parasite, nunn2003comparative, arneberg2002host}. 
-In contrast, host population size has rarely been directly studied as a predictor of pathogen richness. 
-Studies also often test for correlations between pathogen richness and range size \cite{lindenfors2007parasite, nunn2003comparative, turmelle2009correlates, huang2015parasite, kamiya2014determines}, where species with larger geographic range sizes have higher pathogen richness \cite{kamiya2014determines}. 
-While host population structure can be difficult to define and measure, a number of studies have found that increased population structure is associated with increased pathogen richness \cite{maganga2014bat, turmelle2009correlates}. 
-Finally, many studies have tested for correlations between pathogen richness and group size, though results are equivocal \cite{vitone2004body, gay2014parasite, ezenwa2006host, rifkin2012animals, nunn2003comparative}.
-
-
-
-%Zoonotic diseases are an increasingly important source of human infectious diseases \cite{jones2008global, woolhouse2006host, taylor2001risk}.
-%The chance that a new zoonotic disease will come from a particular host reservoir depends on a number of factors including the number of pathogen species it carries \cite{wolfe2000deforestation}.
-%It is well known that population-level factors such as host density, range size and population structure have an important role in controlling pathogen dynamics \cite{anderson1979population, may1979population, colizza2007invasion, may2001infection}.
-%With the increase of novel zoonotic pathogens \cite{jones2008global} much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity, kamiya2014determines, luis2013comparison}.
-%Many comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}.
-%However, factors related to host population biology are also expected to affect disease dynamics and therefore affect pathogen richness.
-%However, the relative importance of these factors in controlling pathogen richness is largely unknown.
-%Host density is commonly included in comparative studies and seems to promote high pathogen richness \cite{morand1998density, kamiya2014determines, lindenfors2007parasite, nunn2003comparative, arneberg2002host}.
-%In contrast, host population size has rarely been directly studied as a predictor of pathogen richness.
-%Studies also often test for correlations between pathogen richness and range size \cite{lindenfors2007parasite, nunn2003comparative, turmelle2009correlates, huang2015parasite, kamiya2014determines}.
-%Overall it seems that species with larger geographic range sizes have higher pathogen richness \cite{kamiya2014determines}.
-%While host population structure can be difficult to define and measure, a number of studies have found that increased population structure is associated with increased pathogen richness \cite{maganga2014bat, turmelle2009correlates}.
-%Finally, many studies have tested for correlations between pathogen richness and group size, though results are equivocal \cite{vitone2004body, gay2014parasite, ezenwa2006host, rifkin2012animals, nunn2003comparative}.
-
-
+Population-level traits that have already been shown to correlate with pathogen richness include: increased host density \cite{morand1998density, kamiya2014determines, lindenfors2007parasite, nunn2003comparative, arneberg2002host}, increased range size \cite{lindenfors2007parasite, nunn2003comparative, turmelle2009correlates, huang2015parasite, kamiya2014determines} and increased population structure \cite{maganga2014bat, turmelle2009correlates}.
+Other traits such as group size have been well studied but results have been equivocal \cite{vitone2004body, gay2014parasite, ezenwa2006host, rifkin2012animals, nunn2003comparative}.
+However, some important population-level traits, such as population size, have not been included in comparative analyses despite it being the natural way to describe epidemiological populations \cite{begon2002clarification}.
 
 %4. then talk about the limitations of taking a comparative approach 
 
@@ -1254,7 +1234,7 @@ $\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\ \emph{CI}) & $p$\\
 
 %\tmpsection{Restate results}
 
-Overall, my results suggest that population size promotes pathogen richness significantly more than host density in the context of metapopulations or group living.
+Overall, our results suggest that population size promotes pathogen richness significantly more than host density in the context of metapopulations or group living.
 Furthermore, the results suggest that the most important component of population size is colony size; a large population made up of large colonies rather than many, small colonies promotes pathogen invasion to the greatest degree.
 
 These results lead to a number of other conclusions.
@@ -1279,7 +1259,7 @@ However, again, this effect was very weak compared to the strong changes in loca
 
 It is clear that many species are suffering strong population changes due to global change \cite{thomas2004extinction}.
 However these changes might affect range size \cite{thomas2004extinction}, population size \cite{craigie2010large}, population connectivity \cite{wasserman2013population, rivera2015habitat, fonturbel2014forest} or group size \cite{lehmann2010apes, zunino2007habitat, manor2003impact, atwood2006influence} to different extents.
-My results suggest that pathogen communities will respond differently depending on which factors are most strongly affected by global change.
+Our results suggest that pathogen communities will respond differently depending on which factors are most strongly affected by global change.
 In short, species suffering reductions in groups size \cite{lehmann2010apes, zunino2007habitat, manor2003impact, atwood2006influence} are predicted to experience decreases in pathogen richness in the long term and there is some evidence that this process is occurring \cite{altizer2007threatened, turmelle2009correlates}.
 Species that are experiencing increases in group size \cite{lehmann2010apes} would be expected to gain new pathogen species.
 In contrast, species suffering range contractions \cite{thomas2004extinction} and decreases in population size \cite{craigie2010large} are expected to experience smaller changes in pathogen richness.
@@ -1290,9 +1270,9 @@ However, it should be noted that these conclusions apply only to the specific me
 Many comparative studies measure some aspect of a species population size or structure, yet it is rarely discussed how these are related.
 Instead most studies use the data that are available, without considering \emph{a priori} how the explanatory variables are causally related (though statistical correlations between independent variables are usually considered and dealt with using PCA or by removing collinear variables).
 Host density is often measured \cite{morand1998density, lindenfors2007parasite, nunn2003comparative, arneberg2002host} yet density is directly associated with population size.
-My results suggest that it is in fact population size that is important (in the context of social species as studied here).
+Our results suggest that it is in fact population size that is important (in the context of social species as studied here).
 This leads to the suggestion that the density measures in these comparative studies are in fact proxies for population size rather than the true causal factor.
-Similarly, my results suggest that host range size does not promote pathogen richness by the mechanism studied here, yet a number of studies have found evidence of this relationship \cite{kamiya2014determines, nunn2003comparative}.
+Similarly, our results suggest that host range size does not promote pathogen richness by the mechanism studied here, yet a number of studies have found evidence of this relationship \cite{kamiya2014determines, nunn2003comparative}.
 These differences suggest that either the relationship found in comparative studies is in fact due to a correlation with another factor, or that mechanisms other than probability of invasion of new pathogens are important.
 Range size has been suggested to affect pathogen richness by a number of mechanisms such as increasing the number of sympatric species and these other mechanisms should be specifically tested \cite{luis2013comparison}.
 
