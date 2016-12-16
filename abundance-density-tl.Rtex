@@ -13,6 +13,7 @@
 
 % line numbers
 \usepackage[running, displaymath, mathlines]{lineno} % running vs pagewise 
+\linenumbers
 
 
 % ------------------------------------------ %
@@ -167,7 +168,7 @@ library(assertthat)
 \textsuperscript{1}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom. 0000-0003-4694-8107\\
 \textsuperscript{2}Department of Statistical Science, University College London, Gower Street, London, WC1E 6BT, United Kingdom\\ 
 \textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1 4RY, United Kingdon. 0000-0001-5231-3293.\\ 
-\dagger Current address: The Big Data Institute, TODO. 
+$\dagger$ Current address: The Big Data Institute, TODO. 
 
 \subsection*{\textsuperscript{$\ast$}Corresponding authors:}
 Tim C.D. Lucas
