@@ -179,18 +179,13 @@ Kate E. Jones: kate.e.jones@
 
 \section*{Abstract}
 
-The majority of emerging, human diseases are zoonotic.
-The chance that a host species will be the source of a new zoonotic disease increases with the pathogen richness of that host species.
-However, the factors that control pathogen richness are poorly understood.
-Comparative studies have found that host density, range size and population structure are associated with high pathogen richness. 
-Additionally, epidemiological theory suggests that host abundance may influence pathogen richness.
-However, these factors are intrinsically linked.
-For example, host density is defined as population size divided by range size.
-We used metapopulation susceptible-infected-recovered models, based on bat populations, to test whether the ability of a newly evolved pathogen to invade and persist in a population is controlled by host density as opposed to host population size.
-We also tested whether pathogens invade more readily into a population with large groups or many groups.
-We found that increased population size increased the chance that a new pathogen will invade into a population more than host density.
-Furthermore, increased group size increased the probability of invasion more than the number of groups.
-This study helps clarify the inter-relationships between a number of population-level factors affecting pathogen richness. 
+Zoonotic diseases are an increasingly important source of human infectious diseases, and reservoir host pathogen richness is a critical driver of spill-over risk. 
+Host life history traits such as population size and density, geographic range size and population structure have all been shown to be important determinants of host pathogen richness. 
+However, empirically identifying the independent influences of these traits has proven difficult as many of these traits directly depend on each other. 
+Here we develop a mechanistic metapopulation susceptible-infected-recovered model to identify the independent life history trait influences on the ability of a newly evolved pathogen to invade and establish in host populations in the presence of an endemic pathogen, using a case study of bats; a highly social mammalian order. 
+We show that larger population and group sizes had a greater influence on the chances of pathogen invasion and establishment than increased population densities (and therefore decreased population structure) and number of groups. 
+As anthropogenic change affects these traits to different extents, this increased understanding of how traits independently determine pathogen richness will aid in predicting future zoonotic spill-over risk.
+
 
 \subsection*{Keywords} %max keywords/phrase 3--6 - current 3
 Multipathogen competition, zoonotic disease, metapopulations, epidemiology, bat pathogens, emerging infectious disease
