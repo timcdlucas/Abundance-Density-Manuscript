@@ -186,8 +186,8 @@ Kate E. Jones: kate.e.jones@ucl.ac.uk
 Zoonotic diseases are an increasingly important source of human infectious diseases, and reservoir host pathogen richness is a critical driver of spill-over risk. 
 Host population-level traits such as population size and density, geographic range size and population structure have all been shown to be important determinants of host pathogen richness. 
 However, empirically identifying the independent influences of these traits has proven difficult as many of these traits directly depend on each other. 
-Here we develop a mechanistic metapopulation susceptible-infected-recovered model to identify the independent life history trait influences on the ability of a newly evolved pathogen to invade and establish in host populations in the presence of an endemic pathogen, using a case study of bats; a highly social mammalian order. 
-We show that larger population and group sizes had a greater influence on the chances of pathogen invasion and establishment than increased population densities (and therefore decreased population structure) and number of groups. 
+Here we develop a mechanistic metapopulation susceptible-infected-recovered model to identify the independent life history trait influences on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen, using a case study of bats; a highly social mammalian order. 
+We show that larger population and group sizes had a greater influence on the chances of pathogen invasion and persistence than increased population densities (and therefore decreased population structure) and number of groups. 
 As anthropogenic change affects these traits to different extents, this increased understanding of how traits independently determine pathogen richness will aid in predicting future zoonotic spill-over risk.
 
 
@@ -258,7 +258,7 @@ While these studies have examined whether these population-level factors can pro
 %7. what you are going to do that is new (ie tease apart these interdependencies) - using case study on bats (and why this is a good group to ask this particular question on)
 
 
-There is great need for mechanistic models that try to disentangle the interplay between these many factors: host density, population size, range size, population structure, group size and the number of groups.
+There is great need for mechanistic models that try to disentangle the interplay between population-level factors including host density, population size, range size, population structure, group size and the number of groups.
 Here, we have used multipathogen, metapopulation models to individually vary these host population parameters.
 The metapopulations were parameterised to broadly mimic wild bat populations.
 We used bats as a case study as the size of bat groups (colonies) is very variable and bat colonies are often very stable \cite{kerth2011bats, mccracken1981social}.
@@ -1152,7 +1152,7 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 %%%     Results text    %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-At the default parameter settings, the probability of invasion and establishment of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S2--4).
+At the default parameter settings, the probability of invasion and persistence of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S2--4).
 These proportions significantly increased with transmission rate (GLM: $b$ = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
 
 In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
