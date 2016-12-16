@@ -155,7 +155,7 @@ library(assertthat)
 
 
 \title[A comparison of the importance of population measures on pathogen richness]{A mechanistic model to compare the importance of interrelated population measures on pathogen richness: host population size, density and colony size}
-\author{Tim C.D. Lucas\textsuperscript{1$\ast\dagger$}, Hilde M. Wilkinson-Herbots\textsuperscript{2} and Kate E. Jones\textsuperscript{3$\ast$}}
+\author[Tim C.D. Lucas, Hilde M. Wilkinson-Herbots and Kate E. Jones]{Tim C.D. Lucas\textsuperscript{1$\ast\dagger$}, Hilde M. Wilkinson-Herbots\textsuperscript{2} and Kate E. Jones\textsuperscript{3$\ast$}}
 \date{}
 
 \maketitle
@@ -170,10 +170,10 @@ library(assertthat)
 %\subsection*{Addresses:}{\ }\\
 \noindent\textsuperscript{1}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom. 0000-0003-4694-8107\\
 \textsuperscript{2}Department of Statistical Science, University College London, Gower Street, London, WC1E 6BT, United Kingdom\\ 
-\textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1 4RY, United Kingdon. 0000-0001-5231-3293.\\ 
-$\dagger$ Current address:  Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, United Kingdom. 
+\textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1 4RY, United Kingdon. 0000-0001-5231-3293\\ 
+$^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, United Kingdom. 
 
-\subsection*{\textsuperscript{$\ast$}Corresponding authors:\\}
+\noindent \textsuperscript{$\ast$}Corresponding authors:\\
 Tim C.D. Lucas: timcdlucas@gmail.com\\
 Kate E. Jones: kate.e.jones@ucl.ac.uk
 
