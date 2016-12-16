@@ -180,7 +180,7 @@ Kate E. Jones: kate.e.jones@
 \section*{Abstract}
 
 Zoonotic diseases are an increasingly important source of human infectious diseases, and reservoir host pathogen richness is a critical driver of spill-over risk. 
-Host life history traits such as population size and density, geographic range size and population structure have all been shown to be important determinants of host pathogen richness. 
+Host population-level traits such as population size and density, geographic range size and population structure have all been shown to be important determinants of host pathogen richness. 
 However, empirically identifying the independent influences of these traits has proven difficult as many of these traits directly depend on each other. 
 Here we develop a mechanistic metapopulation susceptible-infected-recovered model to identify the independent life history trait influences on the ability of a newly evolved pathogen to invade and establish in host populations in the presence of an endemic pathogen, using a case study of bats; a highly social mammalian order. 
 We show that larger population and group sizes had a greater influence on the chances of pathogen invasion and establishment than increased population densities (and therefore decreased population structure) and number of groups. 
@@ -208,75 +208,69 @@ Pathogen competition, zoonotic disease, metapopulations, host pathogen richness,
 
 %1. Zoonotics important - determinants of pathogen richness important
 
-Zoonotic diseases are an increasingly important source of human infectious diseases \cite{jones2008global, woolhouse2006host, taylor2001risk}.
-The chance that a new zoonotic disease will come from a particular host reservoir depends on a number of factors including the number of pathogen species it carries \cite{wolfe2000deforestation}.
-It is well known that population-level factors such as host density, range size and population structure have an important role in controlling pathogen dynamics \cite{anderson1979population, may1979population, colizza2007invasion, may2001infection}.
-However, the relative importance of these factors in controlling pathogen richness is largely unknown.
 
 
+% Pop-level is important as shown by corr studies.
+% Sometimes the definitions are difficults
+% While density been studied, population abundance has not despite being a fundementall characteristic.
 
 
-%\tmpsection{Specific Intro}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% more detailed background}
-% comprehensible to scientists in related disciplines.
-
-
-
-%\tmpsection{Density/size/structure in comparative research}
-With the increase of novel zoonotic pathogens \cite{jones2008global} much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity, kamiya2014determines, luis2013comparison}.
-Many comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}.
-However, factors related to host population biology are also expected to affect disease dynamics and therefore affect pathogen richness.
-
-Host density is commonly included in comparative studies and seems to promote high pathogen richness \cite{morand1998density, kamiya2014determines, lindenfors2007parasite, nunn2003comparative, arneberg2002host}.
-In contrast, host population size has rarely been directly studied as a predictor of pathogen richness.
-Studies also often test for correlations between pathogen richness and range size \cite{lindenfors2007parasite, nunn2003comparative, turmelle2009correlates, huang2015parasite, kamiya2014determines}.
-Overall it seems that species with larger geographic range sizes have higher pathogen richness \cite{kamiya2014determines}.
-While host population structure can be difficult to define and measure, a number of studies have found that increased population structure is associated with increased pathogen richness \cite{maganga2014bat, turmelle2009correlates}.
+Zoonotic diseases are an increasingly important source of human infectious diseases \cite{jones2008global, woolhouse2006host, taylor2001risk}. 
+The chance that a new zoonotic disease will come from a particular reservoir-host depends on a number of factors including the number of pathogen species it carries \cite{wolfe2000deforestation}. 
+Much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity, kamiya2014determines, luis2013comparison}. 
+Many empirical comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}, but factors related to reservoir-host population biology are also expected to affect disease dynamics and therefore affect pathogen richness. 
+Host density is commonly included in empirical comparative studies of pathogen richness across mammals and is found to correlate with high pathogen richness \cite{morand1998density, kamiya2014determines, lindenfors2007parasite, nunn2003comparative, arneberg2002host}. 
+In contrast, host population size has rarely been directly studied as a predictor of pathogen richness. 
+Studies also often test for correlations between pathogen richness and range size \cite{lindenfors2007parasite, nunn2003comparative, turmelle2009correlates, huang2015parasite, kamiya2014determines}, where species with larger geographic range sizes have higher pathogen richness \cite{kamiya2014determines}. 
+While host population structure can be difficult to define and measure, a number of studies have found that increased population structure is associated with increased pathogen richness \cite{maganga2014bat, turmelle2009correlates}. 
 Finally, many studies have tested for correlations between pathogen richness and group size, though results are equivocal \cite{vitone2004body, gay2014parasite, ezenwa2006host, rifkin2012animals, nunn2003comparative}.
 
 
-%2 But problems with interrelated variables
 
-However, the intrinsic relationships between these population-level factors are rarely discussed or accounted for in comparative studies.
-There are two particularly clear relationships between these factors.
+%Zoonotic diseases are an increasingly important source of human infectious diseases \cite{jones2008global, woolhouse2006host, taylor2001risk}.
+%The chance that a new zoonotic disease will come from a particular host reservoir depends on a number of factors including the number of pathogen species it carries \cite{wolfe2000deforestation}.
+%It is well known that population-level factors such as host density, range size and population structure have an important role in controlling pathogen dynamics \cite{anderson1979population, may1979population, colizza2007invasion, may2001infection}.
+%With the increase of novel zoonotic pathogens \cite{jones2008global} much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity, kamiya2014determines, luis2013comparison}.
+%Many comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}.
+%However, factors related to host population biology are also expected to affect disease dynamics and therefore affect pathogen richness.
+%However, the relative importance of these factors in controlling pathogen richness is largely unknown.
+%Host density is commonly included in comparative studies and seems to promote high pathogen richness \cite{morand1998density, kamiya2014determines, lindenfors2007parasite, nunn2003comparative, arneberg2002host}.
+%In contrast, host population size has rarely been directly studied as a predictor of pathogen richness.
+%Studies also often test for correlations between pathogen richness and range size \cite{lindenfors2007parasite, nunn2003comparative, turmelle2009correlates, huang2015parasite, kamiya2014determines}.
+%Overall it seems that species with larger geographic range sizes have higher pathogen richness \cite{kamiya2014determines}.
+%While host population structure can be difficult to define and measure, a number of studies have found that increased population structure is associated with increased pathogen richness \cite{maganga2014bat, turmelle2009correlates}.
+%Finally, many studies have tested for correlations between pathogen richness and group size, though results are equivocal \cite{vitone2004body, gay2014parasite, ezenwa2006host, rifkin2012animals, nunn2003comparative}.
+
+
+
+%4. then talk about the limitations of taking a comparative approach 
+
+Collinearity between explanatory variables is a common problem in correlative studies.
+However, this issue is exacerbated when there are clear, causal relationships between explanatory variables.
+There are two particularly clear relationships between these population-level factors.
 Firstly, host density, $d$, host population size, $N$, and geographic range size, $a$, are, by definition, linked by $d = N / a$ (see Table~S1 for all parameters used).
 The relationship, $N \propto a$, has broad empirical support \cite{blackburn2006variations, borregaard2010causality}.
 Secondly, host population size can be decomposed into two components, the number of groups, $m$, and the average size of a group, $n$, with $N = n$.
-While less clear, geographic range size and host population structure are also related.
-The amount of movement between groups is at least partially dependent on the distance between them \cite{jenkins2010meta, le2012patterns, schooley2009enhancing} and the distance between neighbouring groups decreases with the number of groups per area, $m/a$.
-
-
-
-
-%4. then talk about the limitations of taking a comparative approach and how mechanistic models can help
-
-Collinearity between explanatory variables is a common problem in correlative studies.
-However, this issue is exacerbated when there are clear, causal relationships between explanatory variables (e.g.,\ an increase in host density will directly cause an increase in host population size).
+%While less clear, geographic range size and host population structure are also related.
 Therefore, correlative comparative studies will be especially poor at identifying which of these factors are closely correlated with pathogen richness.
-%If the aim of correlative studies is to create predictive models for estimating pathogen richness of wild animal species, these relationships are not an issue.
-%In each of the above relationships ($d = N / a$ and $N = mn$), as long as two of three variables are included in a statistical model, all the variance in the third variable will also be captured.
-If the aim is to know which factors are causally affecting pathogen richness, and the mechanisms by which they control pathogen richness, correlative approaches are less useful.
-Correlative models are unable to definitively select the causal factor out of correlated factors.
-Furthermore, understanding the mechanisms by which population factors can affect pathogen richness has a number of important benefits.
-Firstly, mechanistic models provide a deeper understanding of the system than correlative approaches.
-Secondly, mechanistic models are expected to be more accurate when forecasting into the future or when extrapolating outside the range of the data it was fitted with.
-The ability of mechanistic models to extrapolate is particularly important with respect to global change and its effects on zoonotic disease emergence.
+This lack of discrimintaroy power is particularly important with respect to global change and its effects on zoonotic disease emergence.
 Population-level factors such as host population size and geographic range size, although interrelated, will respond differently to global change and the response will be species specific.
 Some host species may suffer large range contractions, and therefore large falls in population size, while their density remains fairly constant \cite{thomas2004extinction}.
 Other host species might retain their distribution but have a depressed population density \cite{craigie2010large}.
 Therefore, only by knowing which of these interrelated factors controls pathogen richness will we be able to predict future changes in pathogen richness.
 
 
-%5. review the evidence for mechanistic studies
-%6. limitations of the mechanistic approach so far
-
+%The alternative is mechanistic models.
+The alternative is mechanistic models.
+Firstly, mechanistic models provide a deeper understanding of the system than correlative approaches.
+Secondly, mechanistic models are expected to be more accurate when forecasting into the future or when extrapolating outside the range of the data it was fitted with.
+The ability of mechanistic models to extrapolate is 
+% They have a long history.
 Theoretical studies have established that a number of host population factors are important for epidemiological dynamics generally and for the maintenance of pathogen richness specifically.
 Host density and structure are well established as having central roles in pathogen dynamics \cite{colizza2007invasion, barthelemy2010fluctuation, wu2013threshold, may1979population, anderson1979population, webber2016sociality}.
 Host group size is also known to strongly affect disease dynamics with disease spreading more quickly through populations made up of larger groups \cite{colizza2007invasion}.
 Fewer studies specifically study how these factors affect pathogen coexistence.
 A number of studies find that increased host population structure can promote pathogen coexistence \cite{qiu2013vector, allen2004sis, nunes2006localized}.
-
 While some theoretical studies have examined whether these population-level factors can promote pathogen richness, none have attempted to distinguish which might be the most important.
 Most studies have examined how pathogen coexistence depends on pathogen traits such as the transmission rate and virulence \cite{allen2004sis, may1994superinfection, alizon2008decreased}.
 This focus is more relevant to studies of pathogens in humans and how different human pathogens may coexist.
@@ -284,12 +278,15 @@ As wild animal populations are often very different to human populations these c
 However, it has been noted that host population size is a more natural measure than population density and that particularly in comparative settings, population size should be preferred \cite{begon2002clarification}.
 This preference is due to the fact that host population size uniquely describes a property of the population while, for example, a high host density could be produced by a large population in a medium sized area or a medium sized population in a small area \cite{begon2002clarification}.
 
+%The amount of movement between groups is at least partially dependent on the distance between them \cite{jenkins2010meta, le2012patterns, schooley2009enhancing} and the distance between neighbouring groups decreases with the number of groups per area, $m/a$.
+
+
 
 
 %7. what you are going to do that is new (ie tease apart these interdependencies) - using case study on bats (and why this is a good group to ask this particular question on)
 
 
-Therefore there is great need for mechanistic models that try to disentangle the interplay between these many factors: host density, population size, range size, population structure, group size and the number of groups.
+There is great need for mechanistic models that try to disentangle the interplay between these many factors: host density, population size, range size, population structure, group size and the number of groups.
 Here, we have used multipathogen, metapopulation models to individually vary these host population parameters.
 The metapopulations were parameterised to broadly mimic wild bat populations.
 We used bats as a case study as the size of bat groups (colonies) is very variable and bat colonies are often very stable \cite{kerth2011bats, mccracken1981social}.
