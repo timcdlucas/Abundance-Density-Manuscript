@@ -237,7 +237,7 @@ Furthermore, the relationship $N \propto a$ has broad empirical support \cite{bl
 Secondly, host population size can be decomposed into two components, the number of groups, $m$, and the average size of a group, $n$, with $N = mn$.
 %While less clear, geographic range size and host population structure are also related.
 Therefore, correlative comparative studies will be especially poor at identifying which of these factors are closely correlated with pathogen richness.
-This lack of discrimintaroy power is particularly important with respect to global change and its effects on zoonotic disease emergence.
+This lack of discriminatory power is particularly important with respect to global change and its effects on zoonotic disease emergence.
 Population-level factors such as host population size and geographic range size, although interrelated, will respond differently to global change and the response will be species specific.
 Some host species may suffer large range contractions, and therefore large falls in population size, while their density remains fairly constant \cite{thomas2004extinction}.
 Other host species might retain their distribution but have a depressed population density \cite{craigie2010large}.
@@ -245,26 +245,14 @@ Therefore, only by knowing which of these interrelated factors controls pathogen
 
 
 %The alternative is mechanistic models.
-The alternative is mechanistic models.
-Firstly, mechanistic models provide a deeper understanding of the system than correlative approaches.
-Secondly, mechanistic models are expected to be more accurate when forecasting into the future or when extrapolating outside the range of the data it was fitted with.
-The ability of mechanistic models to extrapolate is 
-% They have a long history.
+Mechanistic models provide one method for comparing the importance of intrinsically related factors and can provide a deeper understanding of the system than correlative approaches.
 Theoretical studies have established that a number of host population factors are important for epidemiological dynamics generally and for the maintenance of pathogen richness specifically.
 Host density and structure are well established as having central roles in pathogen dynamics \cite{colizza2007invasion, barthelemy2010fluctuation, wu2013threshold, may1979population, anderson1979population, webber2016sociality}.
+However, it has been noted that host population size is a more natural measure than population density and that particularly in comparative settings, population size should be preferred \cite{begon2002clarification}.
 Host group size is also known to strongly affect disease dynamics with disease spreading more quickly through populations made up of larger groups \cite{colizza2007invasion}.
 Fewer studies specifically study how these factors affect pathogen coexistence.
 A number of studies find that increased host population structure can promote pathogen coexistence \cite{qiu2013vector, allen2004sis, nunes2006localized}.
-While some theoretical studies have examined whether these population-level factors can promote pathogen richness, none have attempted to distinguish which might be the most important.
-Most studies have examined how pathogen coexistence depends on pathogen traits such as the transmission rate and virulence \cite{allen2004sis, may1994superinfection, alizon2008decreased}.
-This focus is more relevant to studies of pathogens in humans and how different human pathogens may coexist.
-As wild animal populations are often very different to human populations these conclusions based on human populations cannot necessarily be transferred easily to wild animal species.
-However, it has been noted that host population size is a more natural measure than population density and that particularly in comparative settings, population size should be preferred \cite{begon2002clarification}.
-This preference is due to the fact that host population size uniquely describes a property of the population while, for example, a high host density could be produced by a large population in a medium sized area or a medium sized population in a small area \cite{begon2002clarification}.
-
-%The amount of movement between groups is at least partially dependent on the distance between them \cite{jenkins2010meta, le2012patterns, schooley2009enhancing} and the distance between neighbouring groups decreases with the number of groups per area, $m/a$.
-
-
+While these studies have examined whether these population-level factors can promote pathogen richness, none have attempted to distinguish which might be the most important.
 
 
 %7. what you are going to do that is new (ie tease apart these interdependencies) - using case study on bats (and why this is a good group to ask this particular question on)
