@@ -6,7 +6,7 @@
 %---------------------------------------------------------------------------------------------------------------------------------%
 
 
-\documentclass[a4paper,10pt,reqno]{amsart}
+\documentclass[a4paper,10pt,reqno,oneside]{amsart}
 
 \usepackage[T1]{fontenc}
 
@@ -15,6 +15,15 @@
 \usepackage[running, displaymath, mathlines]{lineno} % running vs pagewise 
 \linenumbers
 \linespread{1.5}
+
+\usepackage[marginratio=1:1,height=584pt,margin=1in,tmargin=1in,footskip=2em]{geometry}
+
+\usepackage{fancyhdr} 
+\fancyhf{}
+\cfoot{\thepage}
+\pagestyle{fancy}    
+
+
 
 
 \renewcommand\thesubsection{\textbf{(\alph{subsection})}}
@@ -61,12 +70,11 @@
 \usepackage{graphicx}
 
 \usepackage[width = 0.5\textwidth]{caption}
-\usepackage{verbatim, geometry, fancyhdr,  graphicx, xcomment, microtype, array}
+\usepackage{verbatim, graphicx, xcomment, microtype, array}
 %\usepackage{amsmath}
 
-\geometry{margin=1in}
 
-\usepackage{lineno}
+
 
 \usepackage{booktabs}
 \PassOptionsToPackage{hyphens}{url}
