@@ -872,42 +872,6 @@ Therefore, the only difference between these two sets of simulations is the fact
 
 
 
-
-\subsection{Statistical analysis}
-
-% todo. Clunky. To test this, we did that. To test another we did another.
-We tested two hypotheses.
-Firstly we tested the hypothesis that an increase in host population size creates a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density.
-Secondly, we tested the hypothesis that an increase in colony size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups.
-To statistically test these hypotheses we combined the results from different simulations and fitted multiple logistic regressions, centering and scaling the independent variables.
-Specifically, we fitted the model 
-
-\begin{align}
-  \text{Invasion} = b_1 d + b_2 n + b_3 m + c + \epsilon
-\end{align}
-where $d, n$ and $m$ are density, colony size and number of groups, respectively, and $b_i$ are the regression coefficients. 
-$c$ is a fitted intercept and $\epsilon$ is a binomially distributed error term.
-To test the first hypothesis we compared the size (and 95\% confidence intervals) of $b_1$ to $b_2$ and $b_3$.
-To test the second hypothesis we compared $b_2$ to $b_3$.
-
-In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
-The number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: $b$ = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
-However all of the simulations with extinction of both pathogens had either the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups (5 groups, \rinline{fewAllExtinct} simulations).
-Results from these simulations were removed before further analyses.
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\section{Results}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
 %%begin.rcode predictModels
 
 # Predict separate glms for plotting
@@ -1057,7 +1021,7 @@ combModel <- rbind(dens1, dens2, pop) %>%
                do(glm(invasion ~ colonySize + colonyNumber + area, data = ., family = binomial) %>% confint_tidy) %>%
                ungroup %>%
                dplyr::select(conf.low, conf.high) %>%
-               cbind(combModel, .)
+               bind_cols(combModel, .)
 
 %%end.rcode
 
@@ -1149,6 +1113,42 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 %%end.rcode
 
 
+\subsection{Statistical analysis}
+
+% todo. Clunky. To test this, we did that. To test another we did another.
+We tested two hypotheses.
+Firstly we tested the hypothesis that an increase in host population size creates a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density.
+Secondly, we tested the hypothesis that an increase in colony size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups.
+To statistically test these hypotheses we combined the results from different simulations and fitted multiple logistic regressions, centering and scaling the independent variables.
+Specifically, we fitted the model 
+
+\begin{align}
+  \text{Invasion} = b_1 d + b_2 n + b_3 m + c + \epsilon
+\end{align}
+where $d, n$ and $m$ are density, colony size and number of groups, respectively, and $b_i$ are the regression coefficients. 
+$c$ is a fitted intercept and $\epsilon$ is a binomially distributed error term.
+To test the first hypothesis we compared the size (and 95\% confidence intervals) of $b_1$ to $b_2$ and $b_3$.
+To test the second hypothesis we compared $b_2$ to $b_3$.
+
+In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
+The number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: $b$ = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
+However all of the simulations with extinction of both pathogens had either the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups (5 groups, \rinline{fewAllExtinct} simulations).
+Results from these simulations were removed before further analyses.
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Results}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%     Results text    %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1189,7 +1189,7 @@ $p$ is for the test against the null hypothesis that  $b = 0$.
 \centering
 \begin{tabular}{@{}rlrrr@{}}
 \toprule
-$\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\ \emph{CI}) & $p$\\
+$\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\% \emph{CI}) & $p$\\
 \midrule
 0.1   &    Intercept     & \rinline{combModel$estimate[1]} & (\rinline{combModel$conf.low[1]}, \rinline{combModel$conf.high[1]}) & $< 10^{-5}$ \\
       &    Colony Size   & \rinline{combModel$estimate[2]} & (\rinline{combModel$conf.low[2]}, \rinline{combModel$conf.high[2]}) & $< 10^{-5}$ \\
@@ -1216,6 +1216,8 @@ $\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\ \emph{CI}) & $p$\\
 
 \section{Discussion}
 
+%todo what are the four things i want to say.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\tmpsection{Restate results}
@@ -1225,10 +1227,10 @@ Furthermore, the results suggest that the most important component of population
 
 These results lead to a number of other conclusions.
 All else being equal, increasing range size (with density remaining constant) will not strongly increase pathogen richness unless the increased range size promotes larger groups.
-Furthermore, social species that live in large groups are likely to harbour more pathogen species, even if 
-the larger groups require more space and therefore dispersal between groups is reduced.
+Furthermore, social species that live in large groups are likely to harbour more pathogen species, even if the larger groups require more space and therefore dispersal between groups is reduced.
 
 %\tmpsection{Why are these results like that? What do they mean?}
+% Todo 
 
 The results suggest that, for related, strongly competing strains, the factor that most strongly allows new pathogens to invade is the number of susceptible individuals in the local group.
 As long as there are enough susceptible individuals that the new pathogen species does not go extinct during the stochastic, early stages of the epidemic, the new pathogen will persist.
@@ -1240,16 +1242,6 @@ This, in turn, increased the pool of susceptibles that were within one dispersal
 However, again, this effect was very weak compared to the strong changes in local disease dynamics caused by increasing colony size.
 
 % todo Only two pathogens
-
-%\subsection{Global change}
-
-It is clear that many species are suffering strong population changes due to global change \cite{thomas2004extinction}.
-However these changes might affect range size \cite{thomas2004extinction}, population size \cite{craigie2010large}, population connectivity \cite{wasserman2013population, rivera2015habitat, fonturbel2014forest} or group size \cite{lehmann2010apes, zunino2007habitat, manor2003impact, atwood2006influence} to different extents.
-Our results suggest that pathogen communities will respond differently depending on which factors are most strongly affected by global change.
-In short, species suffering reductions in groups size \cite{lehmann2010apes, zunino2007habitat, manor2003impact, atwood2006influence} are predicted to experience decreases in pathogen richness in the long term and there is some evidence that this process is occurring \cite{altizer2007threatened, turmelle2009correlates}.
-Species that are experiencing increases in group size \cite{lehmann2010apes} would be expected to gain new pathogen species.
-In contrast, species suffering range contractions \cite{thomas2004extinction} and decreases in population size \cite{craigie2010large} are expected to experience smaller changes in pathogen richness.
-However, it should be noted that these conclusions apply only to the specific mechanism studied here; that is, the invasion of newly evolved pathogens.
 
 %\subsection{Comparative studies}
 
@@ -1289,7 +1281,7 @@ This suggests that the mechanism studied here --- invasion of recently evolved p
 
 
 %\tmpsection{Further correlations between factors}
-
+% Limitations of model. First half of first sentence should flag the point of the paragraph
 We used the simple relationships between demographic factors --- $d = N / a$ for example --- to illustrate that these are tightly linked.
 In order to isolate the effects of these factors we assumed that there are no further correlations between factors; to examine density without altering population size, we fixed population size and manipulated range size.
 However, in reality, these factors are likely to covary in more complex ways, both within species across time and also between species.
@@ -1299,12 +1291,17 @@ Similarly it is unlikely that a species whose range size decreases will not expe
 
 
 
+%\subsection{Global change}
 
-\subsection{Conclusions}
-
-Overall we have shown that while a number of demographic factors are intrinsically linked, they have different effects on the rate at which new pathogens will invade.
-We found that population size, not density, has the stronger impact on the ability of a pathogen to invade.
-Furthermore, species with large groups are likely to harbour more pathogens than species with many, smaller groups.
+It is clear that many species are suffering strong population changes due to global change \cite{thomas2004extinction}.
+However these changes might affect range size \cite{thomas2004extinction}, population size \cite{craigie2010large}, population connectivity \cite{wasserman2013population, rivera2015habitat, fonturbel2014forest} or group size \cite{lehmann2010apes, zunino2007habitat, manor2003impact, atwood2006influence} to different extents.
+Our results suggest that pathogen communities will respond differently depending on which factors are most strongly affected by global change.
+In short, species suffering reductions in groups size \cite{lehmann2010apes, zunino2007habitat, manor2003impact, atwood2006influence} are predicted to experience decreases in pathogen richness in the long term and there is some evidence that this process is occurring \cite{altizer2007threatened, turmelle2009correlates}.
+Species that are experiencing increases in group size \cite{lehmann2010apes} would be expected to gain new pathogen species.
+In contrast, species suffering range contractions \cite{thomas2004extinction} and decreases in population size \cite{craigie2010large} are expected to experience smaller changes in pathogen richness.
+However, it should be noted that these conclusions apply only to the specific mechanism studied here; that is, the invasion of newly evolved pathogens.
+% plug grem. 
+% cite ben stevenson. Bat are hard!
 
 
 \section*{Data accessibility}
