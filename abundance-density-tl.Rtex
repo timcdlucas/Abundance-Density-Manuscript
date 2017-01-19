@@ -1180,10 +1180,10 @@ As $R_0$ of the invading pathogen depends on the number of individuals in a subp
 \captionsetup{width=0.9\textwidth}
 \caption[Regression results]{
 Regression results comparing effects of colony size, colony number and density.
-Coefficients are from multiple logistic regressions with invasion as the dependent variable and all independent variables being scaled and centred.
+Coefficient estimates ($b$) and 95\% confidence intervals of each variable are from multiple logistic regressions with invasion as the dependent variable and all independent variables being scaled and centred.
 Colony size and colony number were varied while keeping density equal while density was varied by changing range size while keeping population size equal.
 $p$ is for the test against the null hypothesis that  $b = 0$.
-%todo Describe all column headers.
+Results are given for three transmission values ($\beta$).
 }
 \label{t:regrCoefs}
 \centering
@@ -1197,7 +1197,7 @@ $\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\% \emph{CI}) & $p$\\
       &    Density       & \rinline{combModel$estimate[4]} & (\rinline{combModel$conf.low[4]}, \rinline{combModel$conf.high[4]}) & \rinline{combModel$p.value[4]} \\[1em]
 0.2   &    Intercept     & \rinline{combModel$estimate[5]} & (\rinline{combModel$conf.low[5]}, \rinline{combModel$conf.high[5]}) & $< 10^{-5}$ \\
       &    Colony Size   & \rinline{combModel$estimate[6]} & (\rinline{combModel$conf.low[6]}, \rinline{combModel$conf.high[6]}) & $< 10^{-5}$ \\
-      &    Colony Number & \rinline{combModel$estimate[7]} & (\rinline{combModel$conf.low[7]}, \rinline{combModel$conf.high[7]}) & \rinline{sprintf('.3f', combModel$p.value[7])} \\ %todo FIXX!
+      &    Colony Number & \rinline{combModel$estimate[7]} & (\rinline{combModel$conf.low[7]}, \rinline{combModel$conf.high[7]}) & \rinline{sprintf('%.3f', combModel$p.value[7])} \\
       &    Density       & \rinline{combModel$estimate[8]} & (\rinline{combModel$conf.low[8]}, \rinline{combModel$conf.high[8]}) & \rinline{combModel$p.value[8]} \\[1em]
 0.3   &    Intercept     & \rinline{combModel$estimate[9]} & (\rinline{combModel$conf.low[9]}, \rinline{combModel$conf.high[9]}) & $< 10^{-5}$ \\
       &    Colony Size   & \rinline{combModel$estimate[10]} & (\rinline{combModel$conf.low[10]}, \rinline{combModel$conf.high[10]}) & $< 10^{-5}$ \\
