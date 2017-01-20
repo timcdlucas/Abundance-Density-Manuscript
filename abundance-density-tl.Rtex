@@ -505,8 +505,7 @@ The mean number of connections per subpopulation, $\\bar{k}$, is shown for each 
 \label{f:sir}
 \end{figure}
 
-% todo Capital I is hard to see.
-% Dashes are hard to see.
+% todo
 % Table S1 first in SI.
 % First page of SI should be same as first page of 
 
@@ -540,7 +539,6 @@ There is ample evidence that bat populations are structured to some extent.
 This evidence comes from the existence of subspecies, measurements of genetic dissimilarity and ecological studies \cite{kerth2011bats, mccracken1981social, burns2014correlates, wilson2005mammal}.
 Therefore a fully mixed population is a large oversimplification.
 However, trying to study the contact network relies on detailed knowledge of individual behaviour which is rarely available.		
-
 The metapopulation is modelled as a network with colonies being nodes and dispersal between colonies being indicated by edges (Figure~\ref{fig:colonyNetworkPlots}A--D).
 Individuals within a colony interact randomly so that the colony is fully mixed.
 Dispersal between colonies occurs at a rate $\xi$.
@@ -548,12 +546,11 @@ Individuals can only disperse to colonies connected to theirs by an edge in the 
 The rate of dispersal is not affected by the number of edges a colony has (known as the degree of the colony and denoted $k$).
 Therefore, the dispersal rate from a colony $y$ with degree $k_y$ to colony $x$ is $\xi / k_y$.
 Note this rate is not affected by the degree and size of colony $x$.
-
 We examined the model using stochastic, continuous-time simulations which we implemented in \emph{R} \cite{R}.
 The full details of the model are given in Supplementary Methods~S1.
 The code is available as an \emph{R} package on GitHub \cite{metapopepi}.
 
-%todo Combine some paragraphs together.
+
 %todo more refs for fixed parameters. Pantheria.
 \subsection{Deterministic model}
 \label{s:determ}
@@ -624,8 +621,7 @@ The simulation was then run until a further \rinline{TotalTime} years had elapse
 The invasion of Pathogen 2 was considered successful if any individuals infected with Pathogen 2 remained at the end of the simulation.
 
 
-% todo. Bigger nodes. Bigger whole figger. Less overwhelming labels
-%%begin.rcode colonyNetworkPlots, fig.height = 5, fig.cap = colonyNetCapt, fig.scap = colonyNetTitle, out.width = '0.4\\textwidth', fig.showtext = TRUE
+%%begin.rcode colonyNetworkPlots, fig.height = 5, fig.cap = colonyNetCapt, fig.scap = colonyNetTitle, out.width = '0.8\\textwidth', fig.showtext = TRUE
 
 
 set.seed(3)
@@ -685,46 +681,47 @@ p4 <- makePop(space = side[5],
 k4 <- sum(p4$adjacency != 0 )/p4$parameters['nColonies']
 
 
-labSz <- 2
-bigy <- 16
-bigx <- 11
-titleSz <- 6
-axSz <- 5
+labSz <- 1.1
+bigy <- 8
+bigx <- 6
+titleSz <- 3
+axSz <- 2
+points <- 0.35
 
 par(mfrow = c(2,2))
 
 
-plotColonyNet(p1, area = side[5], cex = 0.25, mar = c(bigx, bigy, 6, 2), alpha = 1)
+plotColonyNet(p1, area = side[5], cex = points, mar = c(bigx, bigy, 2, 2), alpha = 1)
 axis(2, col = 'grey', cex.axis = axSz, at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), col.axis = '#a4a4a4', family = 'sans', font = 2)
 axis(1, col = 'grey', labels = FALSE)
-title(main = bquote(italic(bar(k)) ~ '='~ .(k1)), cex.main = titleSz, family = 'sans',  line = 0.5)
-mtext(side = 2,  line = 7.8, text = 'Longitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
+title(main = bquote(italic(bar(k)) ~ '='~ .(k1)), cex.main = titleSz, family = 'sans',  line = -1.18)
+mtext(side = 2,  line = 4, text = 'Longitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
 lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
-mtext(side = 3,  line = -0.3, text = 'A)', cex = 1.5, family = 'sans', at = -62)
+mtext(side = 3,  line = -0.3, text = 'A)', cex = 1, family = 'sans', at = -62)
 
-plotColonyNet(p4, area = side[5], cex = 0.25, mar = c(bigx, 6, 6, 2), alpha = 1)
+plotColonyNet(p4, area = side[5], cex = points, mar = c(bigx, 6, 2, 2), alpha = 1)
 axis(2, col = 'grey', labels = FALSE)
 axis(1, col = 'grey', labels = FALSE)
-title(main = bquote(italic(bar(k)) ~ '='~ .(k4)), cex.main = titleSz, family = 'sans',  line = 0.5)
-mtext(side = 3,  line = -0.3, text = 'B)', cex = 1.5, family = 'sans', at = -22)
+title(main = bquote(italic(bar(k)) ~ '='~ .(k4)), cex.main = titleSz, family = 'sans',  line = -1.18)
+mtext(side = 3,  line = -0.3, text = 'B)', cex = 1, family = 'sans', at = -22)
 
-plotColonyNet(p3, area = side[5], cex = 0.25, mar = c(bigx, bigy, 3, 2), alpha = 1)
+plotColonyNet(p3, area = side[5], cex = points, mar = c(bigx, bigy, 0, 2), alpha = 1)
 axis(2, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), family = 'sans', font = 2)
 axis(1, col = 'grey', labels = FALSE)
-axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'sans', font = 2, line = 3, lwd = 0)
-title(main = bquote(italic(bar(k)) ~ '='~ .(k3)), cex.main = titleSz, family = 'sans',  line = 0.5)
-mtext(side = 2,  line = 7.8, text = 'Longitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
-mtext(side = 1,  line = 9.8, text = 'Latitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
+axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'sans', font = 2, line = 0.5, lwd = 0)
+title(main = bquote(italic(bar(k)) ~ '='~ .(k3)), cex.main = titleSz, family = 'sans',  line = -1.18)
+mtext(side = 2,  line = 4, text = 'Longitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
+mtext(side = 1,  line = 4.4, text = 'Latitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
 lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
-mtext(side = 3,  line = -0.3, text = 'C)', cex = 1.5, family = 'sans', at = -62)
+mtext(side = 3,  line = -0.3, text = 'C)', cex = 1, family = 'sans', at = -62)
 
-plotColonyNet(p2, area = side[5], cex = 0.25, mar = c(bigx, 6, 3, 2), alpha = 1)
+plotColonyNet(p2, area = side[5], cex = points, mar = c(bigx, 6, 0, 2), alpha = 1)
 axis(1, col = 'grey', labels = FALSE)
-axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'sans', font = 2, line = 3, lwd = 0)
+axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'sans', font = 2, line = 0.5, lwd = 0)
 axis(2, col = 'grey', labels = FALSE)
-title(main = bquote(italic(bar(k)) ~ '='~ .(k2)), cex.main = titleSz, family = 'sans',  line = 0.5)
-mtext(side = 1,  line = 9.8, text = 'Latitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
-mtext(side = 3,  line = -0.3, text = 'D)', cex = 1.5, family = 'sans', at = -22)
+title(main = bquote(italic(bar(k)) ~ '='~ .(k2)), cex.main = titleSz, family = 'sans',  line = -1.18)
+mtext(side = 1,  line = 4.4, text = 'Latitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
+mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, family = 'sans', at = -22)
 
 
 
@@ -1122,24 +1119,22 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 \subsection{Statistical analysis}
 
 % todo. Clunky. To test this, we did that. To test another we did another.
-We tested two hypotheses.
-Firstly we tested the hypothesis that an increase in host population size creates a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density.
-Secondly, we tested the hypothesis that an increase in colony size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups.
-To statistically test these hypotheses we combined the results from different simulations and fitted multiple logistic regressions, centering and scaling the independent variables.
-Specifically, we fitted the model 
+
+We combined the results from different simulations and fitted a logistic multipleregression model, centering and scaling the independent variables.
+In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
+The number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: $b$ = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
+However all of the simulations where extinction of both pathogens occurred had either the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups (5 groups, \rinline{fewAllExtinct} simulations).
+Results from these simulations were removed before further analyses.
+We fitted the model 
 
 \begin{align}
   \text{Invasion} = b_1 d + b_2 n + b_3 m + c + \epsilon
 \end{align}
 where $d, n$ and $m$ are density, colony size and number of groups, respectively, and $b_i$ are the regression coefficients. 
 $c$ is a fitted intercept and $\epsilon$ is a binomially distributed error term.
-To test the first hypothesis we compared the size (and 95\% confidence intervals) of $b_1$ to $b_2$ and $b_3$.
-To test the second hypothesis we compared $b_2$ to $b_3$.
+To test the hypothesis that an increase in host population size creates a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density we compared the size (and 95\% confidence intervals) of $b_1$ to $b_2$ and $b_3$.
+To test the hypothesis that an increase in colony size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups we compared $b_2$ to $b_3$.
 
-In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
-The number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: $b$ = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
-However all of the simulations with extinction of both pathogens had either the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups (5 groups, \rinline{fewAllExtinct} simulations).
-Results from these simulations were removed before further analyses.
 
 
 
