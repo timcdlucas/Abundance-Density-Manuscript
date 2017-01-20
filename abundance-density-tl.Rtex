@@ -691,7 +691,7 @@ points <- 0.35
 par(mfrow = c(2,2))
 
 
-plotColonyNet(p1, area = side[5], cex = points, mar = c(bigx, bigy, 2, 2), alpha = 1)
+plotColonyNet(p1, area = side[5], cex = points, mar = c(bigx, bigy, 2, 2), alpha = 1, lowgrey = 0.2, highgrey = 0.7, col = pokepal('Charizard')[c(4, 14)])
 axis(2, col = 'grey', cex.axis = axSz, at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), col.axis = '#a4a4a4', family = 'sans', font = 2)
 axis(1, col = 'grey', labels = FALSE)
 title(main = bquote(italic(bar(k)) ~ '='~ .(k1)), cex.main = titleSz, family = 'sans',  line = -1.18)
@@ -699,13 +699,13 @@ mtext(side = 2,  line = 4, text = 'Longitude', cex = labSz, family = 'sans', col
 lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
 mtext(side = 3,  line = -0.3, text = 'A)', cex = 1, family = 'sans', at = -62)
 
-plotColonyNet(p4, area = side[5], cex = points, mar = c(bigx, 6, 2, 2), alpha = 1)
+plotColonyNet(p4, area = side[5], cex = points, mar = c(bigx, 6, 2, 2), alpha = 1, lowgrey = 0.2, highgrey = 0.7, col = pokepal('Charizard')[c(4, 14)])
 axis(2, col = 'grey', labels = FALSE)
 axis(1, col = 'grey', labels = FALSE)
 title(main = bquote(italic(bar(k)) ~ '='~ .(k4)), cex.main = titleSz, family = 'sans',  line = -1.18)
 mtext(side = 3,  line = -0.3, text = 'B)', cex = 1, family = 'sans', at = -22)
 
-plotColonyNet(p3, area = side[5], cex = points, mar = c(bigx, bigy, 0, 2), alpha = 1)
+plotColonyNet(p3, area = side[5], cex = points, mar = c(bigx, bigy, 0, 2), alpha = 1, lowgrey = 0.2, highgrey = 0.7, col = pokepal('Charizard')[c(4, 14)])
 axis(2, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), family = 'sans', font = 2)
 axis(1, col = 'grey', labels = FALSE)
 axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'sans', font = 2, line = 0.5, lwd = 0)
@@ -715,13 +715,14 @@ mtext(side = 1,  line = 4.4, text = 'Latitude', cex = labSz, family = 'sans', co
 lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
 mtext(side = 3,  line = -0.3, text = 'C)', cex = 1, family = 'sans', at = -62)
 
-plotColonyNet(p2, area = side[5], cex = points, mar = c(bigx, 6, 0, 2), alpha = 1)
+plotColonyNet(p2, area = side[5], cex = points, mar = c(bigx, 6, 0, 2), alpha = 1, lowgrey = 0.2, highgrey = 0.7, col = pokepal('Charizard')[c(4, 14)])
 axis(1, col = 'grey', labels = FALSE)
 axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'sans', font = 2, line = 0.5, lwd = 0)
 axis(2, col = 'grey', labels = FALSE)
 title(main = bquote(italic(bar(k)) ~ '='~ .(k2)), cex.main = titleSz, family = 'sans',  line = -1.18)
 mtext(side = 1,  line = 4.4, text = 'Latitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
 mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, family = 'sans', at = -22)
+
 
 
 
