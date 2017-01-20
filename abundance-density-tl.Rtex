@@ -507,10 +507,6 @@ The mean number of connections per subpopulation, $\\bar{k}$, is shown for each 
 \label{f:sir}
 \end{figure}
 
-% todo
-% Table S1 first in SI.
-% First page of SI should be same as first page of 
-
 \subsection{Two pathogen SIR model}
 
 
@@ -522,14 +518,14 @@ There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals i
 Recovered individuals, $R$, are immune to both pathogens, even if they have only been infected with one (i.e.\ there is complete cross-immunity).
 Furthermore, recovery from one pathogen moves an individual straight into the recovered class, even if the individual is infected with both pathogens (Figure~\ref{f:sir}).
 This modelling choice allows the model to be easily expanded to include more than two pathogens, though this study is restricted to two pathogens.
-The assumption of immediate recovery from all other diseases is likely to be reasonable. %todo refs here?
+The assumption of immediate recovery from all other diseases is likely to be reasonable \cite{munywoki2015influence}.
 Any up-regulation of innate immune response will affect both pathogens equally.
 Furthermore, as the pathogens are identical, any acquired immunity would also affect both pathogens equally.
 The coinfection rate (the rate at which an infected individual is infected with a second pathogen) is adjusted compared to the infection rate by a factor $\alpha$.
 
 
 
-It is necessary to include births and deaths as the SIR model without vital dynamics has no endemic state.
+It is necessary to include births and deaths as the SIR model without population dynamics has no endemic state.
 Birth and death rates ($\Lambda$ and $\mu$) are set as being equal meaning the population does not systematically increase or decrease.
 New born individuals enter the susceptible class.
 Infection and coinfection were assumed to cause no extra mortality as for a number of viruses, bats show no clinical signs of infection \cite{halpin2011pteropid, deThoisy2016bioecological}.
@@ -553,7 +549,6 @@ The full details of the model are given in Supplementary Methods~S1.
 The code is available as an \emph{R} package on GitHub \cite{metapopepi}.
 
 
-%todo more refs for fixed parameters. Pantheria.
 \subsection{Deterministic model}
 \label{s:determ}
 
@@ -572,7 +567,7 @@ That is, as long as cross-immunity is not complete, Pathogen 2 will always invad
 \label{s:paramSelect}
 
 The fixed parameters were chosen to roughly reflect realistic wild bat populations. 
-The death rate $\mu$ was set as 0.05 per year giving a generation time of 20 years.
+The death rate $\mu$ was set as 0.05 per year giving a generation time of 20 years \cite{jones2009pantheria}.
 The birth rate $\Lambda$ was set to be equal to $\mu$.
 This yields a population that does not systematically increase or decrease.
 However, the size of each colony changes as a random walk.
@@ -1177,7 +1172,7 @@ Increasing either colony size or the number of groups increased the probability 
 Therefore the simulations support the hypothesis that colony size is the more important component of population size. % discussion.
 This is supported by the deterministic model that showed that Pathogen 2 can invade even in a single subpopulation.
 As $R_0$ of the invading pathogen depends on the number of individuals in a subpopulation, invasion probability will increase with colony size.
-%todo desc
+
 
 \begin{table}
 \captionsetup{width=0.9\textwidth}
@@ -1302,10 +1297,7 @@ Our results suggest that pathogen communities will respond differently depending
 In short, species suffering reductions in groups size \cite{lehmann2010apes, zunino2007habitat, manor2003impact, atwood2006influence} are predicted to experience decreases in pathogen richness in the long term and there is some evidence that this process is occurring \cite{altizer2007threatened, turmelle2009correlates}.
 Species that are experiencing increases in group size \cite{lehmann2010apes} would be expected to gain new pathogen species.
 In contrast, species suffering range contractions \cite{thomas2004extinction} and decreases in population size \cite{craigie2010large} are expected to experience smaller changes in pathogen richness.
-However, it should be noted that these conclusions apply only to the specific mechanism studied here; that is, the invasion of newly evolved pathogens.
-% plug grem. 
-% cite ben stevenson. Bat are hard!
-
+However, the monitoring of these different aspects of population change, especially in bats, can often be difficult and may require further developments in acoustic monitoring to be effective \cite{walters2013challenges, measey2016counting, lucas2015generalised}.
 
 \section*{Data accessibility}
 \sloppy
