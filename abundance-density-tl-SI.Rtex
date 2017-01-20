@@ -69,11 +69,27 @@
 \begin{document}
 
 
-\title[Supplementary Material: Lucas et al.]{Supplementary material: A mechanistic model to compare the importance of interrelated population measures: host population size, density and colony size}
-\author{Tim Lucas, Hilde Herbots and Kate Jones}
+\title[Lucas et al. A comparison of the importance of population measures on pathogen richness]{A mechanistic model to compare the importance of interrelated population measures on pathogen richness: host population size, density and colony size}
+\author[Tim C.D. Lucas, Hilde M. Wilkinson-Herbots and Kate E. Jones]{Tim C.D. Lucas\textsuperscript{1$\ast\dagger$}, Hilde M. Wilkinson-Herbots\textsuperscript{2} and Kate E. Jones\textsuperscript{3$\ast$}}
 \date{}
 
 \maketitle
+%\tableofcontents
+
+
+
+
+%\subsection*{Addresses:}{\ }\\
+\noindent\textsuperscript{1}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom. 0000-0003-4694-8107\\
+\textsuperscript{2}Department of Statistical Science, University College London, Gower Street, London, WC1E 6BT, United Kingdom\\ 
+\textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1 4RY, United Kingdon. 0000-0001-5231-3293\\ 
+$^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, United Kingdom. \\
+
+\vspace{3mm}
+\noindent \textsuperscript{$\ast$}Corresponding authors: Tim C.D. Lucas: timcdlucas@gmail.com, Kate E. Jones: kate.e.jones@ucl.ac.uk
+
+\clearpage
+
 
 
 
@@ -108,7 +124,49 @@ library(dplyr)
 
 %%end.rcode
 
-\section{Supplementary methods}
+\section{Supplementary materials and methods}
+
+
+\begin{table}[h!]
+\captionsetup{width=.9\textwidth}
+\centering
+\caption{A summary of all symbols used along with their units and default values.
+The justifications for parameter values are given in the main manuscript.}
+
+\begin{tabular}{@{}lp{6cm}p{2.9cm}r@{}}
+\toprule
+Symbol & Explanation & Units & Value\\
+\midrule
+$\rho$ & Number of pathogens && 2\\
+$x, y$ & Colony index &&\\
+$p$ &  Pathogen index i.e.\ $p\in\{1,2\}$ for pathogens 1 and 2 & &\\
+$q$ & Disease class i.e.\ $q\in\{1,2,12\}$&\\
+$S_x$ & Number of susceptible individuals in colony $x$ &&\\
+$I_{qx}$ & Number of individuals infected with disease(s) $q \in \{1, 2, 12\}$ in colony $x$ &&\\
+$R_x$ & Number of individuals in colony $x$ in the recovered with immunity class  &&\\
+$N$ & Total Population size && 2,000 -- 32,000\\
+$m$ & Number of colonies&& 5 -- 80\\
+$n$ & Colony size && 100 -- 600\\
+$a$ & Area & km\textsuperscript{2}& 2,500 -- 40,000\\
+$\beta$ & Transmission rate &  & 0.1 -- 0.4\\
+$\alpha$ & Coinfection adjustment factor  & & 0.1\\
+$\gamma$ & Recovery rate & year$^{-1}.$individual$^{-1}$ & 1\\
+$\xi$ & Dispersal rate & year$^{-1}.$individual$^{-1}$ & 0.01\\
+$\Lambda$ & Birth rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
+$\mu$ & Death rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
+$k_x$ & Degree of node $x$ (number of colonies that individuals from colony $x$ can disperse to). &&\\
+$\delta$ & Waiting time until next event & years &\\
+$e_i$ & The rate at which event $i$ occurs & year$^{-1}$&\\
+$R_0$ & The (single subpopulation) basic reproduction number & infections &  0.48 -- 11\\
+$b_i$ & Regression coefficient & & \\
+$c$ & Regression intercept & & \\
+$\epsilon$ & Binomially distributed regression error term & & \\
+\bottomrule
+\end{tabular}
+
+\label{t:params}
+\end{table}
+
 
 
 \subsection{Stochastic simulations}
@@ -186,45 +244,10 @@ Finally, recovery from any infectious class occurs at a rate $\gamma$
 \section{Supplementary results}
 
 
-\begin{table}[h!]
-\captionsetup{width=.8\textwidth}
-\centering
-\caption{A summary of all symbols used along with their units and default values.
-The justifications for parameter values are given in the main manuscript.}
-
-\begin{tabular}{@{}lp{6cm}p{2.9cm}r@{}}
-\toprule
-Symbol & Explanation & Units & Value\\
-\midrule
-$\rho$ & Number of pathogens && 2\\
-$x, y$ & Colony index &&\\
-$p$ &  Pathogen index i.e.\ $p\in\{1,2\}$ for pathogens 1 and 2 & &\\
-$q$ & Disease class i.e.\ $q\in\{1,2,12\}$&\\
-$S_x$ & Number of susceptible individuals in colony $x$ &&\\
-$I_{qx}$ & Number of individuals infected with disease(s) $q \in \{1, 2, 12\}$ in colony $x$ &&\\
-$R_x$ & Number of individuals in colony $x$ in the recovered with immunity class  &&\\
-$N$ & Total Population size && 30,000\\
-$m$ & Number of colonies&& 10\\
-$n$ & Colony size && 3,000\\
-$a$ & Area & km\textsuperscript{2}& 10,000\\
-$\beta$ & Transmission rate &  & 0.1 -- 0.4\\
-$\alpha$ & Coinfection adjustment factor  & & 0.1\\
-$\gamma$ & Recovery rate & year$^{-1}.$individual$^{-1}$ & 1\\
-$\xi$ & Dispersal rate & year$^{-1}.$individual$^{-1}$ & 0.001--0.1\\
-$\Lambda$ & Birth rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
-$\mu$ & Death rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
-$k_x$ & Degree of node $x$ (number of colonies that individuals from colony $x$ can disperse to). &&\\
-$\delta$ & Waiting time until next event & years &\\
-
-$e_i$ & The rate at which event $i$ occurs & year$^{-1}$&\\
-\bottomrule
-\end{tabular}
-
-\label{t:params}
-\end{table}
-
-
-
+%betaΛN
+%γ+μ
+% 0.4 * 0.05 * 600 / (0.05 + 1)
+% 0.1 * 0.05 * 100 / (0.05 + 1)
 
 %%begin.rcode rawDataTables, cache = FALSE
 dens1 <- read.csv('Data/DensSims.csv') %>% dplyr::select(-X)
@@ -379,7 +402,7 @@ print(xtable(dens2Means,
 %%end.rcode
 
 
-
+\clearpage
 
 %%begin.rcode plotKcapt
 
@@ -392,8 +415,10 @@ All simulations had 20 colonies, meaning 19 is the maximum value of $\\bar{k}$.
 
 plotKtitle <- 'Change in average network degree with increasing range size'
 
+%%end.rcode
 
-%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, out.width = '0.4\\textwidth', cache = FALSE, plot.height = 2.3, fig.show = TRUE, out.width = '0.9\\textwidth'
+%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, cache = FALSE, plot.height = 4, fig.show = TRUE, out.width = '0.9\\textwidth'
+
 
 ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
   geom_boxplot(outlier.size = 1, size = 0.3, outlier.colour = grey(0.3), 
@@ -403,8 +428,8 @@ ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
   stat_summary(geom = "crossbar", width = 0.2, fatten = 2, 
     fun.data = function(x){ return(c(y = median(x), ymin = median(x), ymax = median(x))) }) +
   theme(legend.position = 'none', panel.grid.major.x = element_blank()) + 
-  scale_x_discrete(labels = c('2500', '5000', '10000', '20000', '40000')) +
-  xlab(expression(paste('Area ', (km^2)))) +
+  scale_x_discrete(labels = c('2.5', '5', '10', '20', '40')) +
+  xlab(expression(paste('Area ', (1000 * km^2)))) +
   ylab(expression(paste('Mean degree, ', italic(bar(k))))) +
   ylim(0, 20)
 
@@ -426,7 +451,7 @@ transMeansTitle <- 'Comparison of the probability of the affect of colony size a
 
 %%end.rcode
 
-%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.9\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.show = TRUE
+%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.9\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 4, fig.show = TRUE
 
 # Constant density, altered colony size
 # Need to remove rows with errors to auto find classes of columns
@@ -509,6 +534,7 @@ d2$transmission <- factor(d2$transmission, labels = c('beta == 0.1', '0.2', '0.3
 densPreds$transmission <- factor(densPreds$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
 
 
+
 ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
   geom_line(data = densPreds, aes(x = pop, y = pred, colour = vary)) +
   geom_point() +
@@ -524,7 +550,8 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
   scale_x_continuous(limits = c(0, 32000), 
                      breaks = c(0, 1e4, 2e4, 3e4), 
                      label = c('0', '10000', '20000', '30000')) +
-  facet_grid(transmission ~ ., labeller = label_parsed) 
+  facet_grid(transmission ~ ., labeller = label_parsed) +
+	theme(legend.position = 'top')
 
 %%end.rcode
 

@@ -178,14 +178,16 @@ library(assertthat)
 \noindent\textsuperscript{1}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom. 0000-0003-4694-8107\\
 \textsuperscript{2}Department of Statistical Science, University College London, Gower Street, London, WC1E 6BT, United Kingdom\\ 
 \textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1 4RY, United Kingdon. 0000-0001-5231-3293\\ 
-$^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, United Kingdom. 
+$^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, United Kingdom. \\
 \vspace{3mm}
 \noindent \textsuperscript{$\ast$}Corresponding authors: Tim C.D. Lucas: timcdlucas@gmail.com, Kate E. Jones: kate.e.jones@ucl.ac.uk
 
-\clearpage
+
 
 \subsection*{Word count:} 4647
 \subsection*{Running header:} A comparison of the importance of population measures on pathogen richness
+
+\clearpage
 
 \section*{Abstract}
 
@@ -224,7 +226,7 @@ Pathogen competition, zoonotic disease, metapopulations, host pathogen richness,
 % Sometimes the definitions are difficults
 % While density been studied, population abundance has not despite being a fundementall characteristic.
 
-% todo Don't repeat abstract first line.
+
 Zoonotic diseases are a major source of human infectious diseases \cite{jones2008global, woolhouse2006host, taylor2001risk}. 
 The chance that a new zoonotic disease will come from a particular reservoir-host depends on a number of factors including the number of pathogen species it carries \cite{wolfe2000deforestation}. 
 Much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity, kamiya2014determines, luis2013comparison}. 
@@ -1119,7 +1121,6 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 
 \subsection{Statistical analysis}
 
-% todo. Clunky. To test this, we did that. To test another we did another.
 
 We combined the results from different simulations and fitted a logistic multipleregression model, centering and scaling the independent variables.
 In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
