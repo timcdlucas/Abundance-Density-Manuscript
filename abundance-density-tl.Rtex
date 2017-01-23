@@ -559,8 +559,8 @@ When Pathogen 2 is introduced, its rate of change can be written as
 \begin{align}
 \frac{dI_2}{dt} = \beta S^\ast I_2 + \alpha\beta I_1^\ast I_2 - (\mu + \gamma)I_2  
 \end{align}
-which is greater than zero when $\frac{\alpha\beta r N}{\gamma + \mu} I_2 > 0$ or $\alpha r R_0 > 0$ (with $R_0$ being the basic reproduction number and being equal for the two identical pathogens).
-$R_0$ is greater than one (as proved by the fact that Pathogen 1 is endemic), $r$ equals one and $I_2$ is positive when Pathogen 2 is first introduced, 
+which is greater than zero when $\frac{\alpha\beta r N}{\gamma + \mu} I_2 > 0$ or $\alpha r R_0 I_2 > 0$ (with $R_0$ being the basic reproduction number and being equal for the two identical pathogens).
+$R_0$ is greater than one (as proved by the fact that Pathogen 1 is endemic), $r$ equals one and $I_2$ is positive when Pathogen 2 is first introduced.
 Therefore, this inequality holds as long as $\alpha$ is greater than zero.
 That is, as long as cross-immunity is not complete, Pathogen 2 will always invade in this deterministic model. 
 
