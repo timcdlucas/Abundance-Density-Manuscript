@@ -8,7 +8,7 @@
 
 \documentclass[a4paper,10pt,reqno,oneside]{amsart}
 
-\usepackage[T1]{fontenc}
+%\usepackage[T1]{fontenc}
 
 
 % line numbers
@@ -552,15 +552,16 @@ The code is available as an \emph{R} package on GitHub \cite{metapopepi}.
 \subsection{Deterministic model}
 \label{s:determ}
 
-We can get some initial insights into the behaviour of the system by examining a simplified, deterministic model with a single path.
-If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\beta \Lambda N}{\gamma + \mu}$.
+We can get some initial insights into the behaviour of the system by examining a simplified, deterministic model with a single subpopulation (for details see Supplementary Methods~S2).
+If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\beta r N}{\gamma + \mu}$ where $r$ is the population growth rate (here $r = 1$ as the population size is constant).
 When Pathogen 2 is introduced, its rate of change can be written as
 
 \begin{align}
-\frac{dI_2}{dt} = \beta S^\ast I_2 + \alpha\beta I_1^\ast I^2 - (\mu + \gamma)I_2  
+\frac{dI_2}{dt} = \beta S^\ast I_2 + \alpha\beta I_1^\ast I_2 - (\mu + \gamma)I_2  
 \end{align}
-which is greater than zero when $\frac{\alpha\beta\Lambda N}{\gamma + \mu} > 0$ or $\alpha R_0 >0$ (with $R_0$ being the basic repdroduction number and is equal for the two identical pathogens).
-As $R_0$ is always greater than zero, this inequality holds as long as $\alpha$ is greater than zero.
+which is greater than zero when $\frac{\alpha\beta r N}{\gamma + \mu} I_2 > 0$ or $\alpha r R_0 > 0$ (with $R_0$ being the basic reproduction number and being equal for the two identical pathogens).
+$R_0$ is greater than one (as proved by the fact that Pathogen 1 is endemic), $r$ equals one and $I_2$ is positive when Pathogen 2 is first introduced, 
+Therefore, this inequality holds as long as $\alpha$ is greater than zero.
 That is, as long as cross-immunity is not complete, Pathogen 2 will always invade in this deterministic model. 
 
 \subsection{Parameter selection}
@@ -570,7 +571,7 @@ The fixed parameters were chosen to roughly reflect realistic wild bat populatio
 The death rate $\mu$ was set as 0.05 per year giving a generation time of 20 years \cite{jones2009pantheria}.
 The birth rate $\Lambda$ was set to be equal to $\mu$.
 This yields a population that does not systematically increase or decrease.
-However, the size of each colony changes as a random walk.
+However, the size of each colony changes stochastically.
 Given the length of the simulations, colonies were very unlikely to go extinct.
 The recovery rate $\gamma$ was set to one, giving an average infection duration of one year. 
 This is therefore a long lasting infection but not a chronic infection. 
@@ -1153,26 +1154,25 @@ To test the hypothesis that an increase in colony size creates a stronger increa
 
 %todo where to put this.
 
-At the default parameter settings, the probability of invasion and persistence of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S2--4).
-These proportions significantly increased with transmission rate (GLM: $b$ = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
-This contradicts the deterministic model.
-
 
 \subsection{Host population size or density}
 
 Increasing host population size, either by increasing colony size or number of groups, increased the probability of invasion (Figure~\ref{fig:plotValueChangeMeans}, Table~\ref{t:regrCoefs}).
 The relationship between colony size and invasion is strong and significant at all transmission rates, while the relationship between colony number and invasion is weaker and more marginally significant.
 In contrast, varying host density does not alter invasion probability.
-Therefore the simulations support the hypothesis that population size affects invasion more strongly than host density.
+%Therefore the simulations support the hypothesis that population size affects invasion more strongly than host density.
 
 
 \subsection{Group size or number of groups}
 
 Increasing either colony size or the number of groups increased the probability of invasion but this effect was much stronger and more statistically significant for colony size (Figure~S2, Table~\ref{t:regrCoefs}).
-Therefore the simulations support the hypothesis that colony size is the more important component of population size. % discussion.
+%Therefore the simulations support the hypothesis that colony size is the more important component of population size. % discussion.
 This is supported by the deterministic model that showed that Pathogen 2 can invade even in a single subpopulation.
 As $R_0$ of the invading pathogen depends on the number of individuals in a subpopulation, invasion probability will increase with colony size.
 
+At the default parameter settings, the probability of invasion and persistence of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S2--4).
+These proportions significantly increased with transmission rate (GLM: $b$ = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
+This contradicts the deterministic model.
 
 \begin{table}
 \captionsetup{width=0.9\textwidth}
@@ -1319,7 +1319,7 @@ TCDL drafted the manuscript
 TCDL, HMH and KEJ all edited the manuscript and gave final approval for publication.
 
 \section*{Acknlowledgements}
-We thank Andy Fenton and David Murrel for comments on the manuscript and help with the analytical model. 
+We thank Andy Fenton and David Murrell for comments on the manuscript and help with the analytical model. 
 The Dynamic Drivers of Disease in Africa Consortium, NERC project no. NE-J001570-1 was funded with support from the Ecosystem Services for Poverty Alleviation Programme (ESPA). 
 The ESPA programme is funded by the Department for International Development (DFID), the Economic and Social Research Council (ESRC) and the Natural Environment Research Council (NERC)
 
