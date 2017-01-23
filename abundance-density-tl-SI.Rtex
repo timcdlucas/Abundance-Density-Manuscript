@@ -277,7 +277,7 @@ I_1^\ast &= \frac{rN}{\gamma + \mu} \label{istar1}.
 If we assume that Pathogen 2 is introduced when the endemic pathogen is at equilibrium, the dynamics of Pathogen 2 are governed by
 
 \begin{align}
-\frac{dI_2}{dt} & = \beta S^\ast I_2 + \alpha \beta I_1^\ast I_2 - (\gamma + \mu) I_2.
+\frac{dI_2}{dt} & = \beta S^\ast I_2 + \alpha \beta I_1^\ast I_2 - (\gamma + \mu) I_2 \label{path2I}.
 \end{align}
 
 Substituting in Equations \ref{sstar} and \ref{istar1}, and noting that $R_0 = \frac{\beta N }{\gamma + \mu}$  we get 
@@ -299,57 +299,37 @@ Therefore, $\frac{dI_2}{dt}$ is greater than zero as long as $\alpha$ is greater
 
 \subsection{Model 2}
 
-We can study the model analytically if we restrict the population to a single subpopulation.
-We first study the endemic pathogen. 
-For now we will simplify the vital dynamics such that births and deaths are included in a single population growth rate parameters $r$ with $r = 1$ given the constant population size.
-We then have a typical SIR model.
-
+A deterministic model with vital dynamics that more accurately matches the simulation model has seperate births and deaths such that
 \begin{align}
-\frac{dS}{dt} & =  rN - \beta S I_1,  \label{smodel1}\\
-\frac{dI_1}{dt} & = \beta S I_1 - (\gamma + \mu) I_1, \\
-\frac{dR}{dt} & = \gamma I_1 - \mu R.
+\frac{dS}{dt} & =  \Lambda N - \mu S -  \beta S I_1  \label{smodel2}.
 \end{align}
 
-\subsubsection{Equilibrium values of single pathogen model}
-
-To find the equilibrium number of susceptibles, $S^\ast$, we set $\frac{dI_1}{dt} = 0$.
+We then find $I^\ast$ by substituting Equation \ref{sstar} into Equation \ref{smodel2} and set $\frac{dS}{dt} = 0$ giving
 
 \begin{align}
-\beta S^\ast I_1 &= (\gamma + \mu) I_1,\\
-S^\ast &= \frac{\gamma + \mu}{\beta} \label{sstar}.
-\end{align}
-
-To find $I^\ast$ we substitute Equation \ref{sstar} into Equation \ref{smodel1} and set $\frac{dI_1}{dt} = 0$ giving
-
-\begin{align}
-rN &= \beta S^\ast I_1^\ast,\\
-rN &= (\gamma + \mu) I_1^\ast,\\
-I_1^\ast &= \frac{rN}{\gamma + \mu} \label{istar1}. 
+0 = & \Lambda N - \mu S^\ast -  \beta S^\ast I_1^\ast , \\
+0 = & \Lambda N - \frac{\mu \left(\gamma + \mu\right)}{\beta} -   \left(\gamma + \mu\right)I_1^\ast , \\
+I_1^\ast = & \frac{\Lambda N}{\gamma + \mu} - \frac{\mu }{\beta} \label{istar2}.
 \end{align}
 
 \subsubsection{Second pathogen}
 
-If we assume that Pathogen 2 is introduced when the endemic pathogen is at equilibrium, the dynamics of Pathogen 2 are governed by
+Substituting Equations \ref{sstar} and \ref{istar2} into Equation \ref{path2I} we get 
 
 \begin{align}
-\frac{dI_2}{dt} & = \beta S^\ast I_2 + \alpha \beta I_1^\ast I_2 - (\gamma + \mu) I_2.
+\frac{dI_2}{dt} & =  (\gamma + \mu) I_2 + \alpha \beta \left( \frac{\Lambda N}{\gamma + \mu} - \frac{\mu}{\beta} \right) I_2 - (\gamma + \mu) I_2, \\
+\frac{dI_2}{dt} & = \alpha\left( \frac{\beta \Lambda N}{\gamma + \mu} - \mu \right) I_2, \\
+\frac{dI_2}{dt} & = \alpha\left( \Lambda R_0 - \mu \right) I_2.
 \end{align}
 
-Substituting in Equations \ref{sstar} and \ref{istar1}, and noting that $R_0 = \frac{\beta N }{\gamma + \mu}$  we get 
+This is greater than zero when 
 
 \begin{align}
-\frac{dI_2}{dt} & =  (\gamma + \mu) I_2 + \frac{\alpha \beta r N}{\gamma + \mu} I_2 - (\gamma + \mu) I_2, \\
-\frac{dI_2}{dt} & =  \frac{\alpha \beta r N}{\gamma + \mu} I_2,\\
-\frac{dI_2}{dt} & =  \alpha r R_0 I_2.
+\alpha\left( \Lambda R_0 - \mu \right) I_2 > 0
 \end{align}
 
-$R_0$ is greater than one (as proved by the fact that Pathogen 1 is endemic), $r$ equals one and $I_2$ is positive when Pathogen 2 is first introduced, 
-Therefore, $\frac{dI_2}{dt}$ is greater than zero as long as $\alpha$ is greater than zero.
-
-
-
-
-
+As $I_2$ is positive, this is greater than zero when $ \Lambda R_0 - \mu > 0$. 
+As $\Lambda = \mu$ due to the assumption of stable population size, this is true as long as $R_0 > 1$. 
 
 
 \clearpage
