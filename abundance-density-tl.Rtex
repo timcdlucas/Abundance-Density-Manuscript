@@ -983,7 +983,7 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary)) +
   xlab('Amount Varied') +
   ylim(0, 1) +
   scale_colour_poke(name = "Focal Pop. Factor", 
-                    labels = c( 'Pop. Size', 'Pop. Size', 'Host Density'), 
+                    labels = c( 'Pop. Size', 'Pop. Size', 'Host Density'), % todo. Get cut. Distinguish size and size
                     pokemon = 'Swampert',
                     spread = 3) +
   scale_y_continuous(breaks = c(0, 0.5, 1), labels = c('0.0', '0.5', '1.0')) +
@@ -1160,7 +1160,6 @@ The number of simulations where both pathogens went extinct did not depend on tr
 However all of the simulations where extinction of both pathogens occurred had either the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups (5 groups, \rinline{fewAllExtinct} simulations).
 Results from these simulations were removed before further analyses.
 We fitted the model 
-
 \begin{align}
   \text{Invasion} = b_1 d + b_2 n + b_3 m + c + \epsilon
 \end{align}
@@ -1182,25 +1181,22 @@ To test the hypothesis that an increase in colony size creates a stronger increa
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\subsection{Host population size or density}
+%\subsection{Host population size or density}
 
 Increasing host population size, either by increasing colony size or number of groups, increased the probability of invasion (Figure~\ref{fig:plotValueChangeMeans}, Table~\ref{t:regrCoefs}).
-The relationship between colony size and invasion is strong and significant at all transmission rates, while the relationship between colony number and invasion is weaker and more marginally significant.
-In contrast, varying host density does not alter invasion probability.
+The relationship between colony size and invasion was strong and significant at all transmission rates, while the relationship between colony number and invasion was weaker and more marginally significant.
+In contrast, varying host density did not alter invasion probability.
 %Therefore the simulations support the hypothesis that population size affects invasion more strongly than host density.
 
 
-\subsection{Group size or number of groups}
+%\subsection{Group size or number of groups}
 
 Increasing either colony size or the number of groups increased the probability of invasion but this effect was much stronger and more statistically significant for colony size (Figure~S2, Table~\ref{t:regrCoefs}).
 %Therefore the simulations support the hypothesis that colony size is the more important component of population size. % discussion.
-This is supported by the deterministic model that showed that Pathogen 2 can invade even in a single subpopulation.
-As $R_0$ of the invading pathogen depends on the number of individuals in a subpopulation, invasion probability will increase with colony size.
+This is supported by the deterministic model (Section~\ref{s:determ}) that showed that Pathogen 2 can invade even in a single subpopulation but depends on $R_0$ which in turn depends on colony size.
 
 At the default parameter settings, the probability of invasion and persistence of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S2--4).
 These proportions significantly increased with transmission rate (GLM: $b$ = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
-This contradicts the deterministic model.
-
 
 
 
