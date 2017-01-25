@@ -1219,18 +1219,19 @@ These proportions significantly increased with transmission rate (GLM: $b$ = \ri
 
 %\tmpsection{Restate results}
 
-Overall, our results suggest that population size promotes pathogen richness significantly more than host density in the context of metapopulations or group living.
+Overall, our results suggest that population size promotes pathogen richness significantly more than host density does in the context of metapopulations or group living.
 Furthermore, the results suggest that the most important component of population size is colony size; a large population made up of large groups rather than many, small groups promotes pathogen invasion to the greatest degree.
 These results lead to a number of other conclusions.
 All else being equal, increasing range size (with density remaining constant) will not strongly increase pathogen richness unless the increased range size promotes larger groups.
 Furthermore, social species that live in large groups are likely to harbour more pathogen species, even if the larger groups require more space and therefore dispersal between groups is reduced.
 The results suggest that, for related, strongly competing strains, the factor that most strongly allows new pathogens to invade is the number of susceptible individuals in the local group.
 As long as there are enough susceptible individuals that the new pathogen species does not go extinct during the stochastic, early stages of the epidemic, the new pathogen will persist.
-As dispersal is a very slow process compared to infection, the global pool of susceptibles is not important. 
+This is explicitely shown by the deterministic model.
+In the stochasic model, dispersal is a very slow process compared to infection, and therefore the global pool of susceptibles is largely unimportant. 
 This is probably why increasing the number of groups did not increase pathogen invasion rate as quickly as the size of a colony did.
 Similarly, the global host density of the species had little effect on pathogen invasion rate.
 In these simulations, increasing density without increasing population size was only achieved by reducing range size; this simply increased the number of connections between groups in the metapopulation network.
-This, in turn, increased the pool of susceptibles that were within one dispersal of the invading pathogen.
+This, in turn, increased the pool of susceptibles that were could be reached by one dispersal event of the invading pathogen.
 However, again, this effect was very weak compared to the strong changes in local disease dynamics caused by increasing colony size.
 
 % \tmpsection{Only two pathogens}
