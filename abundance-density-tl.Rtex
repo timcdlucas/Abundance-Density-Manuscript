@@ -464,25 +464,6 @@ write.csv(z, file = 'Data/PopSims.csv')
 %%end.rcode
 
 
-%%begin.rcode colonyNetCaptions
-
-colonyNetTitle <- 'Relationship between range size and metapopulation network structure'
-
-colonyNetCapt <- '
-The relationship between range size and metapopulation network structure.
-Colonies are shown by circles.
-Colonies that are close enough for animals to disperse between (i.e.\\  within 100 km of each other) are joined by a line.
-Colonies are placed randomly in spaces of various sizes (grey dashed lines).
-A and C) the default range size (10000 km\\textsuperscript{2}).
-B and D) the largest range size (40000 km\\textsuperscript{2}).
-A and B) the smallest number of colonies (five).
-C and D) the default number of colonies (20).
-The mean number of connections per subpopulation, $\\bar{k}$, is shown for each metapopulation.
-'
-
-
-%%end.rcode
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -619,6 +600,27 @@ The simulation was then run until a further \rinline{TotalTime} years had elapse
 The invasion of Pathogen 2 was considered successful if any individuals infected with Pathogen 2 remained at the end of the simulation.
 
 
+\captionsetup{width=.9\linewidth}
+%%begin.rcode colonyNetCaptions
+
+colonyNetTitle <- 'Relationship between range size and metapopulation network structure'
+
+colonyNetCapt <- '
+The relationship between range size and metapopulation network structure.
+Colonies are shown by circles.
+Colonies that are close enough for animals to disperse between (i.e.\\  within 100 km of each other) are joined by a line.
+Colonies are placed randomly in spaces of various sizes (grey dashed lines).
+A and C) the default range size (10000 km\\textsuperscript{2}).
+B and D) the largest range size (40000 km\\textsuperscript{2}).
+A and B) the smallest number of colonies (five).
+C and D) the default number of colonies (20).
+The mean number of connections per subpopulation, $\\bar{k}$, is shown for each metapopulation.
+'
+
+
+%%end.rcode
+
+
 %%begin.rcode colonyNetworkPlots, fig.height = 5, fig.cap = colonyNetCapt, fig.scap = colonyNetTitle, out.width = '0.8\\textwidth', fig.showtext = TRUE
 
 
@@ -725,6 +727,7 @@ mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, family = 'sans', at = -22)
 
 
 %%end.rcode
+\captionsetup{width=.5\linewidth}
 
 
 
