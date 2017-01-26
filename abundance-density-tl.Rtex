@@ -1185,14 +1185,17 @@ To test the hypothesis that an increase in colony size creates a stronger increa
 Increasing host population size, either by increasing colony size or number of groups, increased the probability of invasion (Figure~\ref{fig:plotValueChangeMeans}, Table~\ref{t:regrCoefs}).
 The relationship between colony size and invasion was strong and significant at all transmission rates, while the relationship between colony number and invasion was weaker and more marginally significant.
 In contrast, varying host density did not alter invasion probability.
-%Therefore the simulations support the hypothesis that population size affects invasion more strongly than host density.
+The 95\% confidence intervals for $b_1$ do not overlap those for $b_2$ for the simulations with $\beta = 0.2$ or $0.3$ but the confidence intervals do overlap for the simulations where $\beta = 0.1$.
+The 95\% confidence intervals for $b_1$ overlaps those for $b_3$ at all values of $\beta$ (Table~\ref{t:regrCoefs}).
+
 
 
 %\subsection{Group size or number of groups}
 
-Increasing either colony size or the number of groups increased the probability of invasion but this effect was much stronger and more statistically significant for colony size (Figure~S2, Table~\ref{t:regrCoefs}).
-%Therefore the simulations support the hypothesis that colony size is the more important component of population size. % discussion.
-This is supported by the deterministic model that showed that Pathogen~2 can invade even in a single subpopulation but depends on $R_0$ which in turn depends on colony size.
+The deterministic model showed that Pathogen~2 can invade even in a single subpopulation but depends on $R_0$ which in turn depends on colony size.
+In the stochastic simulations, increasing either colony size or the number of groups increased the probability of invasion but this effect was much stronger and more statistically significant for colony size (Figure~S2, Table~\ref{t:regrCoefs}).
+The 95\% confidence intervals for $b_2$ do not overlap those for $b_3$ for the simulations with $\beta = 0.2$ or $0.3$ but the confidence intervals do overlap for the simulations where $\beta = 0.1$ (Table~\ref{t:regrCoefs}).
+
 
 At the default parameter settings, the probability of invasion and persistence of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S2--4).
 These proportions significantly increased with transmission rate (GLM: $b$ = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
