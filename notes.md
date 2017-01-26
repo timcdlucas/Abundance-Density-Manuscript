@@ -23,7 +23,7 @@ As a rough guide, this means that to avoid these charges, articles submitted sho
 
 
 All figures will be published in colour online (the version of record), but will be reproduced in black and white in the print version of the journal by default.
-Certainly need to change main figure then.
+Certainly need to change main figure then.  
 
 
 
