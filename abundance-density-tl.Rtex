@@ -562,15 +562,15 @@ The coinfection adjustment parameter, $\alpha$, was set to 0.1.
 Therefore, an individual with a single infection is 90\% less likely to gain a second infection.
 Given the deterministic model, $\alpha = 0$ and $\alpha > 0$ are the two qualitatively different conditions.
 The case where Pathogen~2 does not invade and spread ($\alpha = 0$) is unlikely to be important for pathogen richness so we chose a small, non-zero value for $\alpha$.
-Dispersal was only allowed to occur between two colonies if they were within 100km of each other i.e.\ they were then counted as connected nodes in the metapopulation network.
+Dispersal was only allowed to occur between two colonies if they were connected nodes in the metapopulation network.
+The metapopulation network was created for each simulation by randomly placing colonies in a square space (Figure~\ref{fig:colonyNetworkPlots}A--D), the size of which varied between \rinline{min(area)} and \rinline{max(area)} km\textsuperscript{2}.
+If colonies were with 100km of each other, they were connected in the metapopulation network.
 The dispersal rate $\xi$ was set to 0.01 which yields 17\% of individuals dispersing in their lifetime.
 
 
 \subsection{Population factors}
 
 The effect of range size on disease dynamics occurred through changes in the metapopulation network.
-The metapopulation network was created for each simulation by randomly placing colonies in a square space (Figure~\ref{fig:colonyNetworkPlots}A--D).
-This square space was considered to be the species geographic range, the size of which was varied.
 Range size was varied between \rinline{min(area)} and \rinline{max(area)} km\textsuperscript{2}.
 This corresponds to square areas with sides of \rinline{sqrt(min(area))} to \rinline{sqrt(max(area))} km.
 The number of connections each colony has is called its degree, $k$.
