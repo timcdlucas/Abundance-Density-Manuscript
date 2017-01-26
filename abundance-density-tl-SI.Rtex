@@ -146,6 +146,7 @@ $N$ & Total Population size && 2,000 -- 32,000\\
 $m$ & Number of colonies&& 5 -- 80\\
 $n$ & Colony size && 100 -- 600\\
 $a$ & Area & km\textsuperscript{2}& 2,500 -- 40,000\\
+$d$ & Density & individuals.km$^{-1}$ &  0.2 -- 3.2\\
 $\beta$ & Transmission rate &  & 0.1 -- 0.4\\
 $\alpha$ & Coinfection adjustment factor  & & 0.1\\
 $\gamma$ & Recovery rate & year$^{-1}.$individual$^{-1}$ & 1\\
@@ -240,7 +241,16 @@ Finally, recovery from any infectious class occurs at a rate $\gamma$
 
 
 \clearpage
+
+
+
+
+
+
 \section{Supplementary materials and methods: Deterministic model}
+
+% todo Align equal signs across groups
+% http://tex.stackexchange.com/questions/11855/alignment-of-equals-sign-in-multiple-align-environments
 
 \subsection{Model 1}
 
