@@ -24,9 +24,8 @@
 \pagestyle{fancy}    
 
 
-
-
 \renewcommand\thesubsection{\textbf{(\alph{subsection})}}
+
 
 
 % ------------------------------------------ %
@@ -184,7 +183,7 @@ $^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for He
 
 
 
-\subsection*{Word count:} 4647
+\subsection*{Word count:} 4113
 \subsection*{Running header:} A comparison of the importance of population measures on pathogen richness
 
 \clearpage
@@ -478,7 +477,7 @@ write.csv(z, file = 'Data/PopSims.csv')
   \includegraphics[width=0.4\textwidth]{figure/SIRoption1}
   \caption[Schematic of the SIR model used]{
   Schematic of the SIR model used. 
-  Individuals are in one of five classes, susceptible (orange, $S$), infected with Pathogen 1, Pathogen 2 or both (blue, $I_1, I_2, I_{12}$) or recovered and immune from further infection (green, $R$).
+  Individuals are in one of five classes, susceptible (orange, $S$), infected with Pathogen~1, Pathogen~2 or both (blue, $I_1, I_2, I_{12}$) or recovered and immune from further infection (green, $R$).
   Transitions between epidemiological classes occur as indicated by solid arrows and depend on transmission rate ($\beta$) and coinfection adjustment factor ($\alpha$).
   Births ($\Lambda$)  and deaths ($\mu$) are indicated by dashed arrows.
   %Parameter symbols for transitions are indicated.
@@ -495,7 +494,7 @@ We developed a multipathogen, susceptible-infected-recovered (SIR) compartment m
 We examined the ability of a second pathogen to invade and persist into a population given the presence of an identical, endemic pathogen.
 Individuals were classed as susceptible, infected or recovered with immunity (Figure~\ref{f:sir}).
 Susceptible individuals are counted in class $S$ (see Table~S1 for a list of symbols and values used).
-There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen 1, Pathogen 2 or both, respectively.
+There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen~1, Pathogen~2 or both, respectively.
 Recovered individuals, $R$, are immune to both pathogens, even if they have only been infected with one (i.e.\ there is complete cross-immunity).
 Furthermore, recovery from one pathogen moves an individual straight into the recovered class, even if the individual is infected with both pathogens (Figure~\ref{f:sir}).
 This modelling choice allows the model to be easily expanded to include more than two pathogens, though this study is restricted to two pathogens.
@@ -535,15 +534,15 @@ The code is available as an \emph{R} package on GitHub \cite{metapopepi}.
 
 We can get some initial insights into the behaviour of the system by examining a simplified, deterministic model with a single subpopulation (for details see Supplementary Methods~S2).
 If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\beta r N}{\gamma + \mu}$ where $r$ is the population growth rate (here $r = 1$ as the population size is constant).
-When Pathogen 2 is introduced, its rate of change can be written as
+When Pathogen~2 is introduced, its rate of change can be written as
 
 \begin{align}
 \frac{dI_2}{dt} = \beta S^\ast I_2 + \alpha\beta I_1^\ast I_2 - (\mu + \gamma)I_2  
 \end{align}
 which is greater than zero when $\frac{\alpha\beta r N}{\gamma + \mu} I_2 > 0$ or $\alpha r R_0 I_2 > 0$ (with $R_0$ being the basic reproduction number and being equal for the two identical pathogens).
-$R_0$ is greater than one (as proved by the fact that Pathogen 1 is endemic), $r$ equals one and $I_2$ is positive when Pathogen 2 is first introduced.
+$R_0$ is greater than one (as proved by the fact that Pathogen~1 is endemic), $r$ equals one and $I_2$ is positive when Pathogen~2 is first introduced.
 Therefore, this inequality holds as long as $\alpha$ is greater than zero.
-That is, as long as cross-immunity is not complete, Pathogen 2 will always invade in this deterministic model. 
+That is, as long as cross-immunity is not complete, Pathogen~2 will always invade in this deterministic model. 
 
 \subsection{Parameter selection}
 \label{s:paramSelect}
@@ -561,8 +560,8 @@ However, other studies have found much shorter infectious periods \cite{amengual
 These shorter infections are not studied further here. 
 The coinfection adjustment parameter, $\alpha$, was set to 0.1.
 Therefore, an individual with a single infection is 90\% less likely to gain a second infection.
-Given Section \ref{s:determ}, $\alpha = 0$ and $\alpha > 0$ are the two qualitatively different conditions.
-The case where Pathogen 2 does not invade and spread ($\alpha = 0$) is unlikely to be important for pathogen richness so we chose a small, non-zero value for $\alpha$.
+Given the deterministic model, $\alpha = 0$ and $\alpha > 0$ are the two qualitatively different conditions.
+The case where Pathogen~2 does not invade and spread ($\alpha = 0$) is unlikely to be important for pathogen richness so we chose a small, non-zero value for $\alpha$.
 Dispersal was only allowed to occur between two colonies if they were within 100km of each other i.e.\ they were then counted as connected nodes in the metapopulation network.
 The dispersal rate $\xi$ was set to 0.01 which yields 17\% of individuals dispersing in their lifetime.
 
@@ -585,19 +584,19 @@ Given this setup, populations with low densities had relatively unconnected meta
 
 \subsection{Experimental setup}
 
-We let two identical pathogens compete: an endemic pathogen (Pathogen 1) and an invading pathogen (Pathogen 2).
-We used persistence (coded as 1) or extinction (coded as 0) of Pathogen 2 as a binomial response variable.
+We let two identical pathogens compete: an endemic pathogen (Pathogen~1) and an invading pathogen (Pathogen~2).
+We used persistence (coded as 1) or extinction (coded as 0) of Pathogen~2 as a binomial response variable.
 We tested whether host population size is more important than host density and then tested whether colony size or the number of colonies is the more important component of population size.
 We used three values of the transmission rate $\beta$,  0.1, 0.2 and 0.3.
-This yields very high values of $R_0$ which was required so that a reasonable number of simulations experienced invasion of Pathogen 2.
+This yields very high values of $R_0$ which was required so that a reasonable number of simulations experienced invasion of Pathogen~2.
 All simulations were run under all three transmission rates.
 
 
-In each simulation the host population was seeded with 20 individuals infected with Pathogen 1 in each colony. 
-Pathogen 1 was then allowed to spread and reach equilibrium. 
-After \rinline{invadeT} events, five host individuals infected with Pathogen 2 were added to one randomly selected colony. 
+In each simulation the host population was seeded with 20 individuals infected with Pathogen~1 in each colony. 
+Pathogen~1 was then allowed to spread and reach equilibrium. 
+After \rinline{invadeT} events, five host individuals infected with Pathogen~2 were added to one randomly selected colony. 
 The simulation was then run until a further \rinline{TotalTime} years had elapsed.
-The invasion of Pathogen 2 was considered successful if any individuals infected with Pathogen 2 remained at the end of the simulation.
+The invasion of Pathogen~2 was considered successful if any individuals infected with Pathogen~2 remained at the end of the simulation.
 
 
 \captionsetup{width=.9\linewidth}
@@ -983,7 +982,7 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary)) +
   xlab('Amount Varied') +
   ylim(0, 1) +
   scale_colour_poke(name = "Focal Pop. Factor", 
-                    labels = c( 'Pop. Size', 'Pop. Size', 'Host Density'), % todo. Get cut. Distinguish size and size
+                    labels = c( 'Pop. Size', 'Pop. Size', 'Host Density'), # todo. Get cut. Distinguish size and size
                     pokemon = 'Swampert',
                     spread = 3) +
   scale_y_continuous(breaks = c(0, 0.5, 1), labels = c('0.0', '0.5', '1.0')) +
@@ -1160,9 +1159,9 @@ The number of simulations where both pathogens went extinct did not depend on tr
 However all of the simulations where extinction of both pathogens occurred had either the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups (5 groups, \rinline{fewAllExtinct} simulations).
 Results from these simulations were removed before further analyses.
 We fitted the model 
-\begin{align}
+\begin{linenomath*}\begin{align}
   \text{Invasion} = b_1 d + b_2 n + b_3 m + c + \epsilon
-\end{align}
+\end{align}\end{linenomath*}
 where $d, n$ and $m$ are density, colony size and number of groups, respectively, and $b_i$ are the regression coefficients. 
 $c$ is a fitted intercept and $\epsilon$ is a binomially distributed error term.
 To test the hypothesis that an increase in host population size creates a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density we compared the size (and 95\% confidence intervals) of $b_1$ to $b_2$ and $b_3$.
@@ -1193,7 +1192,7 @@ In contrast, varying host density did not alter invasion probability.
 
 Increasing either colony size or the number of groups increased the probability of invasion but this effect was much stronger and more statistically significant for colony size (Figure~S2, Table~\ref{t:regrCoefs}).
 %Therefore the simulations support the hypothesis that colony size is the more important component of population size. % discussion.
-This is supported by the deterministic model (Section~\ref{s:determ}) that showed that Pathogen 2 can invade even in a single subpopulation but depends on $R_0$ which in turn depends on colony size.
+This is supported by the deterministic model that showed that Pathogen~2 can invade even in a single subpopulation but depends on $R_0$ which in turn depends on colony size.
 
 At the default parameter settings, the probability of invasion and persistence of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S2--4).
 These proportions significantly increased with transmission rate (GLM: $b$ = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
@@ -1235,6 +1234,9 @@ This, in turn, increased the pool of susceptibles that were could be reached by 
 However, again, this effect was very weak compared to the strong changes in local disease dynamics caused by increasing colony size.
 
 % \tmpsection{Only two pathogens}
+
+This study is limited to one mechanism by which pathogen richness can be increased; the invasion and persistence of a newly evolved pathogen.
+Furthermore, we restrict outselves to the context of competition between two pathogens in a social host species.
 
 
 
