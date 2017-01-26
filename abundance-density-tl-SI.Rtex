@@ -153,11 +153,11 @@ $\gamma$ & Recovery rate & year$^{-1}.$individual$^{-1}$ & 1\\
 $\xi$ & Dispersal rate & year$^{-1}.$individual$^{-1}$ & 0.01\\
 $\Lambda$ & Birth rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
 $\mu$ & Death rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
-$r$  & Population growth rate &   & 1\\
-$k_x$ & Degree of node $x$ (number of colonies that individuals from colony $x$ can disperse to). &&\\
+$g$  & Population growth rate &   & 1\\
+$k_y$ & Degree of node $y$ (number of colonies that individuals from colony $y$ can disperse to) &&\\
 $\delta$ & Waiting time until next event & years &\\
 $e_i$ & The rate at which event $i$ occurs & year$^{-1}$&\\
-$R_0$ & The (single subpopulation) basic reproduction number & infections &  0.48 -- 11\\
+$R_0$ & The (single subpopulation) basic reproduction number & infections &  \\
 $b_i$ & Regression coefficient & & \\
 $c$ & Regression intercept & & \\
 $\epsilon$ & Binomially distributed regression error term & & \\
@@ -256,11 +256,11 @@ Finally, recovery from any infectious class occurs at a rate $\gamma$
 
 We can study the model analytically if we restrict the population to a single subpopulation.
 We first study the endemic pathogen. 
-For now we will simplify the vital dynamics such that births and deaths are included in a single population growth rate parameters $r$ with $r = 1$ given the constant population size.
+For now we will simplify the vital dynamics such that births and deaths are included in a single population growth rate parameters $g$ with $g = 1$ given the constant population size.
 We then have a typical SIR model.
 
 \begin{align}
-\frac{dS}{dt} & =  rN - \beta S I_1,  \label{smodel1}\\
+\frac{dS}{dt} & =  g n - \beta S I_1,  \label{smodel1}\\
 \frac{dI_1}{dt} & = \beta S I_1 - (\gamma + \mu) I_1, \\
 \frac{dR}{dt} & = \gamma I_1 - \mu R.
 \end{align}
@@ -277,9 +277,9 @@ S^\ast &= \frac{\gamma + \mu}{\beta} \label{sstar}.
 To find $I^\ast$ we substitute Equation \ref{sstar} into Equation \ref{smodel1} and set $\frac{dI_1}{dt} = 0$ giving
 
 \begin{align}
-rN &= \beta S^\ast I_1^\ast,\\
-rN &= (\gamma + \mu) I_1^\ast,\\
-I_1^\ast &= \frac{rN}{\gamma + \mu} \label{istar1}. 
+gn &= \beta S^\ast I_1^\ast,\\
+gn &= (\gamma + \mu) I_1^\ast,\\
+I_1^\ast &= \frac{g n}{\gamma + \mu} \label{istar1}. 
 \end{align}
 
 \subsubsection{Second pathogen}
@@ -297,12 +297,12 @@ For simplicity here we simply label this group $I_2$.
 Substituting in Equations \ref{sstar} and \ref{istar1}, and noting that $R_0 = \frac{\beta N }{\gamma + \mu}$  we get 
 
 \begin{align}
-\frac{dI_2}{dt} & =  (\gamma + \mu) I_2 + \frac{\alpha \beta r N}{\gamma + \mu} I_2 - (\gamma + \mu) I_2, \\
-\frac{dI_2}{dt} & =  \frac{\alpha \beta r N}{\gamma + \mu} I_2,\\
-\frac{dI_2}{dt} & =  \alpha r R_0 I_2.
+\frac{dI_2}{dt} & =  (\gamma + \mu) I_2 + \frac{\alpha \beta g n}{\gamma + \mu} I_2 - (\gamma + \mu) I_2, \\
+\frac{dI_2}{dt} & =  \frac{\alpha \beta g n}{\gamma + \mu} I_2,\\
+\frac{dI_2}{dt} & =  \alpha g R_0 I_2.
 \end{align}
 
-$R_0$ is greater than one (as proved by the fact that Pathogen 1 is endemic), $r$ equals one and $I_2$ is positive when Pathogen 2 is first introduced, 
+$R_0$ is greater than one (as proved by the fact that Pathogen 1 is endemic), $g$ equals one and $I_2$ is positive when Pathogen 2 is first introduced, 
 Therefore, $\frac{dI_2}{dt}$ is greater than zero as long as $\alpha$ is greater than zero.
 
 
@@ -315,15 +315,15 @@ Therefore, $\frac{dI_2}{dt}$ is greater than zero as long as $\alpha$ is greater
 
 A deterministic model with vital dynamics that more accurately matches the simulation model has seperate births and deaths such that
 \begin{align}
-\frac{dS}{dt} & =  \Lambda N - \mu S -  \beta S I_1  \label{smodel2}.
+\frac{dS}{dt} & =  \Lambda n - \mu S -  \beta S I_1  \label{smodel2}.
 \end{align}
 
 We then find $I^\ast$ by substituting Equation \ref{sstar} into Equation \ref{smodel2} and set $\frac{dS}{dt} = 0$ giving
 
 \begin{align}
-0 = & \Lambda N - \mu S^\ast -  \beta S^\ast I_1^\ast , \\
-0 = & \Lambda N - \frac{\mu \left(\gamma + \mu\right)}{\beta} -   \left(\gamma + \mu\right)I_1^\ast , \\
-I_1^\ast = & \frac{\Lambda N}{\gamma + \mu} - \frac{\mu }{\beta} \label{istar2}.
+0 = & \Lambda n - \mu S^\ast -  \beta S^\ast I_1^\ast , \\
+0 = & \Lambda n - \frac{\mu \left(\gamma + \mu\right)}{\beta} -   \left(\gamma + \mu\right)I_1^\ast , \\
+I_1^\ast = & \frac{\Lambda n}{\gamma + \mu} - \frac{\mu }{\beta} \label{istar2}.
 \end{align}
 
 \subsubsection{Second pathogen}
@@ -331,8 +331,8 @@ I_1^\ast = & \frac{\Lambda N}{\gamma + \mu} - \frac{\mu }{\beta} \label{istar2}.
 Substituting Equations \ref{sstar} and \ref{istar2} into Equation \ref{path2I} we get 
 
 \begin{align}
-\frac{dI_2}{dt} & =  (\gamma + \mu) I_2 + \alpha \beta \left( \frac{\Lambda N}{\gamma + \mu} - \frac{\mu}{\beta} \right) I_2 - (\gamma + \mu) I_2, \\
-\frac{dI_2}{dt} & = \alpha\left( \frac{\beta \Lambda N}{\gamma + \mu} - \mu \right) I_2, \\
+\frac{dI_2}{dt} & =  (\gamma + \mu) I_2 + \alpha \beta \left( \frac{\Lambda n}{\gamma + \mu} - \frac{\mu}{\beta} \right) I_2 - (\gamma + \mu) I_2, \\
+\frac{dI_2}{dt} & = \alpha\left( \frac{\beta \Lambda n}{\gamma + \mu} - \mu \right) I_2, \\
 \frac{dI_2}{dt} & = \alpha\left( \Lambda R_0 - \mu \right) I_2.
 \end{align}
 

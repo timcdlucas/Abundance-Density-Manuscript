@@ -193,7 +193,7 @@ $^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for He
 Zoonotic diseases are an increasingly important source of human infectious diseases, and reservoir host pathogen richness is a critical driver of spill-over risk. 
 Host population-level traits such as population size and density, geographic range size and population structure have all been shown to be important determinants of host pathogen richness. 
 However, empirically identifying the independent influences of these traits has proven difficult as many of these traits directly depend on each other. 
-Here we develop a mechanistic metapopulation susceptible-infected-recovered model to identify the independent population-level trait influences on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen, using a case study of bats; a highly social mammalian order. 
+Here we develop a mechanistic, metapopulation, susceptible-infected-recovered model to identify the influences of independent population-level traits on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen, using a case study of bats; a highly social mammalian order. 
 We show that larger population and group sizes had a greater influence on the chances of pathogen invasion and persistence than increased population densities (and therefore decreased population structure) and number of groups. 
 As anthropogenic change affects these traits to different extents, this increased understanding of how traits independently determine pathogen richness will aid in predicting future zoonotic spill-over risk.
 
@@ -226,10 +226,10 @@ Pathogen competition, zoonotic disease, metapopulations, host pathogen richness,
 % While density been studied, population abundance has not despite being a fundementall characteristic.
 
 
-Zoonotic diseases are a major source of human infectious diseases \cite{jones2008global, woolhouse2006host, taylor2001risk}. 
+Zoonotic diseases are a major source of human infectious disease \cite{jones2008global, woolhouse2006host, taylor2001risk}. 
 The chance that a new zoonotic disease will come from a particular reservoir-host depends on a number of factors including the number of pathogen species it carries \cite{wolfe2000deforestation}. 
 Much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity, kamiya2014determines, luis2013comparison}. 
-Many empirical comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}, but factors related to reservoir-host population biology are also expected to affect disease dynamics and therefore affect pathogen richness. 
+Many empirical, comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}, but factors related to reservoir-host population biology are also expected to affect disease dynamics and therefore affect pathogen richness. 
 Population-level traits that have already been shown to correlate with pathogen richness include: increased host density \cite{morand1998density, kamiya2014determines, lindenfors2007parasite, nunn2003comparative, arneberg2002host}, increased range size \cite{lindenfors2007parasite, nunn2003comparative, turmelle2009correlates, huang2015parasite, kamiya2014determines} and increased population structure \cite{maganga2014bat, turmelle2009correlates}.
 Other traits such as group size have been well studied but results have been equivocal \cite{vitone2004body, gay2014parasite, ezenwa2006host, rifkin2012animals, nunn2003comparative}.
 However, some important population-level traits, such as population size, have not been included in comparative analyses despite it being the natural way to describe epidemiological populations \cite{begon2002clarification}.
@@ -268,7 +268,7 @@ While these studies have examined whether these population-level factors can pro
 There is great need for mechanistic models that try to disentangle the interplay between population-level factors including host density, population size, range size, population structure, group size and the number of groups.
 Here, we have used multipathogen, metapopulation models to individually vary these host population parameters.
 The metapopulations were parameterised to broadly mimic wild bat populations.
-We used bats as a case study as the size of bat groups (colonies) is very variable and bat colonies are often very stable \cite{kerth2011bats, mccracken1981social}.
+We used bats as a case study as the size of bat groups (colonies) is very variable and bat colonies are often very stable \cite{kerth2011bats, mccracken1981social, jones2009pantheria}.
 Furthermore, bats are particularly relevant in the context of zoonotic disease as they are thought to be reservoirs for a number of important, recent outbreaks \cite{calisher2006bats, li2005bats}.
 We examined how the interrelated population factors affect the ability of a newly evolved pathogen to invade and persist in a population in the presence of strong competition from an endemic pathogen strain.
 We used these simulations to test two specific hypotheses.
@@ -491,9 +491,9 @@ write.csv(z, file = 'Data/PopSims.csv')
 
 
 We developed a multipathogen, susceptible-infected-recovered (SIR) compartment model.
-We examined the ability of a second pathogen to invade and persist into a population given the presence of an identical, endemic pathogen.
+We examined the ability of a newly evolved pathogen to invade and persist into a population given the presence of an identical, endemic pathogen.
 Individuals were classed as susceptible, infected or recovered with immunity (Figure~\ref{f:sir}).
-Susceptible individuals are counted in class $S$ (see Table~S1 for a list of symbols and values used).
+Susceptible individuals are counted in class $S$.
 There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen~1, Pathogen~2 or both, respectively.
 Recovered individuals, $R$, are immune to both pathogens, even if they have only been infected with one (i.e.\ there is complete cross-immunity).
 Furthermore, recovery from one pathogen moves an individual straight into the recovered class, even if the individual is infected with both pathogens (Figure~\ref{f:sir}).
@@ -521,7 +521,7 @@ The metapopulation is modelled as a network with colonies being nodes and disper
 Individuals within a colony interact randomly so that the colony is fully mixed.
 Dispersal between colonies occurs at a rate $\xi$.
 Individuals can only disperse to colonies connected to theirs by an edge in the network.
-The rate of dispersal is not affected by the number of edges a colony has (known as the degree of the colony and denoted $k$).
+The total rate of dispersal is not affected by the number of edges a colony has (known as the degree of the colony and denoted $k$).
 Therefore, the dispersal rate from a colony $y$ with degree $k_y$ to colony $x$ is $\xi / k_y$.
 Note this rate is not affected by the degree and size of colony $x$.
 We examined the model using stochastic, continuous-time simulations which we implemented in \emph{R} \cite{R}.
@@ -533,14 +533,14 @@ The code is available as an \emph{R} package on GitHub \cite{metapopepi}.
 \label{s:determ}
 
 We can get some initial insights into the behaviour of the system by examining a simplified, deterministic model with a single subpopulation (for details see Supplementary Methods~S2).
-If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\beta r N}{\gamma + \mu}$ where $r$ is the population growth rate (here $r = 1$ as the population size is constant).
+If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\beta g n}{\gamma + \mu}$ where $g$ is the population growth rate (here $g = 1$ as the population size is constant).
 When Pathogen~2 is introduced, its rate of change can be written as
 
 \begin{align}
 \frac{dI_2}{dt} = \beta S^\ast I_2 + \alpha\beta I_1^\ast I_2 - (\mu + \gamma)I_2  
 \end{align}
-which is greater than zero when $\frac{\alpha\beta r N}{\gamma + \mu} I_2 > 0$ or $\alpha r R_0 I_2 > 0$ (with $R_0$ being the basic reproduction number and being equal for the two identical pathogens).
-$R_0$ is greater than one (as proved by the fact that Pathogen~1 is endemic), $r$ equals one and $I_2$ is positive when Pathogen~2 is first introduced.
+which is greater than zero when $\frac{\alpha\beta g n}{\gamma + \mu} I_2 > 0$ or $\alpha g R_0 I_2 > 0$ (with $R_0$ being the basic reproduction number and being equal for the two identical pathogens).
+$R_0$ is greater than one (as proved by the fact that Pathogen~1 is endemic), $g$ equals one and $I_2$ is positive when Pathogen~2 is first introduced.
 Therefore, this inequality holds as long as $\alpha$ is greater than zero.
 That is, as long as cross-immunity is not complete, Pathogen~2 will always invade in this deterministic model. 
 
