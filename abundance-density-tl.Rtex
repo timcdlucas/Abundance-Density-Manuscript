@@ -563,7 +563,7 @@ Therefore, an individual with a single infection is 90\% less likely to gain a s
 Given the deterministic model, $\alpha = 0$ and $\alpha > 0$ are the two qualitatively different conditions.
 The case where Pathogen~2 does not invade and spread ($\alpha = 0$) is unlikely to be important for pathogen richness so we chose a small, non-zero value for $\alpha$.
 Dispersal was only allowed to occur between two colonies if they were connected nodes in the metapopulation network.
-The metapopulation network was created for each simulation by randomly placing colonies in a square space (Figure~\ref{fig:colonyNetworkPlots}A--D), the size of which varied between \rinline{min(area)} and \rinline{max(area)} km\textsuperscript{2}.
+The metapopulation network was created for each simulation by randomly placing colonies in a square space (Figure~\ref{fig:colonyNetworkPlots}A--D), the size of which varied between 2500 and 40000 km\textsuperscript{2}.
 If colonies were with 100km of each other, they were connected in the metapopulation network.
 The dispersal rate $\xi$ was set to 0.01 which yields 17\% of individuals dispersing in their lifetime.
 
@@ -571,7 +571,7 @@ The dispersal rate $\xi$ was set to 0.01 which yields 17\% of individuals disper
 \subsection{Population factors}
 
 The effect of range size on disease dynamics occurred through changes in the metapopulation network.
-Range size was varied between \rinline{min(area)} and \rinline{max(area)} km\textsuperscript{2}.
+Range size was varied between 2500 and 40000 km\textsuperscript{2}.
 This corresponds to square areas with sides of \rinline{sqrt(min(area))} to \rinline{sqrt(max(area))} km.
 The number of connections each colony has is called its degree, $k$.
 The mean degree, $\bar{k}$ is a measure of how well connected the metapopulation network is overall.
@@ -580,16 +580,15 @@ To ensure connected metapopulation networks would have required repeatedly resam
 However, this would bias $\bar{k}$.
 Therefore, it was considered preferential to keep the unconnected networks.
 The threshold of 100 km was arbitrary but we aimed to maximise the range  of $\bar{k}$ (Figure~S1) while not having many simulations with networks that were unconnected.
-Given this setup, populations with low densities had relatively unconnected metapopulation networks while high density populations had fully connected networks.
+Given this setup, populations with low densities had relatively unconnected metapopulation networks while high density populations had fully connected networks (Figure~S1).
 
 \subsection{Experimental setup}
 
 We let two identical pathogens compete: an endemic pathogen (Pathogen~1) and an invading pathogen (Pathogen~2).
 We used persistence (coded as 1) or extinction (coded as 0) of Pathogen~2 as a binomial response variable.
-We tested whether host population size is more important than host density and then tested whether colony size or the number of colonies is the more important component of population size.
-We used three values of the transmission rate $\beta$,  0.1, 0.2 and 0.3.
-This yields very high values of $R_0$ which was required so that a reasonable number of simulations experienced invasion of Pathogen~2.
-All simulations were run under all three transmission rates.
+We tested whether host population size had s strongrt affect on pathogen persistence than host density and then tested whether colony size or the number of colonies was the more important component of population size.
+We used three values of the transmission rate, $\beta$:  0.1, 0.2 and 0.3.
+This yielded very high values of $R_0$ which was required so that a reasonable number of simulations experienced invasion of Pathogen~2.
 
 
 In each simulation the host population was seeded with 20 individuals infected with Pathogen~1 in each colony. 
@@ -852,26 +851,26 @@ In each case these parameters were assigned their default value multiplied by 0.
 The default colony size was 400, the default number of groups was 20 and the default range size was 10000 km\textsuperscript{2}.
 
 
-In the first set of simulations, host density was varied by keeping population constant while varying range size.
+In the first set of simulations, host density was varied by keeping population size constant while varying range size.
 Colony size was kept at a constant value of 400 while the number of groups was fixed at 20 giving a population size of 8000.
-The values of range size used were 40000, 20000, 10000, 5000 and \rinline{dep3[5]} km\textsuperscript{2} which gave density values of \rinline{depDens[-5]} and \rinline{depDens[5]} animals per km\textsuperscript{2}.
+The values of range size used were 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2} which gave density values of \rinline{depDens[-5]} and \rinline{depDens[5]} animals per km\textsuperscript{2}.
 
 In the second set of simulations, population size was varied by changing colony size while the number of groups was kept constant.
-To keep host density constant, range size was reduced as population size increased.
-The values of colony size used were 100, 200, 400, 800 and 600 while range size was set to 40000, 20000, 10000, 5000 and \rinline{dep3[5]} km\textsuperscript{2}.
+To keep host density constant, range size was increased as population size increased.
+The values of colony size used were 100, 200, 400, 800 and 600 while range size was set to 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2}.
 This gave population size values of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
 
 In the third set of simulations, population size was varied by changing the number of groups while colony size was kept constant.
-Again, to keep host density constant, range size was reduced as population size increased.
-The numbers of groups used were 5, 10, 20, 40 and 80 while range size was set to 40000, 20000, 10000, 5000 and \rinline{dep3[5]} km\textsuperscript{2}.
+Again, to keep host density constant, range size was increased as population size increased.
+The numbers of groups used were 5, 10, 20, 40 and 80 while range size was set to 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2}.
 Again, this gave population size values of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
 
 
 
 To compare colony size and the number of groups, only the second and third set of simulations above were used.
-However, colony size and the number of groups were directly used as independent variables instead of using the derived values for host population size or density.
-It can be seen that population density and range size are equivalent in the two sets of simulations.
-Therefore, the only difference between these two sets of simulations is the factor used to increase population size: this factor being either colony size or the number of groups.
+However, colony size and the number of groups were directly used as independent variables instead of using the derived values of host population size and density.
+It can be seen that population density and range size are identical in the two sets of simulations.
+Therefore, the only difference between these two sets of simulations was the factor used to increase population size; this factor being either colony size or the number of groups.
 
 
 
