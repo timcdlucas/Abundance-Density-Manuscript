@@ -7,3 +7,12 @@
 *.toc
 *.run.xml
 *.aux
+run.R
+run.Rout
+runlog.R
+.Rhistory
+*Cache*
+*.tex
+allCode.R
+*.xls
+*Data/DensSims - Copy.csv
