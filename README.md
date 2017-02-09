@@ -9,6 +9,5 @@ This paper is a reworking of one of my [thesis](https://github.com/timcdlucas/Ph
 For submission to Proceedings of the Royal Society: B
 
 It comprises simulations that test whether it is abundance, density, colony size, number of colonies or distribution area which most strongly affects pathogen richness.
-These are directly taken from [Chapter 4](https://github.com/timcdlucas/PhDThesis/blob/master/Chapter4.Rtex).
 
 
