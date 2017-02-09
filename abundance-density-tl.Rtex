@@ -15,10 +15,8 @@
 \usepackage[running, displaymath, mathlines]{lineno} % running vs pagewise 
 \linenumbers
 \linespread{1.5}
-+
 
 
-`````````
 \usepackage[marginratio=1:1,height=584pt,margin=1in,tmargin=1in,footskip=2em]{geometry}
 
 \usepackage{fancyhdr} 
@@ -901,7 +899,7 @@ Comparison of the effect of colony size, number of colonies and host density on 
 The $x$-axis shows the change ($\\times$0.25, 0.5, 1, 2 and $4$) in each of these factors  relative to the default value.
 Default values are: colony number = 20, colony size = 400 and density = 0.8 animals per km\\textsuperscript{2}.
 Blue lines, squares: population size is altered by changing colony size.
-Red lines, circles: population size is altered by changing  number of colonies.
+Green lines, circles: population size is altered by changing  number of colonies.
 Yellow lines, triangles: population density is altered by changing range size.
 Each point is the mean of 100 simulations and bars are 95\\% confidence intervals.
 Curves are simple logistic regression fits for each explanatory variable.
@@ -974,17 +972,17 @@ d$transmission <- factor(d$transmission, labels = c('beta == 0.1', '0.2', '0.3')
 percChangePreds$transmission <- factor(percChangePreds$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
 
 ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
-  geom_point(size = 2.1) +
   geom_line(data = percChangePreds, aes(x = ValueChange, y = pred, colour = vary)) +
-  geom_point() +
   geom_errorbar(aes(ymin = lower, ymax = upper),
-              width = .01) +
+                width = .01,
+                position = position_dodge(width = 0.02)) +
+  geom_point(size = 2.1, position = position_dodge(width = 0.02)) +
   ylab('Prop. Invasions') +
   xlab('Amount Varied') +
   ylim(0, 1) +
   scale_colour_poke(name = 'Focal Population Factor', 
                     labels = c( 'Colony size', 'Number of colonies', 'Host density'),
-                    pokemon = 'Swampert',
+                    pokemon = 'oddish',
                     spread = 3) +
   scale_shape_manual(name = 'Focal Population Factor', 
                      labels = c( 'Colony size', 'Number of colonies', 'Host density'),
