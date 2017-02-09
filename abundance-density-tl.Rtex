@@ -1010,9 +1010,27 @@ combDensModel <- rbind(dens1, dens2) %>%
                    do(glm(invasion ~ colonySize + colonyNumber, data = ., family = binomial) %>% tidy)
 
 
-combModel <- rbind(dens1, dens2, pop) %>% 
+dens1 <- dens1 %>% mutate(invasion = nExtantDis == 2 )
+dens2 <- dens2 %>% mutate(invasion = nExtantDis == 2 )
+pop   <- pop   %>% mutate(invasion = nExtantDis == 2 )
+
+
+colonySizeModel   <- dens1 %>%
+                       group_by(transmission) %>%
+                       do(glm(invasion ~ colonySize, data = ., family = 'binomial') %>% tidy)
+colonyNumberModel <- dens2 %>%
+                       group_by(transmission) %>%
+                       do(glm(invasion ~ colonyNumber, data = ., family = 'binomial') %>% tidy)
+areaModel         <- pop %>%
+                       group_by(transmission) %>%
+                       do(glm(invasion ~ area, data = ., family = 'binomial') %>% tidy)
+
+
+combModel <- rbind(dens1 %>% mutate(vary = 'colonySize', ), 
+                   dens2 %>% mutate(vary = 'colonyNumber'), 
+                   pop   %>% mutate(vary = 'area')) %>% 
                mutate(invasion = nExtantDis == 2 ) %>%
-               group_by(transmission) %>% 
+               group_by(transmission, vary) %>% 
                mutate(colonySize = scale(colonySize), 
                       colonyNumber = scale(colonyNumber), 
                       area = scale(area)) %>% 
