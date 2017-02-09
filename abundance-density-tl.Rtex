@@ -1010,42 +1010,34 @@ combDensModel <- rbind(dens1, dens2) %>%
                    do(glm(invasion ~ colonySize + colonyNumber, data = ., family = binomial) %>% tidy)
 
 
-dens1 <- dens1 %>% mutate(invasion = nExtantDis == 2 )
-dens2 <- dens2 %>% mutate(invasion = nExtantDis == 2 )
-pop   <- pop   %>% mutate(invasion = nExtantDis == 2 )
+dens1 <- dens1 %>% 
+          mutate(invasion = nExtantDis == 2 ) %>%
+          mutate(colonySizeScale = scale(colonySize)[, 1]) %>%
+          filter(nExtantDis != 0)
+          
+dens2 <- dens2 %>% 
+           mutate(invasion = nExtantDis == 2 ) %>%
+           mutate(colonyNumberScale = scale(colonyNumber)[, 1]) %>%
+           filter(nExtantDis != 0)
+           
+pop   <- pop %>% 
+          mutate(invasion = nExtantDis == 2 ) %>%
+          mutate(areaScale = scale(area)[, 1]) %>%
+          filter(nExtantDis != 0)
 
 
 colonySizeModel   <- dens1 %>%
                        group_by(transmission) %>%
-                       do(glm(invasion ~ colonySize, data = ., family = 'binomial') %>% tidy)
+                       do(glm(invasion ~ colonySizeScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE)) 
+
+
 colonyNumberModel <- dens2 %>%
                        group_by(transmission) %>%
-                       do(glm(invasion ~ colonyNumber, data = ., family = 'binomial') %>% tidy)
+                       do(glm(invasion ~ colonyNumberScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
+                       
 areaModel         <- pop %>%
                        group_by(transmission) %>%
-                       do(glm(invasion ~ area, data = ., family = 'binomial') %>% tidy)
-
-
-combModel <- rbind(dens1 %>% mutate(vary = 'colonySize', ), 
-                   dens2 %>% mutate(vary = 'colonyNumber'), 
-                   pop   %>% mutate(vary = 'area')) %>% 
-               mutate(invasion = nExtantDis == 2 ) %>%
-               group_by(transmission, vary) %>% 
-               mutate(colonySize = scale(colonySize), 
-                      colonyNumber = scale(colonyNumber), 
-                      area = scale(area)) %>% 
-               do(glm(invasion ~  colonySize + colonyNumber + area, data = ., family = binomial) %>% tidy)
-
-combModel <- rbind(dens1, dens2, pop) %>% 
-               mutate(invasion = nExtantDis == 2 ) %>%
-               group_by(transmission) %>% 
-               mutate(colonySize = scale(colonySize), 
-                      colonyNumber = scale(colonyNumber), 
-                      area = scale(area)) %>% 
-               do(glm(invasion ~ colonySize + colonyNumber + area, data = ., family = binomial) %>% confint_tidy) %>%
-               ungroup %>%
-               dplyr::select(conf.low, conf.high) %>%
-               bind_cols(combModel, .)
+                       do(glm(invasion ~ areaScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
 
 %%end.rcode
 
@@ -1141,9 +1133,9 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 \captionsetup{width=0.9\textwidth}
 \caption[Regression results]{
 Regression results comparing effects of colony size, colony number and density.
-Coefficient estimates ($b$) and 95\% confidence intervals of each variable are from multiple logistic regressions with invasion as the dependent variable and all explanatory variables being scaled and centred.
+Coefficient estimates ($b$) and 95\% confidence intervals of each variable are from logistic regressions with invasion as the dependent variable and all explanatory variables being scaled and centred.
 Colony size and colony number were varied while keeping density equal while density was varied by changing range size while keeping population size equal.
-$p$ is for the test against the null hypothesis that  $b = 0$.
+$p$ is for the test against the null hypothesis that $b = 0$.
 Results are given for three transmission values ($\beta$).
 }
 \label{t:regrCoefs}
@@ -1152,19 +1144,15 @@ Results are given for three transmission values ($\beta$).
 \toprule
 $\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\% \emph{CI}) & $p$\\
 \midrule
-0.1   &    Intercept     & \rinline{combModel$estimate[1]} & (\rinline{combModel$conf.low[1]}, \rinline{combModel$conf.high[1]}) & $< 10^{-5}$ \\
-      &    Colony Size   & \rinline{combModel$estimate[2]} & (\rinline{combModel$conf.low[2]}, \rinline{combModel$conf.high[2]}) & $< 10^{-5}$ \\
-      &    Colony Number & \rinline{combModel$estimate[3]} & (\rinline{combModel$conf.low[3]}, \rinline{combModel$conf.high[3]}) & \rinline{combModel$p.value[3]} \\
-      &    Density       & \rinline{combModel$estimate[4]} & (\rinline{combModel$conf.low[4]}, \rinline{combModel$conf.high[4]}) & \rinline{combModel$p.value[4]} \\[1em]
-0.2   &    Intercept     & \rinline{combModel$estimate[5]} & (\rinline{combModel$conf.low[5]}, \rinline{combModel$conf.high[5]}) & $< 10^{-5}$ \\
-      &    Colony Size   & \rinline{combModel$estimate[6]} & (\rinline{combModel$conf.low[6]}, \rinline{combModel$conf.high[6]}) & $< 10^{-5}$ \\
-      &    Colony Number & \rinline{combModel$estimate[7]} & (\rinline{combModel$conf.low[7]}, \rinline{combModel$conf.high[7]}) & \rinline{sprintf('%.3f', combModel$p.value[7])} \\
-      &    Density       & \rinline{combModel$estimate[8]} & (\rinline{combModel$conf.low[8]}, \rinline{combModel$conf.high[8]}) & \rinline{combModel$p.value[8]} \\[1em]
-0.3   &    Intercept     & \rinline{combModel$estimate[9]} & (\rinline{combModel$conf.low[9]}, \rinline{combModel$conf.high[9]}) & $< 10^{-5}$ \\
-      &    Colony Size   & \rinline{combModel$estimate[10]} & (\rinline{combModel$conf.low[10]}, \rinline{combModel$conf.high[10]}) & $< 10^{-5}$ \\
-      &    Colony Number & \rinline{combModel$estimate[11]} & (\rinline{combModel$conf.low[11]}, \rinline{combModel$conf.high[11]}) & \rinline{combModel$p.value[11]} \\
-      &    Density       & \rinline{combModel$estimate[12]} & (\rinline{combModel$conf.low[12]}, \rinline{combModel$conf.high[12]}) & \rinline{combModel$p.value[12]} \\
-
+0.1   &    Colony Size   & \rinline{colonySizeModel$estimate[2]} & (\rinline{colonySizeModel$conf.low[2]}, \rinline{colonySizeModel$conf.high[2]}) & $< 10^{-4}$ \\
+&    Colony Number & \rinline{sprintf('%.2f', colonyNumberModel$estimate[2])} & (\rinline{colonyNumberModel$conf.low[2]}, \rinline{colonyNumberModel$conf.high[2]}) & \rinline{colonyNumberModel$p.value[2]} \\
+&    Density       & \rinline{areaModel$estimate[2]} & (\rinline{areaModel$conf.low[2]}, \rinline{areaModel$conf.high[2]}) & \rinline{areaModel$p.value[2]} \\[1em]
+  0.2   &    Colony Size   & \rinline{colonySizeModel$estimate[4]} & (\rinline{colonySizeModel$conf.low[4]}, \rinline{colonySizeModel$conf.high[4]}) & $< 10^{-4}$ \\
+&    Colony Number & \rinline{colonyNumberModel$estimate[4]} & (\rinline{colonyNumberModel$conf.low[4]}, \rinline{colonyNumberModel$conf.high[4]}) & $< 10^{-4}$ \\
+&    Density       & \rinline{areaModel$estimate[4]} & (\rinline{areaModel$conf.low[4]}, \rinline{areaModel$conf.high[4]}) & \rinline{areaModel$p.value[4]} \\[1em]
+0.3   &    Colony Size   & \rinline{colonySizeModel$estimate[6]} & (\rinline{colonySizeModel$conf.low[6]}, \rinline{colonySizeModel$conf.high[6]}) & $< 10^{-4}$ \\
+&    Colony Number & \rinline{colonyNumberModel$estimate[6]} & (\rinline{colonyNumberModel$conf.low[6]}, \rinline{colonyNumberModel$conf.high[6]}) & $< 10^{-4}$  \\
+&    Density       & \rinline{areaModel$estimate[6]} & (\rinline{areaModel$conf.low[6]}, \rinline{areaModel$conf.high[6]}) & \rinline{areaModel$p.value[6]} \\
 \bottomrule
 
 \end{tabular}
@@ -1177,7 +1165,7 @@ $\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\% \emph{CI}) & $p$\\
 We combined the results from different simulations and fitted a logistic multipleregression model, centering and scaling the explanatory variables.
 In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
 The number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: $b$ = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
-However all of the simulations where extinction of both pathogens occurred had either the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups (five groups, \rinline{fewAllExtinct} simulations).
+However all of the simulations where extinction of both pathogens occurred had either the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups (five groups, eight simulations).
 Results from these simulations were removed before further analyses.
 We fitted Binomial GLMs with linear predictor given by 
 \begin{linenomath*}\begin{align}
