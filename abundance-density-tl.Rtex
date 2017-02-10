@@ -749,12 +749,25 @@ dens1Means <- dens1Means %>% as.data.frame %>%
 
 # fit glms to each transmission value
 
-dens1Model <- dens1 %>%
-               dplyr::filter(nExtantDis > 0) %>%
-               mutate(invasion = as.numeric(nExtantDis == 2)) %>%
-               group_by(transmission) %>%
-               do(fit = glm(invasion ~ pop, data = ., family = 'binomial')) %>%
-               mutate(vary = 'colonySize')
+colonySizeModel   <- dens1 %>% 
+                       mutate(invasion = nExtantDis == 2 ) %>%
+                       mutate(ValueChange = log10(colonySize / median(colonySize))) %>%
+                       filter(nExtantDis != 0) %>%
+                       group_by(transmission) %>%
+                       do(glm(invasion ~ colonySizeScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE)) 
+
+colonySizePredictions <- dens1 %>% 
+                           mutate(invasion = nExtantDis == 2 ) %>%
+                           mutate(ValueChange = colonySize / median(colonySize)) %>%
+                           filter(nExtantDis != 0) %>%
+                           group_by(transmission) %>%
+                           do(augment(glm(invasion ~ log10(ValueChange), data = ., family = 'binomial'),
+                                      newdata = data.frame(ValueChange = seq(min(.$ValueChange), max(.$ValueChange), 
+                                                                                 length.out = 1000)),
+                                      type.predict = 'response')) %>%
+                           mutate(vary = 'colonySize')
+
+
 
 
 # Constant density, altered colony number
@@ -771,13 +784,27 @@ dens2Means <- dens2Means %>% as.data.frame %>%
                 cbind(., vary = 'colonyNumber',  binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
 
 # Fit glms to each transmission value
-dens2Model <- dens2 %>%
-               dplyr::filter(nExtantDis > 0) %>%
-               mutate(invasion = as.numeric(nExtantDis == 2)) %>%
-               group_by(transmission) %>%
-               do(fit = glm(invasion ~ pop, data = ., family = 'binomial')) %>%
-               mutate(vary = 'colonyNumber')
 
+colonyNumberModel <- dens2 %>% 
+                       mutate(invasion = nExtantDis == 2 ) %>%
+                       mutate(colonyNumberScale = scale(colonyNumber)[, 1]) %>%
+                       filter(nExtantDis != 0) %>%
+                       group_by(transmission) %>%
+                       do(glm(invasion ~ colonyNumberScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
+                       
+                       
+colonyNumberPredictions <- dens2 %>% 
+                             mutate(invasion = nExtantDis == 2 ) %>%
+                             mutate(ValueChange = colonyNumber / median(colonyNumber)) %>%
+                             filter(nExtantDis != 0) %>%
+                             group_by(transmission) %>%
+                             do(augment(glm(invasion ~ log10(ValueChange), data = ., family = 'binomial'),
+                                        newdata = data.frame(ValueChange = seq(min(.$ValueChange), max(.$ValueChange), 
+                                                                                   length.out = 1000)),
+                                        type.predict = 'response')) %>%
+                             mutate(vary = 'colonyNumber')
+
+                       
 # Constant population, altered area
 
 pop <- read.csv('Data/PopSims.csv') %>% dplyr::select(-X) %>% as.data.frame
@@ -791,19 +818,26 @@ popMeans <- pop %>%
 popMeans <- popMeans %>% as.data.frame %>%
                 cbind(., binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
 
-#popModels <- pop %>%
-#               mutate(invasion = as.numeric(nExtantDis == 2)) %>%
-#               group_by(transmission) %>%
-#               do(glm(.$invasion ~ .$dens, family = 'binomial') %>% tidy)
-
-
 # fit glms to each transmission value
-popModel <- pop %>%
-               dplyr::filter(nExtantDis > 0) %>%
-               mutate(invasion = as.numeric(nExtantDis == 2)) %>%
+
+areaModel <- pop %>% 
+               mutate(invasion = nExtantDis == 2 ) %>%
+               mutate(densScale = scale(dens)[, 1]) %>%
+               filter(nExtantDis != 0) %>%
                group_by(transmission) %>%
-               do(fit = glm(invasion ~ dens, data = ., family = binomial(link = logit))) %>%
-               mutate(vary = 'Density')
+               do(glm(invasion ~ densScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
+
+
+areaPredictions <- pop %>% 
+                     mutate(invasion = nExtantDis == 2 ) %>%
+                     mutate(ValueChange = dens / median(dens)) %>%
+                     filter(nExtantDis != 0) %>%
+                     group_by(transmission) %>%
+                     do(augment(glm(invasion ~ log10(ValueChange), data = ., family = 'binomial'),
+                                newdata = data.frame(ValueChange = seq(min(.$ValueChange), max(.$ValueChange), 
+                                                                           length.out = 1000)),
+                                type.predict = 'response')) %>%
+                     mutate(vary = 'Density')
 
 
 
@@ -873,6 +907,10 @@ Therefore, the only difference between these two sets of simulations was the fac
 
 
 
+
+
+
+
 %%begin.rcode predictModels
 
 # Predict separate glms for plotting
@@ -888,6 +926,7 @@ densPreds <- rbind(dens1Model, dens2Model) %>%
 
 
 %%end.rcode
+
 
 
 
@@ -910,6 +949,12 @@ valueChangeMeansTitle <- 'Comparison of the effect of colony size, number of gro
 
 %%end.rcode
 
+
+
+
+
+
+
 %%begin.rcode plotValueChangeMeans, fig.cap = valueChangeMeansCapt, fig.scap = valueChangeMeansTitle, out.width = '0.5\\textwidth', cache = FALSE, fig.height =  5
 
 # Convert to percentage change in density, colonysize or colony number.
@@ -926,55 +971,20 @@ d <- rbind(popMeans %>%
      )
 
 d$vary <- factor(d$vary, levels = unique(d$vary)[c(2, 3, 1)])
-
-# Refit all glms
-#   First convert all raw data to percentage change, then fit.
-
-
-percChange <- rbind(pop %>% 
-                      mutate(ValueChange = as.numeric(as.character(area))/median(as.numeric(as.character(area))), 
-                             invasion = as.numeric(nExtantDis == 2),
-                             vary = 'Density') %>%
-                      filter(nExtantDis > 0) %>%
-                      dplyr::select(ValueChange, transmission, invasion, vary),
-                    dens1 %>% 
-                      mutate(ValueChange = as.numeric(as.character(colonySize))/median(as.numeric(as.character(colonySize))), 
-                             invasion = as.numeric(nExtantDis == 2),
-                             vary = 'colonySize') %>%
-                      filter(nExtantDis > 0) %>%
-                      dplyr::select(ValueChange, transmission, invasion, vary),
-                    dens2 %>% 
-                      mutate(ValueChange = as.numeric(as.character(colonyNumber))/median(as.numeric(as.character(colonyNumber))), 
-                             invasion = as.numeric(nExtantDis == 2),
-                             vary = 'colonyNumber') %>%
-                      filter(nExtantDis > 0) %>%
-                      dplyr::select(ValueChange, transmission, invasion, vary)
-               )
-
-# Fit glms to value change data
-percChangeModels <- percChange %>%
-                      group_by(transmission, vary) %>%
-                      do(fit = glm(invasion ~ ValueChange, data = ., family = binomial(link = logit)))
-
-# Predict from glms for plotting
-
-percChangeNew <- seq(min(percChange$ValueChange), max(percChange$ValueChange), length.out = 200)
-
-percChangePreds <- percChangeModels %>%
-                       apply(., 1, 
-                     function(m) predict(m['fit'][[1]], newdata = data.frame(ValueChange = percChangeNew), type = 'response') %>%
-                                   data.frame(pred = ., ValueChange = percChangeNew, transmission = m$transmission, vary = m$vary)
-                   ) %>%
-                   do.call(rbind, .)
-
-
 d$transmission <- factor(d$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
+
+# Join predictions
+percChangePreds <- rbind(colonySizePredictions, colonyNumberPredictions, areaPredictions)
+
 percChangePreds$transmission <- factor(percChangePreds$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
 
+
+
+
 ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
-  geom_line(data = percChangePreds, aes(x = ValueChange, y = pred, colour = vary)) +
+  geom_line(data = percChangePreds, aes(x = ValueChange, y = .fitted, colour = vary)) +
   geom_errorbar(aes(ymin = lower, ymax = upper),
-                width = .01,
+                width = .04,
                 position = position_dodge(width = 0.02)) +
   geom_point(size = 2.1, position = position_dodge(width = 0.02)) +
   ylab('Prop. Invasions') +
@@ -999,47 +1009,7 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
 
 
 
-%%begin.rcode statTests 
 
-
-combDensModel <- rbind(dens1, dens2) %>% 
-                   mutate(invasion = nExtantDis == 2 ) %>%
-                   group_by(transmission) %>% 
-                   mutate(colonySize = scale(colonySize), 
-                          colonyNumber = scale(colonyNumber)) %>% 
-                   do(glm(invasion ~ colonySize + colonyNumber, data = ., family = binomial) %>% tidy)
-
-
-dens1 <- dens1 %>% 
-          mutate(invasion = nExtantDis == 2 ) %>%
-          mutate(colonySizeScale = scale(colonySize)[, 1]) %>%
-          filter(nExtantDis != 0)
-          
-dens2 <- dens2 %>% 
-           mutate(invasion = nExtantDis == 2 ) %>%
-           mutate(colonyNumberScale = scale(colonyNumber)[, 1]) %>%
-           filter(nExtantDis != 0)
-           
-pop   <- pop %>% 
-          mutate(invasion = nExtantDis == 2 ) %>%
-          mutate(areaScale = scale(area)[, 1]) %>%
-          filter(nExtantDis != 0)
-
-
-colonySizeModel   <- dens1 %>%
-                       group_by(transmission) %>%
-                       do(glm(invasion ~ colonySizeScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE)) 
-
-
-colonyNumberModel <- dens2 %>%
-                       group_by(transmission) %>%
-                       do(glm(invasion ~ colonyNumberScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
-                       
-areaModel         <- pop %>%
-                       group_by(transmission) %>%
-                       do(glm(invasion ~ areaScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
-
-%%end.rcode
 
 %%begin.rcode transMeansCapt
 
@@ -1080,6 +1050,10 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
 	theme(legend.position = 'bottom')
 
 %%end.rcode
+
+
+
+
 
 %%begin.rcode descriptive
 
