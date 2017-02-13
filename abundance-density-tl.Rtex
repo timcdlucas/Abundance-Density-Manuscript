@@ -1128,7 +1128,7 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 \captionsetup{width=0.9\textwidth}
 \caption[Regression results]{
 Regression results comparing effects of colony size, colony number and density.
-Coefficient estimates ($b$) and 95\% confidence intervals of each variable are from binomial GLM regressions with invasion as the dependent variable and all explanatory variables being standardised by dividing by the default parameter value.
+Coefficient estimates and 95\% confidence intervals of each variable are from binomial GLM regressions with invasion as the dependent variable and all explanatory variables being standardised by dividing by the default parameter value.
 Colony size and colony number were varied while keeping density equal while density was varied by changing range size while keeping population size equal.
 $p$ is for the test against the null hypothesis that $b = 0$.
 Results are given for three transmission values ($\beta$).
@@ -1141,7 +1141,7 @@ $\beta$ & \emph{Variable} & \emph{Estimate} & (95\% \emph{CI}) & $p$\\
 \midrule
 0.1   &    Colony Size   & \rinline{colonySizeModel$estimate[2]} & (\rinline{colonySizeModel$conf.low[2]}, \rinline{colonySizeModel$conf.high[2]}) & $< 10^{-4}$ \\
 &    Colony Number & \rinline{sprintf('%.2f', colonyNumberModel$estimate[2])} & (\rinline{colonyNumberModel$conf.low[2]}, \rinline{colonyNumberModel$conf.high[2]}) & \rinline{colonyNumberModel$p.value[2]} \\
-&    Density       & \rinline{sprintf('%.2f', areaModel$estimate[2])} & (\rinline{areaModel$conf.low[2]}, \rinline{areaModel$conf.high[2]}) & \rinline{sprintf('%.2f', areaModel$p.value[2])} \\[1em]
+&    Density       & \rinline{sprintf('%.2f', areaModel$estimate[2])} & (\rinline{areaModel$conf.low[2]}, \rinline{sprintf('%.2f', areaModel$conf.high[2])}) & \rinline{sprintf('%.2f', areaModel$p.value[2])} \\[1em]
   0.2   &    Colony Size   & \rinline{colonySizeModel$estimate[4]} & (\rinline{colonySizeModel$conf.low[4]}, \rinline{colonySizeModel$conf.high[4]}) & $< 10^{-4}$ \\
 &    Colony Number & \rinline{colonyNumberModel$estimate[4]} & (\rinline{colonyNumberModel$conf.low[4]}, \rinline{colonyNumberModel$conf.high[4]}) & \rinline{colonyNumberModel$p.value[4]} \\
 &    Density       & \rinline{areaModel$estimate[4]} & (\rinline{areaModel$conf.low[4]}, \rinline{areaModel$conf.high[4]}) & \rinline{areaModel$p.value[4]} \\[1em]
@@ -1158,7 +1158,7 @@ $\beta$ & \emph{Variable} & \emph{Estimate} & (95\% \emph{CI}) & $p$\\
 
 
 In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
-The number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: $b$ = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
+The number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: coefficient = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
 However all of the simulations where extinction of both pathogens occurred had either the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups (five groups, eight simulations).
 Results from these simulations were removed before further analyses.
 For each set of simulations, we fitted binomial GLMs with invasion of Pathogen 2 as the dependent variable.
