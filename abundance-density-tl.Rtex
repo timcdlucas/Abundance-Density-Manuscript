@@ -917,12 +917,9 @@ Therefore, the only difference between these two sets of simulations was the fac
 %%begin.rcode valueChangeMeansCapt
 
 valueChangeMeansCapt <- '
-Comparison of the effect of colony size, number of colonies and host density on probability of invasion.
+Comparison of the effect of colony size (green lines, squares), number of colonies (blue lines, circles) and host density (yellow lines, triangles) on probability of invasion.
 The $x$-axis shows the change ($\\times$0.25, 0.5, 1, 2 and $4$) in each of these factors  relative to the default value.
 Default values are: colony number = 20, colony size = 400 and density = 0.8 animals per km\\textsuperscript{2}.
-Blue lines, squares: population size is altered by changing colony size.
-Green lines, circles: population size is altered by changing  number of colonies.
-Yellow lines, triangles: population density is altered by changing range size.
 Each point is the mean of 100 simulations and bars are 95\\% confidence intervals.
 Curves are GLM regression fits.
 Relationships are shown separately for each transmission value, $\\beta$.
