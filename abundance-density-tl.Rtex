@@ -755,7 +755,7 @@ colonySizeModel   <- dens1 %>%
                        mutate(ValueChange = log10(colonySize / median(colonySize))) %>%
                        filter(nExtantDis != 0) %>%
                        group_by(transmission) %>%
-                       do(glm(invasion ~ colonySizeScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE)) 
+                       do(glm(invasion ~ ValueChange, data = ., family = 'binomial') %>% tidy(conf.int = TRUE)) 
 
 colonySizePredictions <- dens1 %>% 
                            mutate(invasion = nExtantDis == 2 ) %>%
@@ -788,10 +788,10 @@ dens2Means <- dens2 %>%
 
 colonyNumberModel <- dens2 %>% 
                        mutate(invasion = nExtantDis == 2 ) %>%
-                       mutate(colonyNumberScale = scale(colonyNumber)[, 1]) %>%
+                       mutate(ValueChange = log10(colonySize / median(colonySize))) %>%
                        filter(nExtantDis != 0) %>%
                        group_by(transmission) %>%
-                       do(glm(invasion ~ colonyNumberScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
+                       do(glm(invasion ~ ValueChange, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
                        
                        
 colonyNumberPredictions <- dens2 %>% 
@@ -822,10 +822,10 @@ popMeans <- pop %>%
 
 areaModel <- pop %>% 
                mutate(invasion = nExtantDis == 2 ) %>%
-               mutate(densScale = dens / median(dens)) %>%
+               mutate(ValueChange = log10(colonySize / median(colonySize))) %>%
                filter(nExtantDis != 0) %>%
                group_by(transmission) %>%
-               do(glm(invasion ~ densScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
+               do(glm(invasion ~ ValueChange, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
 
 
 areaPredictions <- pop %>% 
