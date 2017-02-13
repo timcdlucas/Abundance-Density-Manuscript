@@ -812,7 +812,7 @@ pop <- read.csv('Data/PopSims.csv') %>% dplyr::select(-X) %>% as.data.frame
 
 popMeans <- pop %>%
                 dplyr::filter(nExtantDis > 0) %>%
-                group_by(transmission, area) %>%
+                group_by(transmission, dens) %>%
                 summarise(success = sum(nExtantDis == 2), sampleSize = n()) %>%
                 ungroup %>%
                 cbind(., binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
@@ -943,7 +943,7 @@ valueChangeMeansTitle <- 'Comparison of the effect of colony size, number of gro
 # Convert to percentage change in density, colonysize or colony number.
 
 d <- rbind(popMeans %>% 
-             mutate(ValueChange = area/median(area), vary = 'Density') %>%
+             mutate(ValueChange = dens/median(dens), vary = 'Density') %>%
              dplyr::select(ValueChange, transmission, mean, lower, upper, vary),
            dens1Means %>% 
              mutate(ValueChange = colonySize/median(colonySize), vary = 'colonySize') %>%
@@ -968,8 +968,8 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
   geom_line(data = percChangePreds, aes(x = ValueChange, y = .fitted, colour = vary)) +
   geom_errorbar(aes(ymin = lower, ymax = upper),
                 width = .04,
-                position = position_dodge(width = 0.06)) +
-  geom_point(size = 2.1, position = position_dodge(width = 0.06)) +
+                position = position_dodge(width = 0.04)) +
+  geom_point(size = 2.1, position = position_dodge(width = 0.04)) +
   ylab('Prop. Invasions') +
   xlab('Amount Varied') +
   
@@ -1142,9 +1142,9 @@ $\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\% \emph{CI}) & $p$\\
 \midrule
 0.1   &    Colony Size   & \rinline{colonySizeModel$estimate[2]} & (\rinline{colonySizeModel$conf.low[2]}, \rinline{colonySizeModel$conf.high[2]}) & $< 10^{-4}$ \\
 &    Colony Number & \rinline{sprintf('%.2f', colonyNumberModel$estimate[2])} & (\rinline{colonyNumberModel$conf.low[2]}, \rinline{colonyNumberModel$conf.high[2]}) & \rinline{colonyNumberModel$p.value[2]} \\
-&    Density       & \rinline{areaModel$estimate[2]} & (\rinline{areaModel$conf.low[2]}, \rinline{areaModel$conf.high[2]}) & \rinline{areaModel$p.value[2]} \\[1em]
+&    Density       & \rinline{areaModel$estimate[2]} & (\rinline{areaModel$conf.low[2]}, \rinline{areaModel$conf.high[2]}) & \rinline{sprintf('%.2f', areaModel$p.value[2])} \\[1em]
   0.2   &    Colony Size   & \rinline{colonySizeModel$estimate[4]} & (\rinline{colonySizeModel$conf.low[4]}, \rinline{colonySizeModel$conf.high[4]}) & $< 10^{-4}$ \\
-&    Colony Number & \rinline{colonyNumberModel$estimate[4]} & (\rinline{colonyNumberModel$conf.low[4]}, \rinline{colonyNumberModel$conf.high[4]}) & $< 10^{-4}$ \\
+&    Colony Number & \rinline{colonyNumberModel$estimate[4]} & (\rinline{colonyNumberModel$conf.low[4]}, \rinline{colonyNumberModel$conf.high[4]}) & \rinline{colonyNumberModel$p.value[4]} \\
 &    Density       & \rinline{areaModel$estimate[4]} & (\rinline{areaModel$conf.low[4]}, \rinline{areaModel$conf.high[4]}) & \rinline{areaModel$p.value[4]} \\[1em]
 0.3   &    Colony Size   & \rinline{colonySizeModel$estimate[6]} & (\rinline{colonySizeModel$conf.low[6]}, \rinline{colonySizeModel$conf.high[6]}) & $< 10^{-4}$ \\
 &    Colony Number & \rinline{colonyNumberModel$estimate[6]} & (\rinline{colonyNumberModel$conf.low[6]}, \rinline{colonyNumberModel$conf.high[6]}) & $< 10^{-4}$  \\
