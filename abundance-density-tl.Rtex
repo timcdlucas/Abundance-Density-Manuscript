@@ -788,7 +788,7 @@ dens2Means <- dens2 %>%
 
 colonyNumberModel <- dens2 %>% 
                        mutate(invasion = nExtantDis == 2 ) %>%
-                       mutate(ValueChange = log10(colonySize / median(colonySize))) %>%
+                       mutate(ValueChange = log10(colonyNumber / median(colonyNumber))) %>%
                        filter(nExtantDis != 0) %>%
                        group_by(transmission) %>%
                        do(glm(invasion ~ ValueChange, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
@@ -822,7 +822,7 @@ popMeans <- pop %>%
 
 areaModel <- pop %>% 
                mutate(invasion = nExtantDis == 2 ) %>%
-               mutate(ValueChange = log10(colonySize / median(colonySize))) %>%
+               mutate(ValueChange = log10(dens / median(dens))) %>%
                filter(nExtantDis != 0) %>%
                group_by(transmission) %>%
                do(glm(invasion ~ ValueChange, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
@@ -924,7 +924,7 @@ Blue lines, squares: population size is altered by changing colony size.
 Green lines, circles: population size is altered by changing  number of colonies.
 Yellow lines, triangles: population density is altered by changing range size.
 Each point is the mean of 100 simulations and bars are 95\\% confidence intervals.
-Curves are simple logistic regression fits for each explanatory variable.
+Curves are GLM regression fits.
 Relationships are shown separately for each transmission value, $\\beta$.
 '
 
@@ -968,8 +968,8 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
   geom_line(data = percChangePreds, aes(x = ValueChange, y = .fitted, colour = vary)) +
   geom_errorbar(aes(ymin = lower, ymax = upper),
                 width = .04,
-                position = position_dodge(width = 0.02)) +
-  geom_point(size = 2.1, position = position_dodge(width = 0.02)) +
+                position = position_dodge(width = 0.06)) +
+  geom_point(size = 2.1, position = position_dodge(width = 0.06)) +
   ylab('Prop. Invasions') +
   xlab('Amount Varied') +
   
@@ -1129,7 +1129,7 @@ fewAllExtinct <- rbind(dens1, dens2, pop) %>%
 \captionsetup{width=0.9\textwidth}
 \caption[Regression results]{
 Regression results comparing effects of colony size, colony number and density.
-Coefficient estimates ($b$) and 95\% confidence intervals of each variable are from logistic regressions with invasion as the dependent variable and all explanatory variables being scaled and centred.
+Coefficient estimates ($b$) and 95\% confidence intervals of each variable are from binomial GLM regressions with invasion as the dependent variable and all explanatory variables being standardised by dividing by the default parameter value.
 Colony size and colony number were varied while keeping density equal while density was varied by changing range size while keeping population size equal.
 $p$ is for the test against the null hypothesis that $b = 0$.
 Results are given for three transmission values ($\beta$).
@@ -1158,19 +1158,15 @@ $\beta$ & \emph{Variable} & \emph{Estimate} ($b$) & (95\% \emph{CI}) & $p$\\
 \subsection{Statistical analysis}
 
 
-We combined the results from different simulations and fitted a logistic multipleregression model, centering and scaling the explanatory variables.
 In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
 The number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: $b$ = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
 However all of the simulations where extinction of both pathogens occurred had either the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups (five groups, eight simulations).
 Results from these simulations were removed before further analyses.
-We fitted Binomial GLMs with linear predictor given by 
-\begin{linenomath*}\begin{align}
-  \log\left( \frac{}{}\right) = b_1 d + b_2 n + b_3 m + c + \epsilon
-\end{align}\end{linenomath*}
-where $d, n$ and $m$ are density, colony size and number of groups, respectively, and $b_i$ are the regression coefficients. 
-$c$ is a fitted intercept and $\epsilon$ is a binomially distributed error term.
-To test the hypothesis that an increase in host population size creates a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density we compared the size (and 95\% confidence intervals) of $b_1$ to $b_2$ and $b_3$.
-To test the hypothesis that an increase in colony size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups we compared $b_2$ to $b_3$.
+For each set of simulations, we fitted binomial GLMs with invasion of Pathogen 2 as the dependent variable.
+To enable comparison between GLMs we divided the explanatory variables by their default values.
+The explanatory variables for all three sets of simulations therefore became the proportional change relative to the default parameter value, in the range 0.25 -- 4.
+To test the hypothesis that an increase in host population size created a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density we compared the size (and 95\% confidence intervals) of the regression coefficients of $m$ and $n$ to $d$.
+To test the hypothesis that an increase in colony size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups we compared regression coeffients of $m$ to $n$.
 
 
 
