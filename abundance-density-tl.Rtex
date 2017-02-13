@@ -911,23 +911,6 @@ Therefore, the only difference between these two sets of simulations was the fac
 
 
 
-%%begin.rcode predictModels
-
-# Predict separate glms for plotting
-
-popPred <- seq(min(dens2$pop), max(dens2$pop), length.out = 200)
-
-densPreds <- rbind(dens1Model, dens2Model) %>%
-               apply(., 1, 
-                 function(m) predict(m['fit'][[1]], newdata = data.frame(pop = popPred), type = 'response') %>%
-                               data.frame(pred = ., pop = popPred, transmission = m$transmission, vary = m$vary)
-               ) %>%
-               do.call(rbind, .)
-
-
-%%end.rcode
-
-
 
 
 
@@ -1028,13 +1011,50 @@ transMeansTitle <- 'Comparison of the probability of the affect of colony size a
 
 %%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.4\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.show = 'hide'
 
-d2 <- rbind(dens1Means, dens2Means)
+# Convert to percentage change in density, colonysize or colony number.
+
+d2 <- rbind(dens1Means %>% 
+             mutate(ValueChange = colonySize/median(colonySize), vary = 'colonySize') %>%
+             dplyr::select(pop, transmission, mean, lower, upper, vary),
+           dens2Means %>% 
+             mutate(ValueChange = colonyNumber/median(colonyNumber), vary = 'colonyNumber') %>%
+             dplyr::select(pop, transmission, mean, lower, upper, vary)
+     )
+
+d2$vary <- factor(d2$vary, levels = unique(d2$vary)[c(2, 3, 1)])
 d2$transmission <- factor(d2$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
-densPreds$transmission <- factor(densPreds$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
+
+# Join predictions
+
+
+colonySizePredictions2 <- dens1 %>% 
+                             mutate(invasion = nExtantDis == 2 ) %>%
+                             filter(nExtantDis != 0) %>%
+                             group_by(transmission) %>%
+                             do(augment(glm(invasion ~ pop, data = ., family = 'binomial'),
+                                        newdata = data.frame(pop = seq(min(.$pop), max(.$pop), 
+                                                                                   length.out = 1000)),
+                                        type.predict = 'response')) %>%
+                             mutate(vary = 'colonySize')
+                       
+colonyNumberPredictions2 <- dens2 %>% 
+                             mutate(invasion = nExtantDis == 2 ) %>%
+                             filter(nExtantDis != 0) %>%
+                             group_by(transmission) %>%
+                             do(augment(glm(invasion ~ pop, data = ., family = 'binomial'),
+                                        newdata = data.frame(pop = seq(min(.$pop), max(.$pop), 
+                                                                                   length.out = 1000)),
+                                        type.predict = 'response')) %>%
+                             mutate(vary = 'colonyNumber')
+
+percChangePreds2 <- rbind(colonySizePredictions2, colonyNumberPredictions2)
+
+percChangePreds2$transmission <- factor(percChangePreds2$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
+
 
 
 ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
-  geom_line(data = densPreds, aes(x = pop, y = pred, colour = vary)) +
+  geom_line(data = percChangePreds2, aes(x = pop, y = .fitted, colour = vary)) +
   geom_point() +
   geom_errorbar(aes(ymin = lower, ymax = upper),
               width=.2) +
@@ -1042,7 +1062,7 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
   xlab('Population size') +
   ylim(0, 1) +
   scale_colour_manual(name = "Focal Pop. factor", 
-                      labels = c('Colony Size', 'Colony Number'), 
+                      labels = c('Colony Number', 'Colony Size'), 
                       values = pokepal('Swampert', spread = 3)[2:1]) +
   scale_y_continuous(breaks = c(0, 0.5, 1), labels = c('0.0', '0.5', '1.0')) +
   scale_x_continuous(limits = c(0, 32000), 
