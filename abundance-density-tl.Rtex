@@ -542,7 +542,7 @@ When Pathogen~2 is introduced, its rate of change can be written as
 \end{align}
 which is greater than zero when $\alpha\left( \Lambda R_0 - \mu \right) I_2 > 0$ (with $R_0 = \frac{\beta N }{\gamma + \mu}$ being the basic reproduction number and being equal for the two identical pathogens).
 $R_0$ is greater than one (as proved by the fact that Pathogen~1 is endemic) and $I_2$ is positive when Pathogen~2 is first introduced by definition.
-As $\Lambda = \mu$ due to the assumption of a stable population size,  $\Lambda R_0 - \mu \right$ is also greater than one.
+As $\Lambda = \mu$ due to the assumption of a stable population size,  $\Lambda R_0 - \mu$ is also greater than one.
 Therefore, this inequality holds as long as $\alpha$ is greater than zero.
 That is, as long as cross-immunity is not complete, Pathogen~2 will always invade in this deterministic model. 
 
