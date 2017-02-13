@@ -958,6 +958,8 @@ d$transmission <- factor(d$transmission, labels = c('beta == 0.1', '0.2', '0.3')
 
 # Join predictions
 percChangePreds <- rbind(colonySizePredictions, colonyNumberPredictions, areaPredictions)
+percChangePreds$vary <- factor(percChangePreds$vary, levels = levels(d$vary))
+
 
 percChangePreds$transmission <- factor(percChangePreds$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
 
