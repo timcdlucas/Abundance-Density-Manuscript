@@ -252,15 +252,13 @@ Finally, recovery from any infectious class occurs at a rate $\gamma$
 % todo Align equal signs across groups
 % http://tex.stackexchange.com/questions/11855/alignment-of-equals-sign-in-multiple-align-environments
 
-\subsection{Model 1}
 
 We can study the model analytically if we restrict the population to a single subpopulation.
 We first study the endemic pathogen. 
-For now we will simplify the vital dynamics such that births and deaths are included in a single population growth rate parameters $g$ with $g = 1$ given the constant population size.
-We then have a typical SIR model.
+We then have a typical SIR model with vital dynamics \cite{Kermack1932}.
 
 \begin{align}
-\frac{dS}{dt} & =  g n - \beta S I_1,  \label{smodel1}\\
+\frac{dS}{dt} & =  \Lambda n - \mu S -  \beta S I_1  \label{smodel2}.
 \frac{dI_1}{dt} & = \beta S I_1 - (\gamma + \mu) I_1, \\
 \frac{dR}{dt} & = \gamma I_1 - \mu R.
 \end{align}
@@ -274,12 +272,12 @@ To find the equilibrium number of susceptibles, $S^\ast$, we set $\frac{dI_1}{dt
 S^\ast &= \frac{\gamma + \mu}{\beta} \label{sstar}.
 \end{align}
 
-To find $I^\ast$ we substitute Equation \ref{sstar} into Equation \ref{smodel1} and set $\frac{dI_1}{dt} = 0$ giving
+To find $I^\ast$ we substitute Equation \ref{sstar} into Equation \ref{smodel2} and set $\frac{dI_1}{dt} = 0$ giving
 
 \begin{align}
-gn &= \beta S^\ast I_1^\ast,\\
-gn &= (\gamma + \mu) I_1^\ast,\\
-I_1^\ast &= \frac{g n}{\gamma + \mu} \label{istar1}. 
+0 = & \Lambda n - \mu S^\ast -  \beta S^\ast I_1^\ast , \\
+0 = & \Lambda n - \frac{\mu \left(\gamma + \mu\right)}{\beta} -   \left(\gamma + \mu\right)I_1^\ast , \\
+I_1^\ast = & \frac{\Lambda n}{\gamma + \mu} - \frac{\mu }{\beta} \label{istar}.
 \end{align}
 
 \subsubsection{Second pathogen}
@@ -290,45 +288,11 @@ If we assume that Pathogen 2 is introduced when the endemic pathogen is at equil
 \frac{dI_2}{dt} & = \beta S^\ast I_2 + \alpha \beta I_1^\ast I_2 - (\gamma + \mu) I_2 \label{path2I}
 \end{align}
 
-where $\beta S^\ast I_2$ is the number of infections,  $ \alpha \beta I_1^\ast I_2$ is the number of coinfections and $ (\gamma + \mu) I_2 $ is the number of deaths of recoveries. 
+where $\beta S^\ast I_2$ is the number of infections,  $ \alpha \beta I_1^\ast I_2$ is the number of coinfections and $ (\gamma + \mu) I_2 $ is the number of deaths and recoveries. 
 $I_2$ is therefore the number of individuals infected with Pathogen 2 regardless of whether they are infected with Pathogen 1.
 In this sense it is the combined size of classes $I_2$ and $I_12$  as used in the stochastic model (Section \ref{sup:stochmodel}).
 For simplicity here we simply label this group $I_2$.
 Substituting in Equations \ref{sstar} and \ref{istar1}, and noting that $R_0 = \frac{\beta N }{\gamma + \mu}$  we get 
-
-\begin{align}
-\frac{dI_2}{dt} & =  (\gamma + \mu) I_2 + \frac{\alpha \beta g n}{\gamma + \mu} I_2 - (\gamma + \mu) I_2, \\
-\frac{dI_2}{dt} & =  \frac{\alpha \beta g n}{\gamma + \mu} I_2,\\
-\frac{dI_2}{dt} & =  \alpha g R_0 I_2.
-\end{align}
-
-$R_0$ is greater than one (as proved by the fact that Pathogen 1 is endemic), $g$ equals one and $I_2$ is positive when Pathogen 2 is first introduced, 
-Therefore, $\frac{dI_2}{dt}$ is greater than zero as long as $\alpha$ is greater than zero.
-
-
-
-
-
-
-
-\subsection{Model 2}
-
-A deterministic model with vital dynamics that more accurately matches the simulation model has seperate births and deaths such that
-\begin{align}
-\frac{dS}{dt} & =  \Lambda n - \mu S -  \beta S I_1  \label{smodel2}.
-\end{align}
-
-We then find $I^\ast$ by substituting Equation \ref{sstar} into Equation \ref{smodel2} and set $\frac{dS}{dt} = 0$ giving
-
-\begin{align}
-0 = & \Lambda n - \mu S^\ast -  \beta S^\ast I_1^\ast , \\
-0 = & \Lambda n - \frac{\mu \left(\gamma + \mu\right)}{\beta} -   \left(\gamma + \mu\right)I_1^\ast , \\
-I_1^\ast = & \frac{\Lambda n}{\gamma + \mu} - \frac{\mu }{\beta} \label{istar2}.
-\end{align}
-
-\subsubsection{Second pathogen}
-
-Substituting Equations \ref{sstar} and \ref{istar2} into Equation \ref{path2I} we get 
 
 \begin{align}
 \frac{dI_2}{dt} & =  (\gamma + \mu) I_2 + \alpha \beta \left( \frac{\Lambda n}{\gamma + \mu} - \frac{\mu}{\beta} \right) I_2 - (\gamma + \mu) I_2, \\
@@ -342,8 +306,14 @@ This is greater than zero when
 \alpha\left( \Lambda R_0 - \mu \right) I_2 > 0
 \end{align}
 
-As $I_2$ is positive, this is greater than zero when $ \Lambda R_0 - \mu > 0$. 
-As $\Lambda = \mu$ due to the assumption of stable population size, this is true as long as $R_0 > 1$. 
+As $I_2$ is positive, this is greater than zero when $ \Lambda R_0 - \mu > 0$ and $\alpha > 0$. 
+As $\Lambda = \mu$ due to the assumption of stable population size, $ \Lambda R_0 - \mu > 0$ is true as long as $R_0 > 1$. 
+$R_0$ is greater than one (as proved by the fact that Pathogen 1 is endemic), 
+Therefore, $\frac{dI_2}{dt}$ is greater than zero as long as $\alpha$ is greater than zero.
+
+
+
+
 
 
 \clearpage

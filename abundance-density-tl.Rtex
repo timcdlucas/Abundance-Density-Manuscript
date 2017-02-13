@@ -534,14 +534,15 @@ The code is available as an \emph{R} package on GitHub \cite{metapopepi}.
 \label{s:determ}
 
 We can get some initial insights into the behaviour of the system by examining a simplified, deterministic model with a single subpopulation (for details see Supplementary Methods~S2).
-If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\beta g n}{\gamma + \mu}$ where $g$ is the population growth rate (here $g = 1$ as the population size is constant).
+If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with vital dynamics \cite{Kermack1932} with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\Lambda n}{\gamma + \mu} - \frac{\mu }{\beta}$.
 When Pathogen~2 is introduced, its rate of change can be written as
 
 \begin{align}
-\frac{dI_2}{dt} = \beta S^\ast I_2 + \alpha\beta I_1^\ast I_2 - (\mu + \gamma)I_2  
+\frac{dI_2}{dt} & = \beta S^\ast I_2 + \alpha \beta I_1^\ast I_2 - (\gamma + \mu) I_2 \label{path2I}
 \end{align}
-which is greater than zero when $\frac{\alpha\beta g n}{\gamma + \mu} I_2 > 0$ or $\alpha g R_0 I_2 > 0$ (with $R_0$ being the basic reproduction number and being equal for the two identical pathogens).
-$R_0$ is greater than one (as proved by the fact that Pathogen~1 is endemic), $g$ equals one and $I_2$ is positive when Pathogen~2 is first introduced.
+which is greater than zero when $\alpha\left( \Lambda R_0 - \mu \right) I_2 > 0$ (with $R_0 = \frac{\beta N }{\gamma + \mu}$ being the basic reproduction number and being equal for the two identical pathogens).
+$R_0$ is greater than one (as proved by the fact that Pathogen~1 is endemic) and $I_2$ is positive when Pathogen~2 is first introduced by definition.
+As $\Lambda = \mu$ due to the assumption of a stable population size,  $\Lambda R_0 - \mu \right$ is also greater than one.
 Therefore, this inequality holds as long as $\alpha$ is greater than zero.
 That is, as long as cross-immunity is not complete, Pathogen~2 will always invade in this deterministic model. 
 
@@ -741,11 +742,11 @@ dens1 <- read.csv(text = rmerrors) %>%
 dens1Means <- dens1 %>%
                 dplyr::filter(nExtantDis > 0) %>%
                 group_by(transmission, colonySize, colonyNumber) %>%
-                summarise(success = sum(nExtantDis == 2), sampleSize = n(), pop = mean(as.numeric(as.character(pop))))
-
-
-dens1Means <- dens1Means %>% as.data.frame %>%
+                summarise(success = sum(nExtantDis == 2), sampleSize = n(), pop = mean(pop)) %>%
+                ungroup %>% 
                 cbind(., vary = 'colonySize', binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
+
+
 
 # fit glms to each transmission value
 
@@ -777,11 +778,11 @@ dens2 <- read.csv('Data/Dens2Sims.csv') %>% dplyr::select(-X) %>% as.data.frame
 dens2Means <- dens2 %>%
                 dplyr::filter(nExtantDis > 0) %>%
                 group_by(transmission, colonySize, colonyNumber) %>%
-                summarise(success = sum(nExtantDis == 2), sampleSize = n(), pop = mean(as.numeric(as.character(pop))))
-
-
-dens2Means <- dens2Means %>% as.data.frame %>%
+                summarise(success = sum(nExtantDis == 2), sampleSize = n(), pop = mean(pop)) %>% 
+                ungroup %>%
                 cbind(., vary = 'colonyNumber',  binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
+
+
 
 # Fit glms to each transmission value
 
@@ -812,17 +813,16 @@ pop <- read.csv('Data/PopSims.csv') %>% dplyr::select(-X) %>% as.data.frame
 popMeans <- pop %>%
                 dplyr::filter(nExtantDis > 0) %>%
                 group_by(transmission, area) %>%
-                summarise(success = sum(nExtantDis == 2), sampleSize = n())
-
-
-popMeans <- popMeans %>% as.data.frame %>%
+                summarise(success = sum(nExtantDis == 2), sampleSize = n()) %>%
+                ungroup %>%
                 cbind(., binom.confint(.$success, .$sampleSize, conf.level = 0.95, methods = "exact"))
+
 
 # fit glms to each transmission value
 
 areaModel <- pop %>% 
                mutate(invasion = nExtantDis == 2 ) %>%
-               mutate(densScale = scale(dens)[, 1]) %>%
+               mutate(densScale = dens / median(dens)) %>%
                filter(nExtantDis != 0) %>%
                group_by(transmission) %>%
                do(glm(invasion ~ densScale, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
@@ -960,13 +960,13 @@ valueChangeMeansTitle <- 'Comparison of the effect of colony size, number of gro
 # Convert to percentage change in density, colonysize or colony number.
 
 d <- rbind(popMeans %>% 
-             mutate(ValueChange = as.numeric(as.character(area))/median(as.numeric(as.character(area))), vary = 'Density') %>%
+             mutate(ValueChange = area/median(area), vary = 'Density') %>%
              dplyr::select(ValueChange, transmission, mean, lower, upper, vary),
            dens1Means %>% 
-             mutate(ValueChange = as.numeric(as.character(colonySize))/median(as.numeric(as.character(colonySize))), vary = 'colonySize') %>%
+             mutate(ValueChange = colonySize/median(colonySize), vary = 'colonySize') %>%
              dplyr::select(ValueChange, transmission, mean, lower, upper, vary),
            dens2Means %>% 
-             mutate(ValueChange = as.numeric(as.character(colonyNumber))/median(as.numeric(as.character(colonyNumber))), vary = 'colonyNumber') %>%
+             mutate(ValueChange = colonyNumber/median(colonyNumber), vary = 'colonyNumber') %>%
              dplyr::select(ValueChange, transmission, mean, lower, upper, vary)
      )
 
@@ -989,7 +989,7 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
   geom_point(size = 2.1, position = position_dodge(width = 0.02)) +
   ylab('Prop. Invasions') +
   xlab('Amount Varied') +
-  ylim(0, 1) +
+  
   scale_colour_poke(name = 'Focal Population Factor', 
                     labels = c( 'Colony size', 'Number of colonies', 'Host density'),
                     pokemon = 'oddish',
@@ -997,7 +997,9 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
   scale_shape_manual(name = 'Focal Population Factor', 
                      labels = c( 'Colony size', 'Number of colonies', 'Host density'),
 										 values = 15:17) +
-  scale_y_continuous(breaks = c(0, 0.5, 1), labels = c('0.0', '0.5', '1.0')) +
+  scale_y_continuous(breaks = c(0, 0.5, 1), 
+                     labels = c('0.0', '0.5', '1.0'),
+                     limits = c(0, 1)) +
   scale_x_continuous(breaks = c(0.25, 0.5, 1, 2, 4), 
                      labels = c(0.25, 0.5, 1, 2, 4), 
                      trans = 'log10') +
