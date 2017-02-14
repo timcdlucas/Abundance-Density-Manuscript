@@ -1226,22 +1226,22 @@ $\beta$ & \emph{Variable} & \emph{Estimate} & (95\% \emph{CI}) & $p$\\
 
 %\tmpsection{Restate results}
 
-Overall, our results suggest that population size promotes pathogen richness significantly more than host density does in the context of metapopulations or group living.
+Overall, our results suggest that population size promotes pathogen richness considerably more than host density does in the context of metapopulations or group living.
 Furthermore, the results suggest that the most important component of population size is colony size; a large population made up of large groups rather than many, small groups promotes pathogen invasion to the greatest degree.
 These results lead to a number of other conclusions.
 All else being equal, increasing range size (with density remaining constant) will not strongly increase pathogen richness unless the increased range size promotes larger groups.
 Furthermore, social species that live in large groups are likely to harbour more pathogen species, even if the larger groups require more space and therefore dispersal between groups is reduced.
-The results suggest that, for related, strongly competing strains, the factor that most strongly allows new pathogens to invade is the number of susceptible individuals in the local group.
+The results also suggest that, for related, strongly competing strains, the factor that most strongly allows new pathogens to invade is the number of susceptible individuals in the local group.
 As long as there are enough susceptible individuals that the new pathogen species does not go extinct during the stochastic, early stages of the epidemic, the new pathogen will persist.
 This is explicitely shown by the deterministic model.
 In the stochasic model, dispersal is a very slow process compared to infection, and therefore the global pool of susceptibles is largely unimportant. 
 This is probably why increasing the number of groups did not increase pathogen invasion rate as quickly as the size of a colony did.
-The difference in size between these two effects might decrease in systems with higher dispersal rates.
-However, at very high dispersal rates, the population will be effectively unstructured and therefore changes in population structure will again have no affect on pathogen competition; it seems likely that population structure will be most important at intermediate dispersal rates.
-Similarly, the global host density of the species had little effect on pathogen invasion rate.
-In these simulations, increasing density without increasing population size was only achieved by reducing range size; this simply increased the number of connections between groups in the metapopulation network.
-This, in turn, increased the pool of susceptibles that were could be reached by one dispersal event of the invading pathogen.
-However, again, this effect was very weak compared to the strong changes in local disease dynamics caused by increasing colony size.
+%The difference in size between these two effects might decrease in systems with higher dispersal rates.
+%However, at very high dispersal rates, the population will be effectively unstructured and therefore changes in population structure will again have no affect on pathogen competition; it seems likely that population structure will be most important at intermediate dispersal rates.
+%Similarly, the global host density of the species had little effect on pathogen invasion rate.
+%In these simulations, increasing density without increasing population size was only achieved by reducing range size; this simply increased the number of connections between groups in the metapopulation network.
+%This, in turn, increased the pool of susceptibles that were could be reached by one dispersal event of the invading pathogen.
+%However, again, this effect was very weak compared to the strong changes in local disease dynamics caused by increasing colony size.
 
 
 % \tmpsection{Only two pathogens, direct transmission}
@@ -1250,7 +1250,7 @@ This study is limited to one mechanism by which pathogen richness can be increas
 We also restrict outselves to the context of competition between two pathogens in a social host species.
 As the pathogen modelled here is directly transmitted there is no transmission between individuals in seperate subpopulations.
 Infection via shared food sources or contact between individuals from different subpopulations would act to reduce population structure.
-As above, if there is high rates of infection between subpopulations, the population becomes effectively unstructured and changes to the underlying metapopulation will have no affect on pathogen competition.
+As above, if there is high rates of infection between subpopulations, the population becomes effectively unstructured and changes to the underlying metapopulation will have no effect on pathogen competition.
 However, these alternate transmission routes are likely to be more directly density dependent.
 Further modelling would be required to examine whether the results here would change with the inclusion of alternate transmission routes.
 However, only empirical studies would be able to indicate the relative importance of these different transmission routes in wild populations.
@@ -1263,8 +1263,8 @@ However, only empirical studies would be able to indicate the relative importanc
 Many comparative studies measure some aspect of a species population size or structure, yet it is rarely discussed how these are related.
 Instead most studies use the data that are available, without considering \emph{a priori} how the explanatory variables are causally related (statistical correlations between explanatory variables are however often handled appropriately).
 For example, host density is often used in studies \cite{morand1998density, lindenfors2007parasite, nunn2003comparative, arneberg2002host} yet density is directly associated with population size.
-Our results suggest that it is in fact population size that is important (in the context of social species as studied here) and previous authors have suggested it is the more natural descriptor of population size \cite{begon2002clarification}
-Therefore, density is likely acting as a proxy for population size in these comparative studies.
+Our results suggest that it is in fact population size that is important (in the context of social species as studied here) and previous authors have suggested it is the more natural descriptor of population size \cite{begon2002clarification}.
+Therefore, density could be acting as a proxy for population size in these comparative studies.
 These causal relationships between population factors should be considered more carefully in future comparative studies.
 Our results also suggest that host range size does not promote pathogen richness, yet a number of studies have found evidence of this relationship \cite{kamiya2014determines, nunn2003comparative}.
 This contradiction suggests that either the relationship found in comparative studies is in fact due to a correlation with another factor, or that mechanisms other than probability of invasion of new pathogens (as studied here) are important.
@@ -1305,7 +1305,7 @@ TCDL, HMH and KEJ all helped design the study.
 TCDL drafted the manuscript
 TCDL, HMH and KEJ all edited the manuscript and gave final approval for publication.
 
-\section*{Acknlowledgements}
+\section*{Acknowledgements}
 We thank Andy Fenton and David Murrell for comments on the manuscript and help with the analytical model. 
 The Dynamic Drivers of Disease in Africa Consortium, NERC project no. NE-J001570-1 was funded with support from the Ecosystem Services for Poverty Alleviation Programme (ESPA). 
 The ESPA programme is funded by the Department for International Development (DFID), the Economic and Social Research Council (ESRC) and the Natural Environment Research Council (NERC)
