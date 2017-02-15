@@ -625,7 +625,7 @@ transMeansCapt <- '
 Comparison of the effect of host population size on probability of invasion when population size is altered by changing colony size or colony number.
 Relationships are shown separately for each transmission value, $\\beta$.
 It can be seen that changes in colony size give a much greater increase in invasion probability than changes in colony number.
-Note that this is the same data as Figure~\\ref{fig:plotValueChangeMeans} but with the $x$-axis scaled by population size, rather than relative parameter change.
+Note that this is the same data as Figure~3 but with the $x$-axis scaled by population size, rather than relative parameter change.
 '
 
 transMeansTitle <- 'Comparison of the probability of the affect of colony size and number of groups on probability of invasion'
