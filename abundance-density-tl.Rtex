@@ -227,12 +227,12 @@ Pathogen competition, zoonotic disease, metapopulations, host pathogen richness,
 % While density been studied, population abundance has not despite being a fundementall characteristic.
 
 
-Zoonotic diseases are a major source of human infectious disease \cite{jones2008global, woolhouse2006host, taylor2001risk}. 
+Zoonotic diseases are a major source of human infectious disease \cite{jones2008global, taylor2001risk}. 
 The chance that a new zoonotic disease will come from a particular reservoir-host depends on a number of factors including the number of pathogen species it carries \cite{wolfe2000deforestation}. 
 Much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity, kamiya2014determines, luis2013comparison}. 
 Many empirical, comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}, but factors related to reservoir-host population biology are also expected to affect disease dynamics and therefore affect pathogen richness. 
-Population-level traits that have already been shown to correlate with pathogen richness include: increased host density \cite{morand1998density, kamiya2014determines, lindenfors2007parasite, nunn2003comparative, arneberg2002host}, increased range size \cite{lindenfors2007parasite, nunn2003comparative, turmelle2009correlates, huang2015parasite, kamiya2014determines} and increased population structure \cite{maganga2014bat, turmelle2009correlates}.
-Other traits such as group size have been well studied but results have been equivocal \cite{vitone2004body, gay2014parasite, ezenwa2006host, rifkin2012animals, nunn2003comparative}.
+Population-level traits that have already been shown to correlate with pathogen richness include: increased host density \cite{morand1998density, kamiya2014determines, nunn2003comparative}, increased range size \cite{nunn2003comparative, turmelle2009correlates, kamiya2014determines} and increased population structure \cite{maganga2014bat, turmelle2009correlates}.
+Other traits such as group size have been well studied but results have been equivocal \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative}.
 However, some important population-level traits, such as population size, have not been included in comparative analyses despite it being the natural way to describe epidemiological populations \cite{begon2002clarification}.
 
 %4. then talk about the limitations of taking a comparative approach 
@@ -241,7 +241,7 @@ Collinearity between explanatory variables is a common problem in correlative st
 However, this issue is exacerbated when there are clear, causal relationships between explanatory variables.
 There are two particularly clear relationships between the population-level factors associated with pathogen richness.
 Firstly, host density, $d$, host population size, $N$, and geographic range size, $a$, are, by definition, linked by $d = N / a$ (see Table~S1 for all parameters used).
-Furthermore, the relationship $N \propto a$ has broad empirical support \cite{blackburn2006variations, borregaard2010causality}.
+Furthermore, the relationship $N \propto a$ has broad empirical support \cite{blackburn2006variations}.
 Secondly, host population size can be decomposed into two components, the number of groups, $m$, and the average size of a group, $n$, with $N = mn$.
 %While less clear, geographic range size and host population structure are also related.
 Therefore, correlative comparative studies will be especially poor at identifying which, if any, of these factors are causally related with pathogen richness.
@@ -255,7 +255,7 @@ Therefore, only by knowing which of these interrelated factors control pathogen 
 %The alternative is mechanistic models.
 Mechanistic models provide one method for comparing the importance of intrinsically related factors and can provide a deeper understanding of the system than correlative approaches.
 Theoretical studies have established that a number of host population factors are important for epidemiological dynamics generally and for the maintenance of pathogen richness specifically.
-Host density and structure are well established as having central roles in pathogen dynamics \cite{colizza2007invasion, barthelemy2010fluctuation, wu2013threshold, may1979population, anderson1979population, webber2016sociality}.
+Host density and structure are well established as having central roles in pathogen dynamics \cite{colizza2007invasion, may1979population, anderson1979population}.
 However, it has been noted that host population size is a more natural measure than population density and that particularly in comparative settings, population size should be preferred \cite{begon2002clarification}.
 Host group size is also known to strongly affect disease dynamics with disease spreading more quickly through populations made up of larger groups \cite{colizza2007invasion}.
 Fewer studies specifically study how these factors affect pathogen coexistence.
@@ -645,7 +645,7 @@ Infection and coinfection were assumed to cause no extra mortality as for a numb
 The population is modelled as a metapopulation, being divided into a number of subpopulations (colonies).
 This model is an intermediate level of complexity between fully-mixed populations and contact networks.
 There is ample evidence that bat populations are structured to some extent.
-This evidence comes from the existence of subspecies, measurements of genetic dissimilarity and ecological studies \cite{kerth2011bats, mccracken1981social, burns2014correlates, wilson2005mammal}.
+This evidence comes from the existence of subspecies, measurements of genetic dissimilarity and ecological studies \cite{kerth2011bats, mccracken1981social, burns2014correlates}.
 Therefore a fully mixed population is a large oversimplification.
 However, trying to study the contact network relies on detailed knowledge of individual behaviour which is rarely available.		
 The metapopulation is modelled as a network with colonies being nodes and dispersal between colonies being indicated by edges (Figure~\ref{fig:colonyNetworkPlots}A--D).
@@ -1171,7 +1171,7 @@ The deterministic model showed that Pathogen~2 can invade even in a single subpo
 In the stochastic simulations, increasing either colony size or the number of groups increased the probability of invasion but this effect was  stronger for colony size (Figure~\ref{fig:plotValueChangeMeans}, Figure~S2, Table~\ref{t:regrCoefs}).
 The 95\% confidence intervals of regression coefficients for colony size do not overlap those for number of colonies for the simulations with $\beta = 0.2$ or $0.3$ but the confidence intervals do overlap for the simulations where $\beta = 0.1$.
 
-At the default parameter settings, the probability of invasion and persistence of the second pathogen, $P(I)$,  was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S2--4).
+At the default parameter settings, the probability of invasion and persistence of the second pathogen was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S2--4).
 These proportions significantly increased with transmission rate (GLM: coefficient = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
 
 \begin{table}
@@ -1235,7 +1235,7 @@ In the stochasic model, dispersal is a very slow process compared to infection, 
 This is probably why increasing the number of groups did not increase pathogen invasion rate as quickly as the size of a colony did.
 The negative association between density and invasion probability at $\beta = 0.3$ is unexpected.
 The small size of the estimated coefficient, the marginal p-value and the lack of a consistent relationship at other $\beta$ values means we expect that this is not a real effect.
-However, given that increased density affects disease dynamics by decreasing population structure, this negative relationship does fit with studies that suggest that population structure should allow pathogen coexistence \cite{maganga2014bat, turmelle2009correlates, poletto2015characterising, allen2004sis}
+However, given that increased density affects disease dynamics by decreasing population structure, this negative relationship does fit with studies that suggest that population structure should allow pathogen coexistence \cite{maganga2014bat, turmelle2009correlates, allen2004sis}
 
 %The difference in size between these two effects might decrease in systems with higher dispersal rates.
 %However, at very high dispersal rates, the population will be effectively unstructured and therefore changes in population structure will again have no affect on pathogen competition; it seems likely that population structure will be most important at intermediate dispersal rates.
@@ -1263,14 +1263,12 @@ However, only empirical studies would be able to indicate the relative importanc
 
 Many comparative studies measure some aspect of a species population size or structure, yet it is rarely discussed how these are related.
 Instead most studies use the data that are available, without considering \emph{a priori} how the explanatory variables are causally related (statistical correlations between explanatory variables are however often handled appropriately).
-For example, host density is often used in studies \cite{morand1998density, lindenfors2007parasite, nunn2003comparative, arneberg2002host} yet density is directly associated with population size.
+For example, host density is often used in studies \cite{morand1998density, lindenfors2007parasite, nunn2003comparative} yet density is directly associated with population size.
 Our results suggest that it is in fact population size that is important (in the context of social species as studied here) and previous authors have suggested it is the more natural descriptor of population size \cite{begon2002clarification}.
 Therefore, density could be acting as a proxy for population size in these comparative studies.
 These causal relationships between population factors should be considered more carefully in future comparative studies.
 Our results also suggest that host range size does not promote pathogen richness, yet a number of studies have found evidence of this relationship \cite{kamiya2014determines, nunn2003comparative}.
-This contradiction suggests that either the relationship found in comparative studies is in fact due to a correlation with another factor, or that mechanisms other than probability of invasion of new pathogens (as studied here) are important.
-The studies that have specifically tested the effect of group size have in fact found both positive \cite{vitone2004body} and negative associations \cite{gay2014parasite} or no relationship \cite{ezenwa2006host}.
-A Meta-analysis suggested that the relationship between social group size and pathogen richness is weak \cite{rifkin2012animals}.
+Studies have suggested that the relationship between social group size and pathogen richness is weak \cite{rifkin2012animals, vitone2004body, gay2014parasite}.
 However, we have found that group size is the most important population factor.
 This suggests that the mechanism studied here --- invasion of recently evolved pathogens --- may not be the major mechanism by which pathogen richness is created in wild populations.
 
@@ -1280,12 +1278,12 @@ This suggests that the mechanism studied here --- invasion of recently evolved p
 %\subsection{Global change}
 
 It is clear that many species are suffering strong population changes due to global change \cite{thomas2004extinction}.
-However these changes might affect range size \cite{thomas2004extinction}, population size \cite{craigie2010large}, population connectivity \cite{wasserman2013population, rivera2015habitat, fonturbel2014forest} or group size \cite{lehmann2010apes, zunino2007habitat, manor2003impact, atwood2006influence} to different extents.
+However these changes might affect range size \cite{thomas2004extinction}, population size \cite{craigie2010large}, population connectivity \cite{rivera2015habitat, fonturbel2014forest} or group size \cite{lehmann2010apes, atwood2006influence} to different extents.
+However, the monitoring of these different aspects of population change, especially in bats, can often be difficult and may require further developments in acoustic monitoring to be effective \cite{walters2013challenges, measey2016counting, lucas2015generalised}.
 Our results suggest that pathogen communities will respond differently depending on which factors are most strongly affected by global change.
-In short, species suffering reductions in groups size \cite{lehmann2010apes, zunino2007habitat, manor2003impact, atwood2006influence} are predicted to experience decreases in pathogen richness in the long term and there is some evidence that this process is occurring \cite{altizer2007threatened, turmelle2009correlates}.
+In short, species suffering reductions in groups size \cite{lehmann2010apes, atwood2006influence} are predicted to experience decreases in pathogen richness in the long term and there is some evidence that this process is occurring \cite{altizer2007threatened, turmelle2009correlates}.
 Species that are experiencing increases in group size \cite{lehmann2010apes} would be expected to gain new pathogen species.
 In contrast, species suffering range contractions \cite{thomas2004extinction} and decreases in population size \cite{craigie2010large} are expected to experience smaller changes in pathogen richness.
-However, the monitoring of these different aspects of population change, especially in bats, can often be difficult and may require further developments in acoustic monitoring to be effective \cite{walters2013challenges, measey2016counting, lucas2015generalised}.
 
 \section*{Data accessibility}
 \sloppy
@@ -1303,7 +1301,7 @@ We have no competing interests.
 
 TCDL wrote the simulations and performed the analysis.
 TCDL, HMH and KEJ all helped design the study.
-TCDL drafted the manuscript
+TCDL drafted the manuscript.
 TCDL, HMH and KEJ all edited the manuscript and gave final approval for publication.
 
 \section*{Acknowledgements}
