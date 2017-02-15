@@ -621,75 +621,82 @@ areaPredictions <- pop %>%
 
 %%begin.rcode transMeansCapt
 
-
 transMeansCapt <- '
 Comparison of the effect of host population size on probability of invasion when population size is altered by changing colony size or colony number.
 Relationships are shown separately for each transmission value, $\\beta$.
 It can be seen that changes in colony size give a much greater increase in invasion probability than changes in colony number.
-Note that this is the same data as Figure~3 in the main manuscript but with the $x$-axis scaled by population size, rather than relative parameter change.
+Note that this is the same data as Figure~\\ref{fig:plotValueChangeMeans} but with the $x$-axis scaled by population size, rather than relative parameter change.
 '
 
-transMeansTitle <- 'Comparison of the probability of the affect of colony size and number of colonies on probability of invasion'
+transMeansTitle <- 'Comparison of the probability of the affect of colony size and number of groups on probability of invasion'
 
 %%end.rcode
 
 
-
-%%begin.rcode plotValueChangeMeans, fig.cap = valueChangeMeansCapt, fig.scap = valueChangeMeansTitle, out.width = '0.8\\textwidth', cache = FALSE, fig.height =  5
+%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.4\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.show = 'hide'
 
 # Convert to percentage change in density, colonysize or colony number.
 
-d <- rbind(popMeans %>% 
-             mutate(ValueChange = dens/median(dens), vary = 'Density') %>%
-             dplyr::select(ValueChange, transmission, mean, lower, upper, vary),
-           dens1Means %>% 
+d2 <- rbind(dens1Means %>% 
              mutate(ValueChange = colonySize/median(colonySize), vary = 'colonySize') %>%
-             dplyr::select(ValueChange, transmission, mean, lower, upper, vary),
+             dplyr::select(pop, transmission, mean, lower, upper, vary),
            dens2Means %>% 
              mutate(ValueChange = colonyNumber/median(colonyNumber), vary = 'colonyNumber') %>%
-             dplyr::select(ValueChange, transmission, mean, lower, upper, vary)
+             dplyr::select(pop, transmission, mean, lower, upper, vary)
      )
 
-d$vary <- factor(d$vary, levels = unique(d$vary)[c(2, 3, 1)])
-d$transmission <- factor(d$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
+d2$vary <- factor(d2$vary, levels = unique(d2$vary)[c(2, 3, 1)])
+d2$transmission <- factor(d2$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
 
 # Join predictions
-percChangePreds <- rbind(colonySizePredictions, colonyNumberPredictions, areaPredictions)
-percChangePreds$vary <- factor(percChangePreds$vary, levels = levels(d$vary))
 
 
-percChangePreds$transmission <- factor(percChangePreds$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
+colonySizePredictions2 <- dens1 %>% 
+                             mutate(invasion = nExtantDis == 2 ) %>%
+                             filter(nExtantDis != 0) %>%
+                             group_by(transmission) %>%
+                             do(augment(glm(invasion ~ pop, data = ., family = 'binomial'),
+                                        newdata = data.frame(pop = seq(min(.$pop), max(.$pop), 
+                                                                                   length.out = 1000)),
+                                        type.predict = 'response')) %>%
+                             mutate(vary = 'colonySize')
+                       
+colonyNumberPredictions2 <- dens2 %>% 
+                             mutate(invasion = nExtantDis == 2 ) %>%
+                             filter(nExtantDis != 0) %>%
+                             group_by(transmission) %>%
+                             do(augment(glm(invasion ~ pop, data = ., family = 'binomial'),
+                                        newdata = data.frame(pop = seq(min(.$pop), max(.$pop), 
+                                                                                   length.out = 1000)),
+                                        type.predict = 'response')) %>%
+                             mutate(vary = 'colonyNumber')
+
+percChangePreds2 <- rbind(colonySizePredictions2, colonyNumberPredictions2)
+
+percChangePreds2$transmission <- factor(percChangePreds2$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
 
 
 
-
-ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
-  geom_line(data = percChangePreds, aes(x = ValueChange, y = .fitted, colour = vary)) +
+ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
+  geom_line(data = percChangePreds2, aes(x = pop, y = .fitted, colour = vary)) +
+  geom_point() +
   geom_errorbar(aes(ymin = lower, ymax = upper),
-                width = .04,
-                position = position_dodge(width = 0.04)) +
-  geom_point(size = 2.1, position = position_dodge(width = 0.04)) +
+              width=.2) +
   ylab('Prop. Invasions') +
-  xlab('Amount Varied') +
-  
-  scale_colour_poke(name = 'Focal Population Factor', 
-                    labels = c( 'Colony size', 'Number of colonies', 'Host density'),
-                    pokemon = 'oddish',
-                    spread = 3) +
-  scale_shape_manual(name = 'Focal Population Factor', 
-                     labels = c( 'Colony size', 'Number of colonies', 'Host density'),
-										 values = 15:17) +
-  scale_y_continuous(breaks = c(0, 0.5, 1), 
-                     labels = c('0.0', '0.5', '1.0'),
-                     limits = c(0, 1)) +
-  scale_x_continuous(breaks = c(0.25, 0.5, 1, 2, 4), 
-                     labels = c(0.25, 0.5, 1, 2, 4), 
-                     trans = 'log10') +
+  xlab('Population size') +
+  ylim(0, 1) +
+  scale_colour_manual(name = "Focal Pop. factor", 
+                      labels = c('Colony Number', 'Colony Size'), 
+                      values = pokepal('Swampert', spread = 3)[2:1]) +
+  scale_y_continuous(breaks = c(0, 0.5, 1), labels = c('0.0', '0.5', '1.0')) +
+  scale_x_continuous(limits = c(0, 32000), 
+                     breaks = c(0, 1e4, 2e4, 3e4), 
+                     label = c('0', '10000', '20000', '30000')) +
   facet_grid(transmission ~ ., labeller = label_parsed) +
-	theme(legend.position = 'bottom', legend.direction = 'vertical')
-
+	theme(legend.position = 'bottom')
 
 %%end.rcode
+
 
 
 \clearpage
