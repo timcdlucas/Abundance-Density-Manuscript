@@ -620,42 +620,31 @@ mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, family = 'sans', at = -22)
 
 
 We developed a multipathogen, susceptible-infected-recovered (SIR) compartment model.
-We examined the ability of a newly evolved pathogen to invade and persist into a population given the presence of an identical, endemic pathogen.
-Individuals were classed as susceptible, infected or recovered with immunity (Figure~\ref{f:sir}).
-Susceptible individuals are counted in class $S$.
+We examined the probability that a newly evolved pathogen would invade and persist into a population given the presence of an identical, endemic pathogen.
+Susceptible individuals are counted in class $S$ (Figure~\ref{f:sir}).
 There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen~1, Pathogen~2 or both, respectively.
 Recovered individuals, $R$, are immune to both pathogens, even if they have only been infected with one (i.e.\ there is complete cross-immunity).
-Furthermore, recovery from one pathogen moves an individual straight into the recovered class, even if the individual is infected with both pathogens (Figure~\ref{f:sir}).
-This modelling choice allows the model to be easily expanded to include more than two pathogens, though this study is restricted to two pathogens.
+Furthermore, recovery from one pathogen moves an individual into the recovered class, even if the individual was coinfected (Figure~\ref{f:sir}).
+Though this study is restricted to two pathogens, this modelling choice allows the model to be easily expanded to include many pathogens, 
 The assumption of immediate recovery from all other diseases is likely to be reasonable \cite{munywoki2015influence}.
 Any up-regulation of innate immune response will affect both pathogens equally.
 Furthermore, as the pathogens are identical, any acquired immunity would also affect both pathogens equally.
 The coinfection rate (the rate at which an infected individual is infected with a second pathogen) is adjusted compared to the infection rate by a factor $\alpha$.
-
-
-
-It is necessary to include births and deaths as the SIR model without population dynamics has no endemic state.
 Birth and death rates ($\Lambda$ and $\mu$) are set as being equal meaning the population does not systematically increase or decrease.
 New born individuals enter the susceptible class.
 Infection and coinfection were assumed to cause no extra mortality as for a number of viruses, bats show no clinical signs of infection \cite{halpin2011pteropid, deThoisy2016bioecological}.
 
 
 The population is modelled as a metapopulation, being divided into a number of subpopulations (colonies).
-This model is an intermediate level of complexity between fully-mixed populations and contact networks.
-There is ample evidence that bat populations are structured to some extent.
-This evidence comes from the existence of subspecies, measurements of genetic dissimilarity and ecological studies \cite{kerth2011bats, mccracken1981social, burns2014correlates}.
-Therefore a fully mixed population is a large oversimplification.
-However, trying to study the contact network relies on detailed knowledge of individual behaviour which is rarely available.		
+The existence of subspecies, measurements of genetic dissimilarity and ecological studies demonstrate that bat populations are structured to some extent \cite{kerth2011bats, mccracken1981social, burns2014correlates}.
+Therefore a fully-mixed population is a large oversimplification.
 The metapopulation is modelled as a network with colonies being nodes and dispersal between colonies being indicated by edges (Figure~\ref{fig:colonyNetworkPlots}A--D).
 Individuals within a colony interact randomly so that the colony is fully mixed.
-Dispersal between colonies occurs at a rate $\xi$.
-Individuals can only disperse to colonies connected to theirs by an edge in the network.
-The total rate of dispersal is not affected by the number of edges a colony has (known as the degree of the colony and denoted $k$).
-Therefore, the dispersal rate from a colony $y$ with degree $k_y$ to colony $x$ is $\xi / k_y$.
-Note this rate is not affected by the degree and size of colony $x$.
-We examined the model using stochastic, continuous-time simulations which we implemented in \emph{R} \cite{R}.
+Dispersal between colonies occurs at a rate $\xi$ between colonies connected by an edge in the network.
+The dispersal rate from a colony $y$ with degree $k_y$ to colony $x$ is $\xi / k_y$.
+Note this rate is not affected by the degree and size of colony $x$ and the total rate of dispersal is not affected by the degree of a colony.
+We examined the model using stochastic, continuous-time simulations, in \emph{R} \cite{R, metapopepi}.
 The full details of the model are given in Supplementary Methods~S1.
-The code is available as an \emph{R} package on GitHub \cite{metapopepi}.
 
 
 \subsection{Deterministic model}
