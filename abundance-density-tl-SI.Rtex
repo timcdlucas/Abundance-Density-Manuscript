@@ -292,7 +292,7 @@ where $\beta S^\ast I_2$ is the number of infections,  $ \alpha \beta I_1^\ast I
 $I_2$ is therefore the number of individuals infected with Pathogen 2 regardless of whether they are infected with Pathogen 1.
 In this sense it is the combined size of classes $I_2$ and $I_12$  as used in the stochastic model (Section \ref{sup:stochmodel}).
 For simplicity here we simply label this group $I_2$.
-Substituting in Equations \ref{sstar} and \ref{istar}, and noting that $R_0 = \frac{\beta N }{\gamma + \mu}$  we get 
+Substituting in Equations \ref{sstar} and \ref{istar}, and noting that $R_0 = \frac{\beta n }{\gamma + \mu}$  we get 
 
 \begin{align}
 \frac{dI_2}{dt} & =  (\gamma + \mu) I_2 + \alpha \beta \left( \frac{\Lambda n}{\gamma + \mu} - \frac{\mu}{\beta} \right) I_2 - (\gamma + \mu) I_2, \\
