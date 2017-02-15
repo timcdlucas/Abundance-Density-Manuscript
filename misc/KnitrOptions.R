@@ -9,7 +9,7 @@ opts_chunk$set(
   echo = FALSE, 
   error = FALSE,
   cache = TRUE, 
-  dev = 'postscript', 
+  dev = c('postscript', 'pdf'),
   warning = FALSE,
   results = 'hide',
   message = FALSE,
