@@ -44,7 +44,7 @@
   firstinits=true, 
 	maxcitenames=2, 
   terseinits=true,
-  maxbibnames=10
+  maxbibnames=3
 ]{biblatex}
 
 \renewcommand{\cite}[1]{\parencite{#1}}
