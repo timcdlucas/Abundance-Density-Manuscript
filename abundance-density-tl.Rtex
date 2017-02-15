@@ -177,7 +177,7 @@ library(assertthat)
 %\subsection*{Addresses:}{\ }\\
 \noindent\textsuperscript{1}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom. 0000-0003-4694-8107\\
 \textsuperscript{2}Department of Statistical Science, University College London, Gower Street, London, WC1E 6BT, United Kingdom\\ 
-\textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1 4RY, United Kingdon. 0000-0001-5231-3293\\ 
+\textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1 4RY, United Kingdom. 0000-0001-5231-3293\\ 
 $^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, United Kingdom. \\
 \vspace{3mm}
 \noindent \textsuperscript{$\ast$}Corresponding authors: Tim C.D. Lucas: timcdlucas@gmail.com, Kate E. Jones: kate.e.jones@ucl.ac.uk
@@ -1008,7 +1008,7 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
 
 Increasing host population size, either by increasing colony size or number of groups, increased the probability of invasion (Figure~\ref{fig:plotValueChangeMeans}, Table~\ref{t:regrCoefs}).
 The positive relationship between colony size and invasion was strong and significant at all transmission rates, while the relationship between colony number was weaker but still strongly significant.
-In contrast, varying host density did not alter invasion probability except for when $\beta = 0.3$ where there was a marginally signicant decrease in invasion probability with increased host density (GLM: coefficient = $\rinline{areaModel$estimate[6]}$, $p$ = \rinline{areaModel$p.value[6]}).
+In contrast, varying host density did not alter invasion probability except for when $\beta = 0.3$ where there was a marginally significant decrease in invasion probability with increased host density (GLM: coefficient = $\rinline{areaModel$estimate[6]}$, $p$ = \rinline{areaModel$p.value[6]}).
 The 95\% confidence intervals for colony size does not overlap those for host density at any value of $\beta$.
 The 95\% confidence intervals for number of colonies only overlaps those for host density at $\beta = 0.2$.
 
@@ -1078,8 +1078,8 @@ All else being equal, increasing range size (with density remaining constant) wi
 Furthermore, social species that live in large groups are likely to harbour more pathogen species, even if the larger groups require more space and therefore dispersal between groups is reduced.
 The results also suggest that, for related, strongly competing strains, the factor that most strongly allows new pathogens to invade is the number of susceptible individuals in the local group.
 As long as there are enough susceptible individuals that the new pathogen species does not go extinct during the stochastic, early stages of the epidemic, the new pathogen will persist.
-This is explicitely shown by the deterministic model.
-In the stochasic model, dispersal is a very slow process compared to infection, and therefore the global pool of susceptibles is largely unimportant. 
+This is explicitly shown by the deterministic model.
+In the stochastic model, dispersal is a very slow process compared to infection, and therefore the global pool of susceptibles is largely unimportant. 
 This is probably why increasing the number of groups did not increase pathogen invasion rate as quickly as the size of a colony did.
 The negative association between density and invasion probability at $\beta = 0.3$ is unexpected.
 The small size of the estimated coefficient, the marginal p-value and the lack of a consistent relationship at other $\beta$ values means we expect that this is not a real effect.
@@ -1096,8 +1096,8 @@ However, given that increased density affects disease dynamics by decreasing pop
 % \tmpsection{Only two pathogens, direct transmission}
 
 This study is limited to one mechanism by which pathogen richness can be increased; the invasion and persistence of a newly evolved pathogen.
-We also restrict outselves to the context of competition between two pathogens in a social host species.
-As the pathogen modelled here is directly transmitted there is no transmission between individuals in seperate subpopulations.
+We also restrict ourselves to the context of competition between two pathogens in a social host species.
+As the pathogen modelled here is directly transmitted there is no transmission between individuals in separate subpopulations.
 Infection via shared food sources or contact between individuals from different subpopulations would act to reduce population structure.
 As above, if there is high rates of infection between subpopulations, the population becomes effectively unstructured and changes to the underlying metapopulation will have no effect on pathogen competition.
 However, these alternate transmission routes are likely to be more directly density dependent.
