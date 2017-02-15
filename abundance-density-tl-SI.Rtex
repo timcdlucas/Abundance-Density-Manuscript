@@ -124,6 +124,8 @@ library(dplyr)
 %%end.rcode
 
 
+\section{Supplementary materials and methods: Stochastic simulations} \label{sup:stochmodel}
+
 
 \begin{table}[h!]
 \captionsetup{width=.9\textwidth}
@@ -167,9 +169,6 @@ $\epsilon$ & Binomially distributed regression error term & & \\
 \label{t:params}
 \end{table}
 
-\clearpage
-
-\section{Supplementary materials and methods: Stochastic simulations} \label{sup:stochmodel}
 
 We examined the model using stochastic, continuous-time simulations implemented in \emph{R} \cite{R}.
 The implementation is available as an \emph{R} package on GitHub \cite{metapopepi}.
@@ -470,7 +469,137 @@ print(xtable(dens2Means,
 %%end.rcode
 
 
+
+%%begin.rcode colonyNetCaptions
+
+colonyNetTitle <- 'Relationship between range size and metapopulation network structure'
+
+colonyNetCapt <- '
+The relationship between range size and metapopulation network structure.
+Colonies are shown by circles.
+Colonies that are close enough for animals to disperse between (i.e.\\  within 100 km of each other) are joined by a line.
+Colonies are placed randomly in spaces of various sizes (grey dashed lines).
+A and C) the default range size (10000 km\\textsuperscript{2}).
+B and D) the largest range size (40000 km\\textsuperscript{2}).
+A and B) the smallest number of colonies (five).
+C and D) the default number of colonies (20).
+The mean number of connections per subpopulation, $\\bar{k}$, is shown for each metapopulation.
+'
+
+
+%%end.rcode
+
 \clearpage
+
+
+
+%%begin.rcode colonyNetworkPlots, fig.height = 5, fig.cap = colonyNetCapt, fig.scap = colonyNetTitle, out.width = '0.8\\textwidth', fig.showtext = TRUE
+
+
+set.seed(3)
+
+  #   Area and meanColonySize are the actal input arguments
+  pop <- c(2000, 4000, 8000, 16000, 32000)
+  colonySize <- 400
+  colonyNumber <- pop / colonySize
+
+  area <- pop / 0.8
+  side <- sqrt(area)
+
+
+# Make the population.
+p1 <- makePop(space = side[3], 
+             transmission = 0.1, 
+             meanColonySize = colonySize, 
+             nColonies = colonyNumber[1], 
+             model = 'SIR', 
+             events = 20,
+             sample = 2,
+             maxDistance = 100)
+k1 <- sum(p1$adjacency != 0 )/p1$parameters['nColonies']
+
+
+# Make the population.
+p2 <- makePop(space = side[5], 
+             transmission = 0.1, 
+             meanColonySize = colonySize, 
+             nColonies = colonyNumber[3], 
+             model = 'SIR', 
+             events = 20,
+             sample = 2,
+             maxDistance = 100)
+k2 <- sum(p2$adjacency != 0 )/p2$parameters['nColonies']
+
+# Make the population.
+p3 <- makePop(space = side[3], 
+             transmission = 0.1, 
+             meanColonySize = colonySize, 
+             nColonies = colonyNumber[3], 
+             model = 'SIR', 
+             events = 20,
+             sample = 2,
+             maxDistance = 100)
+k3 <- sum(p3$adjacency != 0 )/p3$parameters['nColonies']
+
+# Make the population.
+p4 <- makePop(space = side[5], 
+             transmission = 0.1, 
+             meanColonySize = colonySize, 
+             nColonies = colonyNumber[1], 
+             model = 'SIR', 
+             events = 20,
+             sample = 2,
+             maxDistance = 100)
+k4 <- sum(p4$adjacency != 0 )/p4$parameters['nColonies']
+
+
+labSz <- 1.1
+bigy <- 8
+bigx <- 6
+titleSz <- 3
+axSz <- 2
+points <- 0.35
+
+par(mfrow = c(2,2))
+
+
+plotColonyNet(p1, area = side[5], cex = points, mar = c(bigx, bigy, 2, 2), alpha = 1, lowgrey = 0.2, highgrey = 0.7, col = pokepal('Charizard')[c(4, 14)])
+axis(2, col = 'grey', cex.axis = axSz, at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), col.axis = '#a4a4a4', family = 'sans', font = 2)
+axis(1, col = 'grey', labels = FALSE)
+title(main = bquote(italic(bar(k)) ~ '='~ .(k1)), cex.main = titleSz, family = 'sans',  line = -1.18)
+mtext(side = 2,  line = 4, text = 'Latitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
+lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
+mtext(side = 3,  line = -0.3, text = 'A)', cex = 1, family = 'sans', at = -62)
+
+plotColonyNet(p4, area = side[5], cex = points, mar = c(bigx, 6, 2, 2), alpha = 1, lowgrey = 0.2, highgrey = 0.7, col = pokepal('Charizard')[c(4, 14)])
+axis(2, col = 'grey', labels = FALSE)
+axis(1, col = 'grey', labels = FALSE)
+title(main = bquote(italic(bar(k)) ~ '='~ .(k4)), cex.main = titleSz, family = 'sans',  line = -1.18)
+mtext(side = 3,  line = -0.3, text = 'B)', cex = 1, family = 'sans', at = -22)
+
+plotColonyNet(p3, area = side[5], cex = points, mar = c(bigx, bigy, 0, 2), alpha = 1, lowgrey = 0.2, highgrey = 0.7, col = pokepal('Charizard')[c(4, 14)])
+axis(2, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), family = 'sans', font = 2)
+axis(1, col = 'grey', labels = FALSE)
+axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'sans', font = 2, line = 0.5, lwd = 0)
+title(main = bquote(italic(bar(k)) ~ '='~ .(k3)), cex.main = titleSz, family = 'sans',  line = -1.18)
+mtext(side = 2,  line = 4, text = 'Latitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
+mtext(side = 1,  line = 4.4, text = 'Longitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
+lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
+mtext(side = 3,  line = -0.3, text = 'C)', cex = 1, family = 'sans', at = -62)
+
+plotColonyNet(p2, area = side[5], cex = points, mar = c(bigx, 6, 0, 2), alpha = 1, lowgrey = 0.2, highgrey = 0.7, col = pokepal('Charizard')[c(4, 14)])
+axis(1, col = 'grey', labels = FALSE)
+axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'sans', font = 2, line = 0.5, lwd = 0)
+axis(2, col = 'grey', labels = FALSE)
+title(main = bquote(italic(bar(k)) ~ '='~ .(k2)), cex.main = titleSz, family = 'sans',  line = -1.18)
+mtext(side = 1,  line = 4.4, text = 'Longitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
+mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, family = 'sans', at = -22)
+
+
+
+
+%%end.rcode
+
 
 %%begin.rcode plotKcapt
 
