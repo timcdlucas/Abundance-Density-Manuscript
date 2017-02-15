@@ -962,6 +962,19 @@ Therefore, the only difference between these two sets of simulations was the fac
 
 
 
+%%begin.rcode transMeansCapt
+
+transMeansCapt <- '
+Comparison of the effect of host population size on probability of invasion when population size is altered by changing colony size or colony number.
+Relationships are shown separately for each transmission value, $\\beta$.
+It can be seen that changes in colony size give a much greater increase in invasion probability than changes in colony number.
+Note that this is the same data as Figure~\\ref{fig:plotValueChangeMeans} but with the $x$-axis scaled by population size, rather than relative parameter change.
+'
+
+transMeansTitle <- 'Comparison of the probability of the affect of colony size and number of groups on probability of invasion'
+
+%%end.rcode
+
 
 %%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.4\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.show = 'hide'
 
@@ -1144,19 +1157,6 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
 
 
 
-%%begin.rcode transMeansCapt
-
-transMeansCapt <- '
-Comparison of the effect of host population size on probability of invasion when population size is altered by changing colony size or colony number.
-Relationships are shown separately for each transmission value, $\\beta$.
-It can be seen that changes in colony size give a much greater increase in invasion probability than changes in colony number.
-Note that this is the same data as Figure~\\ref{fig:plotValueChangeMeans} but with the $x$-axis scaled by population size, rather than relative parameter change.
-'
-
-transMeansTitle <- 'Comparison of the probability of the affect of colony size and number of groups on probability of invasion'
-
-%%end.rcode
-
 
 %\subsection{Host population size or density}
 
@@ -1236,6 +1236,10 @@ As long as there are enough susceptible individuals that the new pathogen specie
 This is explicitely shown by the deterministic model.
 In the stochasic model, dispersal is a very slow process compared to infection, and therefore the global pool of susceptibles is largely unimportant. 
 This is probably why increasing the number of groups did not increase pathogen invasion rate as quickly as the size of a colony did.
+The negative association between density and invasion probability at $\beta = 0.3$ is unexpected.
+The small size of the estimated coefficient, the marginal p-value and the lack of a consistent relationship at other $\beta$ values means we expect that this is not a real effect.
+However, given that increased density affects disease dynamics by decreasing population structure, this negative relationship does fit with studies that suggest that population structure should allow pathogen coexistence \cite{maganga2014bat, turmelle2009correlates, poletto2015characterising, allen2004sis}
+
 %The difference in size between these two effects might decrease in systems with higher dispersal rates.
 %However, at very high dispersal rates, the population will be effectively unstructured and therefore changes in population structure will again have no affect on pathogen competition; it seems likely that population structure will be most important at intermediate dispersal rates.
 %Similarly, the global host density of the species had little effect on pathogen invasion rate.
