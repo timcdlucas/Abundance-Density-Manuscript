@@ -633,7 +633,7 @@ transMeansTitle <- 'Comparison of the probability of the affect of colony size a
 %%end.rcode
 
 
-%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.8\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 4.5
+%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.8\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 5
 # Convert to percentage change in density, colonysize or colony number.
 
 d2 <- rbind(dens1Means %>% 
