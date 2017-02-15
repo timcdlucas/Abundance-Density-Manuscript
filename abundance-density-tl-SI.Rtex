@@ -258,7 +258,7 @@ We first study the endemic pathogen.
 We then have a typical SIR model with vital dynamics \cite{Kermack1932}.
 
 \begin{align}
-\frac{dS}{dt} & =  \Lambda n - \mu S -  \beta S I_1  \label{smodel2}.
+\frac{dS}{dt} & =  \Lambda n - \mu S -  \beta S I_1,  \label{smodel2} \\
 \frac{dI_1}{dt} & = \beta S I_1 - (\gamma + \mu) I_1, \\
 \frac{dR}{dt} & = \gamma I_1 - \mu R.
 \end{align}
@@ -292,7 +292,7 @@ where $\beta S^\ast I_2$ is the number of infections,  $ \alpha \beta I_1^\ast I
 $I_2$ is therefore the number of individuals infected with Pathogen 2 regardless of whether they are infected with Pathogen 1.
 In this sense it is the combined size of classes $I_2$ and $I_12$  as used in the stochastic model (Section \ref{sup:stochmodel}).
 For simplicity here we simply label this group $I_2$.
-Substituting in Equations \ref{sstar} and \ref{istar1}, and noting that $R_0 = \frac{\beta N }{\gamma + \mu}$  we get 
+Substituting in Equations \ref{sstar} and \ref{istar}, and noting that $R_0 = \frac{\beta N }{\gamma + \mu}$  we get 
 
 \begin{align}
 \frac{dI_2}{dt} & =  (\gamma + \mu) I_2 + \alpha \beta \left( \frac{\Lambda n}{\gamma + \mu} - \frac{\mu}{\beta} \right) I_2 - (\gamma + \mu) I_2, \\
@@ -310,10 +310,6 @@ As $I_2$ is positive, this is greater than zero when $ \Lambda R_0 - \mu > 0$ an
 As $\Lambda = \mu$ due to the assumption of stable population size, $ \Lambda R_0 - \mu > 0$ is true as long as $R_0 > 1$. 
 $R_0$ is greater than one (as proved by the fact that Pathogen 1 is endemic), 
 Therefore, $\frac{dI_2}{dt}$ is greater than zero as long as $\alpha$ is greater than zero.
-
-
-
-
 
 
 \clearpage
