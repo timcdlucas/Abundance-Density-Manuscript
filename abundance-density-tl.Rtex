@@ -698,14 +698,15 @@ The threshold of 100 km was arbitrary but we aimed to maximise the range  of $\b
 
 \subsection{Experimental setup}
 
-We let two identical pathogens compete: an endemic pathogen (Pathogen~1) and an invading pathogen (Pathogen~2).
-We used persistence (coded as 1) or extinction (coded as 0) of Pathogen~2 as a binomial response variable.
-We examined whether host population size had a stronger affect on pathogen persistence than host density and then examined whether colony size or the number of colonies was the more important component of population size.
+Three sets of simulations were run to examine whether \emph{i}) host population size had a stronger affect on pathogen persistence than host density and \emph{ii}) whether colony size or the number of colonies was the more important component of population size.
 In each simulation the host population was seeded with 20 individuals infected with Pathogen~1 in each colony. 
 Pathogen~1 was then allowed to spread and reach equilibrium. 
 After \rinline{invadeT} events, five host individuals infected with Pathogen~2 were added to one randomly selected colony. 
 The simulation was then run until a further \rinline{TotalTime} years had elapsed.
 The invasion of Pathogen~2 was considered successful if any individuals infected with Pathogen~2 remained at the end of the simulation.
+The population parameters that were directly varied were colony size, the number of groups and range size.
+In each case these parameters were assigned their default value multiplied by 0.25, 0.5, 1, 2 and 4.
+The default colony size was 400, the default number of groups was 20 and the default range size was 10000 km\textsuperscript{2}.
 
 
 
@@ -908,28 +909,22 @@ ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
 %%end.rcode
 
 
-Three sets of simulations were run to compare two pairs of population factors: \emph{i}) population size and host density, \emph{ii}) colony size and the number of groups.
-The population parameters that were directly varied were colony size, the number of groups and range size.
-In each case these parameters were assigned their default value multiplied by 0.25, 0.5, 1, 2 and 4.
-The default colony size was 400, the default number of groups was 20 and the default range size was 10000 km\textsuperscript{2}.
 
-
-In the first set of simulations, host density was varied by keeping population size constant while varying range size.
-Colony size was kept at a constant value of 400 while the number of groups was fixed at 20 giving a population size of 8000.
+In the first set of simulations, host density was varied by keeping population size constant ($N$ = 8000, $n$ = 400, $m$ = 20) while varying range size.
 The values of range size used were 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2} which gave density values of \rinline{depDens[-5]} and \rinline{depDens[5]} animals per km\textsuperscript{2}.
 
 In the second set of simulations, population size was varied by changing colony size while the number of groups was kept constant.
 To keep host density constant, range size was increased as population size increased.
 The values of colony size used were 100, 200, 400, 800 and 1600 while range size was set to 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2}.
-This gave population size values of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
+This gave population sizes of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
 
 In the third set of simulations, population size was varied by changing the number of groups while colony size was kept constant.
 Again, to keep host density constant, range size was increased as population size increased.
 The numbers of groups used were 5, 10, 20, 40 and 80 while range size was set to 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2}.
-Again, this gave population size values of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
+Again, this gave population sizes of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
 
 
-Population density and range size are identical in the second and third set of simulations above.
+Population density and range size are identical in the second and third set of simulations.
 Therefore, the only difference between these two sets of simulations was the factor used to increase population size; this factor being either colony size or the number of groups.
 Therefore, to compare colony size and the number of groups, we compared the second and third set of simulations.
 
@@ -1028,9 +1023,9 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
 \subsection{Statistical analysis}
 
 
-In \rinline{nAllExtinct} simulations, both of the pathogens went extinct.
+In \rinline{nAllExtinct} simulations, both pathogens went extinct.
 The number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: coefficient = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
-However all of the simulations where extinction of both pathogens occurred had either the smallest colony size (colony size = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups (five groups, eight simulations).
+However all \rinline{nAllExtinct} simulations had either the smallest colony size ($n$ = 100, \rinline{smallAllExtinct} simulations) or the fewest number of colonies ($m = 5$, eight simulations).
 Results from these simulations were removed before further analyses.
 For each set of simulations, we fitted binomial GLMs with invasion of Pathogen 2 as the dependent variable.
 To enable comparison between GLMs we divided the explanatory variables by their default values.
