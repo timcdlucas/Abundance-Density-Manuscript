@@ -633,7 +633,7 @@ transMeansTitle <- 'Comparison of the probability of the affect of colony size a
 %%end.rcode
 
 
-%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.8\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5
+%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.8\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 4.5
 # Convert to percentage change in density, colonysize or colony number.
 
 d2 <- rbind(dens1Means %>% 
@@ -692,7 +692,7 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
                      breaks = c(0, 1e4, 2e4, 3e4), 
                      label = c('0', '10000', '20000', '30000')) +
   facet_grid(transmission ~ ., labeller = label_parsed) +
-	theme(legend.position = 'bottom')
+	theme(legend.position = 'bottom', legend.direction = 'vertical')
 
 %%end.rcode
 
