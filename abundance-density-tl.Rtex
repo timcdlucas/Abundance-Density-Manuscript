@@ -671,7 +671,7 @@ When Pathogen~2 is introduced, its rate of change can be written as
 \frac{dI_2}{dt} & = \beta S^\ast I_2 + \alpha \beta I_1^\ast I_2 - (\gamma + \mu) I_2 \label{path2I}
 \end{align}
 which is greater than zero when $\alpha\left( \Lambda R_0 - \mu \right) I_2 > 0$ (with $R_0 = \frac{\beta N }{\gamma + \mu}$ being the basic reproduction number and being equal for the two identical pathogens).
-$R_0$ is greater than one (as proved by the fact that Pathogen~1 is endemic) and $I_2$ is positive when Pathogen~2 is first introduced by definition.
+$R_0$ is greater than one (as proved by the fact that Pathogen~1 is endemic) and $I_2$ is, by definition, positive when Pathogen~2 is first introduced.
 As $\Lambda = \mu$ due to the assumption of a stable population size,  $\Lambda R_0 - \mu$ is also greater than one.
 Therefore, this inequality holds as long as $\alpha$ is greater than zero.
 That is, as long as cross-immunity is not complete, Pathogen~2 will always invade in this deterministic model. 
@@ -940,7 +940,7 @@ The values of range size used were 40000, 20000, 10000, 5000 and 2500 km\textsup
 
 In the second set of simulations, population size was varied by changing colony size while the number of groups was kept constant.
 To keep host density constant, range size was increased as population size increased.
-The values of colony size used were 100, 200, 400, 800 and 600 while range size was set to 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2}.
+The values of colony size used were 100, 200, 400, 800 and 1600 while range size was set to 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2}.
 This gave population size values of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
 
 In the third set of simulations, population size was varied by changing the number of groups while colony size was kept constant.
@@ -949,11 +949,9 @@ The numbers of groups used were 5, 10, 20, 40 and 80 while range size was set to
 Again, this gave population size values of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
 
 
-
-To compare colony size and the number of groups, only the second and third set of simulations above were used.
-However, colony size and the number of groups were directly used as explanatory variables instead of using the derived values of host population size and density.
-It can be seen that population density and range size are identical in the two sets of simulations.
+Population density and range size are identical in the second and third set of simulations above.
 Therefore, the only difference between these two sets of simulations was the factor used to increase population size; this factor being either colony size or the number of groups.
+Therefore, to compare colony size and the number of groups, we compared the second and third set of simulations.
 
 
 
@@ -1057,8 +1055,8 @@ Results from these simulations were removed before further analyses.
 For each set of simulations, we fitted binomial GLMs with invasion of Pathogen 2 as the dependent variable.
 To enable comparison between GLMs we divided the explanatory variables by their default values.
 The explanatory variables for all three sets of simulations therefore became the proportional change relative to the default parameter value, in the range 0.25 -- 4.
-To test the hypothesis that an increase in host population size created a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density we compared the size (and 95\% confidence intervals) of the regression coefficients of $m$ and $n$ to $d$.
-To test the hypothesis that an increase in colony size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups we compared regression coeffients of $m$ to $n$.
+To investigate the hypothesis that an increase in host population size created a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density we compared the size (and 95\% confidence intervals) of the regression coefficients of colony size and number of colonies to host density.
+To examine the hypothesis that an increase in colony size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups we compared regression coeffients of $m$ to $n$.
 
 
 
@@ -1179,11 +1177,10 @@ These proportions significantly increased with transmission rate (GLM: coefficie
 \begin{table}
 \captionsetup{width=0.9\textwidth}
 \caption[Regression results]{
-Regression results comparing effects of colony size, colony number and density.
+Regression results comparing effects of colony size, colony number and host density.
 Coefficient estimates and 95\% confidence intervals of each variable are from binomial GLM regressions with invasion as the dependent variable and all explanatory variables being standardised by dividing by the default parameter value.
 Colony size and colony number were varied while keeping density equal while density was varied by changing range size while keeping population size equal.
-$p$ is for the test against the null hypothesis that $b = 0$.
-Results are given for three transmission values ($\beta$).
+Results are given for three transmission ($\beta$) values.
 }
 \label{t:regrCoefs}
 \centering
