@@ -1,0 +1,122 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Professional Formal Letter
+% LaTeX Template
+% Version 2.0 (12/2/17)
+%
+% This template originates from:
+% http://www.LaTeXTemplates.com
+%
+% Authors:
+% Brian Moses
+% Vel (vel@LaTeXTemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[10pt, a4paper]{letter} % Set the font size (10pt, 11pt and 12pt) and paper size (letterpaper, a4paper, etc)
+
+\usepackage{hyperref}
+
+
+\input{structure.tex} % Include the file that specifies the document structure
+
+%\longindentation=0pt % Un-commenting this line will push the closing "Sincerely," and date to the left of the page
+
+%----------------------------------------------------------------------------------------
+%	YOUR INFORMATION
+%----------------------------------------------------------------------------------------
+
+\Who{Dr Tim C.D. Lucas} % Your name
+
+\Title{} % Your title, leave blank for no title
+
+\authordetails{
+	Big Data Institute\\ % Your department/institution
+	Peter Medawar Building\\ % Your address
+	University of Oxford\\
+	OX1 3SY, U.K.\\ % Your city, zip code, country, etc
+	timcdlucas@gmail.com\\ % Your email address
+	+44 (0) 7415863536\\ % Your phone number
+}
+
+%----------------------------------------------------------------------------------------
+%	HEADER CONTENTS
+%----------------------------------------------------------------------------------------
+
+\logo{oxford-logo.png} % Logo filename, your logo should have square dimensions (i.e. roughly the same width and height), if it does not, you will need to adjust spacing within the HEADER STRUCTURE block in structure.tex (read the comments carefully!)
+
+\headerlineone{UNIVERSITY} % Top header line, leave blank if you only want the bottom line
+
+\headerlinetwo{OF OXFORD} % Bottom header line
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TO ADDRESS
+%----------------------------------------------------------------------------------------
+
+\begin{letter}{
+Professor Spencer Barrett, FRS\\
+Editor-in-Chief\\
+Royal Society Publishing\\
+6--9 Carlton House Terrace\\
+London\\
+SW1Y 5AG, U.K.\\
+}
+
+%----------------------------------------------------------------------------------------
+%	LETTER CONTENT
+%----------------------------------------------------------------------------------------
+
+\opening{Dear Professor Barrett,}
+
+%The criteria for selection are: work of outstanding importance, scientific excellence, originality and interest to a wide spectrum of biologists.
+
+%Proceedings B is the Royal Society’s flagship biological research journal, accepting original articles and reviews of outstanding scientific importance and broad general interest. The main criteria for acceptance are that a study is novel, and has general significance to biologists. Articles published cover a wide range of areas within the biological sciences, many have relevance to organisms and the environments in which they live. The scope includes, but is not limited to, ecology, evolution, behavior, health and disease epidemiology, neuroscience and cognition, behavioral genetics, development, biomechanics, paleontology, comparative biology, molecular ecology and evolution, and global change biology.
+
+%Many more good manuscripts are submitted than we have space to print, and we give preference to those presenting significant advances of broad interest. Submission of preliminary reports, of articles that merely confirm previous findings, and of articles that are likely to interest only small groups of specialists, is not encouraged. Articles will only be considered where they have clear relevance to fundamental biological principles and processes. All articles are sent to an Editorial Board member for an initial assessment, and may be returned to authors without in-depth peer review if the paper is unlikely to be accepted because it is either too specialized, not sufficiently novel, or is deficient in other respects.
+
+
+
+I am pleased to submit the article ``A mechanistic model to compare the importance of interrelated population measures on pathogen richness: host population size, density and colony size'', by Tim C.D. Lucas, Hilde M. Wilkinson-Herbots and Kate E. Jones, to be considered for publication as a research article in \emph{Proceedings of the Royal Society B: Biological Sciences}.
+There are four files: the main manuscript (abundance-density-tl.pdf), the supplementary material (abundance-density-tl-SI.pdf) and two figures (Lucas\_et\_al\_Figure\_1.pdf and Lucas\_et\_al\_Figure\_2.pdf).
+
+Zoonotic diseases make up the majority of emerging human infectious diseases, and spill-over risk from a wild animal species depends on the number of pathogen species it harbours.
+The ability to estimate pathogen richness in host species and to predict how it will change in response to global change is vital for effective and efficient zoonotic disease surveillance.
+
+Population size, density and range size are all used as explanatory variables in models of pathogen dynamics and statistical analyses of pathogen richness in wild hosts.
+However, they all depend directly upon one another.
+Similarly, population size, social group size and the number of groups are intrinsically linked.
+In this study we have used epidemiological simulations to examine whether these factors contribute equally to the ability of a new pathogen to invade into a population in the presence of a competing endemic pathogen and therefore to increase the pathogen richness of the host species. 
+We found that while empirical studies tend to measure population density, it is in fact population size that controls the probability of pathogen invasion, and therefore pathogen richness.
+We furthermore found that it is specifically larger groups that allow large populations to allow pathogen invasion; large populations divided into many small groups will not promote pathogen richness to the same extent.
+Our study has implications for public health researchers studying zoonotic diseases, epidemiologists interested in multipathogen systems as well as ecologists studying both the basic science of pathogen richness in wild animals and the effects of global change on pathogen communities.
+
+We confirm that this manuscript has not been previously published elsewhere, and is not under consideration by any other journal. All authors have approved this manuscript and agree with its submission to \emph{Proceedings of the Royal Society B: Biological Sciences}.
+We have, however, uploaded a preprint at \hyperref[www.preprint.com]{www.preprint.com} %todo
+
+\closing{Sincerely,}
+
+%----------------------------------------------------------------------------------------
+%	OPTIONAL FOOTNOTE
+%----------------------------------------------------------------------------------------
+
+% Uncomment the 4 lines below to print a footnote with custom text
+%\def\thefootnote{}
+%\def\footnoterule{\hrule}
+%\footnotetext{\hspace*{\fill}{\footnotesize\em Footnote text}}
+%\def\thefootnote{\arabic{footnote}}
+
+%----------------------------------------------------------------------------------------
+
+\end{letter}
+
+\end{document}
