@@ -192,10 +192,11 @@ $^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for He
 \section*{Abstract}
 
 Zoonotic diseases are an increasingly important source of human infectious diseases, and reservoir host pathogen richness is a critical driver of spill-over risk. 
-Host population-level traits such as population size and density, geographic range size and population structure have all been shown to be important determinants of host pathogen richness. 
+Host, population-level traits such as population size, density and geographic range size as well as population structure due to limited dispersal between social groups have all been shown to be important determinants of host pathogen richness. 
 However, empirically identifying the independent influences of these traits has proven difficult as many of these traits directly depend on each other. 
-Here we develop a mechanistic, metapopulation, susceptible-infected-recovered model to identify the influences of independent population-level traits on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen, using a case study of bats; a highly social mammalian order. 
-We show that larger population and group sizes had a greater influence on the chances of pathogen invasion and persistence than increased population densities (and therefore decreased population structure) and number of groups. 
+Here we develop a mechanistic, metapopulation, susceptible-infected-recovered model to identify the influences of independent population-level traits on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen
+We use bats as case study as they are highly social and an important source of zoonotic disease. 
+We show that larger populations and group sizes had a greater influence on the chances of pathogen invasion and persistence than increased population densities and number of groups. 
 As anthropogenic change affects these traits to different extents, this increased understanding of how traits independently determine pathogen richness will aid in predicting future zoonotic spill-over risk.
 
 
@@ -228,9 +229,9 @@ Pathogen competition, zoonotic disease, metapopulations, host pathogen richness,
 
 
 Zoonotic diseases are a major source of human infectious disease \cite{jones2008global, taylor2001risk}. 
-The chance that a new zoonotic disease will come from a particular reservoir-host depends on a number of factors including the number of pathogen species it carries \cite{wolfe2000deforestation}. 
+The chance that a new zoonotic disease will come from a particular reservoir host depends on a number of factors including the number of pathogen species it carries \cite{wolfe2000deforestation}. 
 Much attention has been devoted to comparatively assessing the factors that are associated with high or low pathogen richness in wild animal species \cite{poulin2000diversity, kamiya2014determines, luis2013comparison}. 
-Many empirical, comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}, but factors related to reservoir-host population biology are also expected to affect disease dynamics and therefore affect pathogen richness. 
+Many empirical, comparative studies have examined morphological or life history traits \cite{kamiya2014determines, luis2013comparison}, but factors related to reservoir host population biology are also expected to affect disease dynamics and therefore affect pathogen richness. 
 Population-level traits that have already been shown to correlate with pathogen richness include: increased host density \cite{morand1998density, kamiya2014determines, nunn2003comparative}, increased range size \cite{nunn2003comparative, turmelle2009correlates, kamiya2014determines} and increased population structure \cite{maganga2014bat, turmelle2009correlates}.
 Other traits such as group size have been well studied but results have been equivocal \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative}.
 However, some important population-level traits, such as population size, have not been included in comparative analyses despite it being the natural way to describe epidemiological populations \cite{begon2002clarification}.
