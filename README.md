@@ -1,6 +1,6 @@
 
-The interactions between population structure and density in pathogen diversity
-================================================================================
+A mechanistic model to compare the importance of interrelated population measures: population size, population density and colony size
+=======================================================================================
 
 Repo for manuscript and analysis.
 
