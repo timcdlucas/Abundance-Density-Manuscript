@@ -240,7 +240,7 @@ Important population-level traits, such as population size, have not been includ
 
 Collinearity between explanatory variables is a common problem in correlative studies, and this issue is exacerbated when there are clear, causal relationships between explanatory variables.
 There are two particularly clear relationships between the population-level factors associated with pathogen richness.
-Firstly, host population density, $d$, host population size, $N$, and geographic range size, $a$, are, by definition, linked by $d = N / a$ (see Table~S1 for all parameters used) and this relationship has broad empirical support \cite{blackburn2006variations}.
+Firstly, host population density, $d$, host population size, $N$, and geographic range size, $a$, are, by definition, linked by $d = N / a$ (electronic supplementary material, table~S1 for all parameters used) and this relationship has broad empirical support \cite{blackburn2006variations}.
 Secondly, host population size can be decomposed into two components, the number of groups, $m$, and the average size of a group, $n$, with $N = mn$.
 %While less clear, geographic range size and host population structure are also related.
 Correlative comparative studies will be especially poor at identifying which, if any, of these factors are causally related with pathogen richness.
@@ -494,7 +494,7 @@ write.csv(z, file = 'Data/PopSims.csv')
 We developed a multipathogen, susceptible-infected-recovered (SIR) compartment model to examine the probability that a newly evolved pathogen would invade and persist into a population given the presence of an identical, endemic pathogen.
 Susceptible individuals were counted in class $S$ (Figure~\ref{f:sir}) while infected individuals were counted in classes $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen~1, Pathogen~2 or both, respectively.
 Recovered individuals, $R$, were immune to both pathogens, even if they had only been infected with one (i.e.\ there is complete cross-immunity).
-Furthermore, recovery from one pathogen moved an individual into the recovered class, even if the individual was coinfected (Figure~\ref{f:sir}).
+Furthermore, recovery from one pathogen moved an individual into the recovered class, even if the individual was coinfected (figure~\ref{f:sir}).
 Though our study was restricted to two pathogens, this modelling choice allows the model to be easily expanded to include many pathogens. 
 Our assumption of immediate recovery from all other diseases is likely to be reasonable \cite{munywoki2015influence} as any up-regulation of innate immune response or acquired immunity would affect both pathogens equally.
 The coinfection rate (the rate at which an infected individual is infected with a second pathogen) was adjusted compared to the infection rate by a factor $\alpha$.
@@ -504,9 +504,9 @@ Infection and coinfection were assumed to cause no extra mortality as bats show 
 
 
 The population was modelled as a metapopulation, being divided into a number of groups (colonies).
-The existence of subspecies, measurements of genetic dissimilarity and ecological studies demonstrate that bat populations are structured to some extent \cite{kerth2011bats, mccracken1981social, burns2014correlates}.
-Therefore a fully-mixed population is a large oversimplification.
-The metapopulation was modelled as a network with groups being nodes and dispersal between groups being indicated by edges (Figure~S1).
+Bat populations are structured as demonstrated by the existence of subspecies, measurements of genetic dissimilarity and behavioural studies  \cite{kerth2011bats, mccracken1981social, burns2014correlates}.
+Therefore assuming a fully-mixed population is an oversimplification.
+Consequently, the population was modelled as a metapopulation network with groups being nodes and dispersal between groups being indicated by edges (electronic supplementary material, figure~S1).
 Individuals within a group interacted randomly so that the group was fully mixed.
 Dispersal between groups occurs at a rate $\xi$ between groups connected by an edge in the network.
 The dispersal rate from a group $y$ with degree $k_y$ to group $x$ is $\xi / k_y$.
@@ -548,7 +548,7 @@ Therefore, an individual with a single infection is 90\% less likely to gain a s
 Given the deterministic model, $\alpha = 0$ and $\alpha > 0$ are the two qualitatively different conditions.
 The case where Pathogen~2 does not invade and spread ($\alpha = 0$) is unlikely to be important for pathogen richness so we chose a small, non-zero value for $\alpha$.
 Dispersal was only allowed to occur between two groups if they were connected nodes in the metapopulation network.
-The metapopulation network was created for each simulation by randomly placing groups in a square space (Figure~S1), the size of which varied between 2500 and 40000 km\textsuperscript{2}.
+The metapopulation network was created for each simulation by randomly placing groups in a square space (electronic supplementary material, figure~S1), the size of which varied between 2500 and 40000 km\textsuperscript{2}.
 If groups were with 100km of each other, they were connected in the metapopulation network.
 The dispersal rate $\xi$ was set to 0.01 which yields 17\% of individuals dispersing in their lifetime.
 
@@ -562,7 +562,7 @@ The metapopulation network was not necessarily connected (i.e.\ made up of a sin
 To ensure connected metapopulation networks would have required repeatedly resampling the group locations until a connected metapopulation  occurred.
 However, this would bias the mean degree, $\bar{k}$.
 Therefore, it was considered preferential to keep the unconnected networks.
-The threshold of 100 km was arbitrary but we aimed to maximise the range  of $\bar{k}$ (Figure~S2) while not having many simulations with networks that were unconnected.
+The threshold of 100 km was arbitrary but we aimed to maximise the range  of $\bar{k}$ (electronic supplementary material, figure~S2) while not having many simulations with networks that were unconnected.
 
 \subsection{Experimental setup}
 
@@ -809,7 +809,7 @@ transMeansCapt <- '
 Comparison of the effect of host population size on probability of invasion when population size is altered by changing group size or number of groups.
 Relationships are shown separately for each transmission value, $\\beta$.
 It can be seen that changes in group size give a much greater increase in invasion probability than changes in group number.
-Note that this is the same data as Figure~\\ref{fig:plotValueChangeMeans} but with the $x$-axis scaled by population size, rather than relative parameter change.
+Note that this is the same data as figure~\\ref{fig:plotValueChangeMeans} but with the $x$-axis scaled by population size, rather than relative parameter change.
 '
 
 transMeansTitle <- 'Comparison of the probability of the affect of group size and number of groups on probability of invasion'
@@ -1001,7 +1001,7 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
 
 %\subsection{Host population size or density}
 
-Increasing host population size, either by increasing group size or number of groups, increased the probability of invasion (Figure~\ref{fig:plotValueChangeMeans}, Table~\ref{t:regrCoefs}).
+Increasing host population size, either by increasing group size or number of groups, increased the probability of invasion (figure~\ref{fig:plotValueChangeMeans}, table~\ref{t:regrCoefs}).
 The positive relationship between group size and invasion was strong and significant at all transmission rates, while the relationship between number of groups was weaker but still strongly significant.
 In contrast, varying host density did not alter invasion probability except for when $\beta = 0.3$ where there was a marginally significant decrease in invasion probability with increased host density (GLM: coefficient = $\rinline{areaModel$estimate[6]}$, $p$ = \rinline{areaModel$p.value[6]}).
 The 95\% confidence intervals for group size does not overlap those for host density at any value of $\beta$.
@@ -1011,10 +1011,10 @@ The 95\% confidence intervals for number of groups only overlaps those for host 
 %\subsection{Group size or number of groups}
 
 The deterministic model showed that Pathogen~2 can invade even in a single subpopulation but the rate of spread depends on $R_0$ which in turn depends on group size.
-In the stochastic simulations, increasing either group size or the number of groups increased the probability of invasion but this effect was  stronger for group size (Figure~\ref{fig:plotValueChangeMeans}, Figure~S3, Table~\ref{t:regrCoefs}).
+In the stochastic simulations, increasing either group size or the number of groups increased the probability of invasion but this effect was  stronger for group size (figure~\ref{fig:plotValueChangeMeans}, table~\ref{t:regrCoefs}).
 The 95\% confidence intervals of regression coefficients for group size do not overlap those for number of groups for the simulations with $\beta = 0.2$ or $0.3$ but the confidence intervals do overlap for the simulations where $\beta = 0.1$.
 
-At the default parameter settings, the probability of invasion and persistence of the second pathogen was rare (Figure~\ref{fig:plotValueChangeMeans} and Tables~S2--4).
+At the default parameter settings, the probability of invasion and persistence of the second pathogen was rare (figure~\ref{fig:plotValueChangeMeans} and electronic supplementary material, tables~S2--4).
 These proportions significantly increased with transmission rate (GLM: coefficient = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
 
 \begin{table}
