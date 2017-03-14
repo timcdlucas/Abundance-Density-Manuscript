@@ -264,11 +264,11 @@ Mechanistic models that try to disentangle the interplay between population-leve
 
 
 Here, we use multipathogen models to individually vary host population-level parameters.
-We examine a stochastic, metapopulation model and a simplified deterministic model.
-The metapopulations were parameterised to broadly mimic wild bat populations.
+We examine a simple deterministic model to establish whether a newly evolved pathogen can invade into an unstructured population in the presnce of strong competition from an endemic pathogen strain. 
+We then examine a stochastic, metapopulation model that was parameterised to broadly mimic wild bat populations.
 We used bats as a case study as the size of bat groups (colonies) is very variable and bat colonies are often very stable \cite{kerth2011bats, mccracken1981social, jones2009pantheria}.
 Furthermore, bats are particularly relevant in the context of zoonotic disease as they are thought to be reservoirs for a number of important, recent outbreaks \cite{calisher2006bats, li2005bats}.
-We examined how the interrelated population-level factors affect the ability of a newly evolved pathogen to invade and persist in a population in the presence of strong competition from an endemic pathogen strain.
+We examined how the interrelated population-level factors affect the ability of a newly evolved pathogen to invade and persist in a population in the presence of an endemic pathogen strain.
 We used these simulations to examine two specific hypotheses.
 First, we investigated whether host population size or density more strongly promotes the invasion of a new pathogen.
 Secondly, we investigated whether the invasion of a new pathogen is more strongly promoted by group size or the number of groups
@@ -512,13 +512,13 @@ Dispersal between groups occurs at a rate $\xi$ between groups connected by an e
 The dispersal rate from a group $y$ with degree $k_y$ to group $x$ is $\xi / k_y$.
 Note this rate was not affected by the degree and size of group $x$ and the total rate of dispersal was not affected by the degree of a group.
 We examined the full model using stochastic, continuous-time simulations, in \emph{R} \cite{R, metapopepi}.
-The full details of the model are given in Supplementary Methods~S1.
+The full details of the model are given in electronic supplementary material~S1.
 
 
 \subsection{Deterministic model}
 \label{s:determ}
 
-We obtained some initial insights into the behaviour of the system by examining a single-group, deterministic model (for details see Supplementary Methods~S2).
+We examined a single-group, deterministic model to establish a baseline expectation for whether a newly evolved pathogen strain could invade into a population in the presence of an identical strain given the assumptions of our two-pathogen SIR model (for details see electronic supplementary material~S2).
 If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with vital dynamics \cite{Kermack1932} with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\Lambda n}{\gamma + \mu} - \frac{\mu }{\beta}$ where $\gamma$ is the recovery rate and $n$ is group size.
 When Pathogen~2 is introduced, its rate of change can be written as
 
@@ -528,14 +528,16 @@ When Pathogen~2 is introduced, its rate of change can be written as
 which is greater than zero when $\alpha\left( \Lambda R_0 - \mu \right) I_2 > 0$ (with $R_0 = \frac{\beta N }{\gamma + \mu}$ being the basic reproduction number and being equal for the two identical pathogens).
 As $\Lambda = \mu$ due to the assumption of a stable population size,  $\Lambda R_0 - \mu$ is greater than one.
 Therefore, this $\frac{dI_2}{dt} > 0$ as long as $\alpha$ is greater than zero.
-That is, as long as cross-immunity is not complete, Pathogen~2 will invade in this deterministic model. 
+That is, as long as cross-immunity is not complete, Pathogen~2 will invade in this deterministic model.
+This means that it is only stochastic extinction that would prevent a pathogen from persisting in a population.
+Our more detailed simulations are therefore examining how effectively different population-level factors alleviate stochastic extinction.
 
 \subsection{Parameter selection}
 \label{s:paramSelect}
 
-The fixed parameters were chosen to roughly reflect realistic wild bat populations. 
-Assuming equal birth and death rates, $\Lambda$ and $\mu$, were set to 0.05 per year giving a generation time of 20 years \cite{jones2009pantheria} and a stochastically varying population size.
-Given the length of the simulations, groups were very unlikely to go extinct.
+All fixed parameters were chosen to approximate those found in wild bat populations. 
+Assuming equal birth and death rates, $\Lambda$ and $\mu$, were set to 0.05 per year giving a generation time of 20 years \cite{jones2009pantheria}.
+Setting birth and death rates equal gives a stochastically varying population size but given the length of the simulations groups were very unlikely to go extinct.
 We used three values of the transmission rate, $\beta$:  0.1, 0.2 and 0.3.
 The recovery rate $\gamma$ was set to one, giving an average infection duration of one year. 
 This was therefore a long lasting infection but not a chronic infection. 
