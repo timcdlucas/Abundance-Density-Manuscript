@@ -491,18 +491,14 @@ write.csv(z, file = 'Data/PopSims.csv')
 \subsection{Two pathogen SIR model}
 
 
-We developed a multipathogen, susceptible-infected-recovered (SIR) compartment model.
-We examined the probability that a newly evolved pathogen would invade and persist into a population given the presence of an identical, endemic pathogen.
-Susceptible individuals were counted in class $S$ (Figure~\ref{f:sir}).
-There were three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen~1, Pathogen~2 or both, respectively.
-Recovered individuals, $R$, were immune to both pathogens, even if they have only been infected with one (i.e.\ there is complete cross-immunity).
+We developed a multipathogen, susceptible-infected-recovered (SIR) compartment model to examine the probability that a newly evolved pathogen would invade and persist into a population given the presence of an identical, endemic pathogen.
+Susceptible individuals were counted in class $S$ (Figure~\ref{f:sir}) while infected individuals were counted in classes $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen~1, Pathogen~2 or both, respectively.
+Recovered individuals, $R$, were immune to both pathogens, even if they had only been infected with one (i.e.\ there is complete cross-immunity).
 Furthermore, recovery from one pathogen moved an individual into the recovered class, even if the individual was coinfected (Figure~\ref{f:sir}).
-Though this study was restricted to two pathogens, this modelling choice allows the model to be easily expanded to include many pathogens. 
-Our assumption of immediate recovery from all other diseases is likely to be reasonable \cite{munywoki2015influence}.
-Any up-regulation of innate immune response will affect both pathogens equally.
-Furthermore, as the pathogens are identical, any acquired immunity would also affect both pathogens equally.
+Though our study was restricted to two pathogens, this modelling choice allows the model to be easily expanded to include many pathogens. 
+Our assumption of immediate recovery from all other diseases is likely to be reasonable \cite{munywoki2015influence} as any up-regulation of innate immune response or acquired immunity would affect both pathogens equally.
 The coinfection rate (the rate at which an infected individual is infected with a second pathogen) was adjusted compared to the infection rate by a factor $\alpha$.
-Birth and death rates ($\Lambda$ and $\mu$) were set as being equal meaning the population did not systematically increase or decrease.
+Birth rate ($\Lambda$) was set equal to the death rate ($\mu$), meaning the population did not systematically increase or decrease.
 New born individuals entered the susceptible class.
 Infection and coinfection were assumed to cause no extra mortality as bats show no clinical signs of infection for a number of viruses \cite{halpin2011pteropid, deThoisy2016bioecological}.
 
