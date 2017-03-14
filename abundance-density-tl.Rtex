@@ -473,10 +473,10 @@ write.csv(z, file = 'Data/PopSims.csv')
 \begin{figure}[t]
 \centering
   \includegraphics[width=0.4\textwidth]{figure/SIRoption1}
-  \caption[Schematic of the SIR model used]{
-  Schematic of the SIR model used. 
-  Individuals are in one of five classes, susceptible (orange, $S$), infected with Pathogen~1, Pathogen~2 or both (blue, $I_1, I_2, I_{12}$) or recovered and immune from further infection (green, $R$).
-  Transitions between epidemiological classes occur as indicated by solid arrows and depend on transmission rate ($\beta$) and coinfection adjustment factor ($\alpha$).
+  \caption[Schematic of the two-pathogen SIR model used]{
+  Schematic of the two-pathogen SIR model used. 
+  Individuals are in one of five epidemiological classes, susceptible (orange, $S$), infected with Pathogen~1, Pathogen~2 or both (blue, $I_1, I_2, I_{12}$, respectively) or recovered and immune from further infection (green, $R$).
+  Transitions between classes occur as indicated by solid arrows and depend on transmission rate ($\beta$), coinfection adjustment factor ($\alpha$) and recovery rate ($\gamma$).
   Births ($\Lambda$)  and deaths ($\mu$) are indicated by dashed arrows.
   %Parameter symbols for transitions are indicated.
   Note that individuals in $I_{12}$ move into $R$, not back to $I_1$ or $I_2$. 
@@ -493,28 +493,28 @@ write.csv(z, file = 'Data/PopSims.csv')
 
 We developed a multipathogen, susceptible-infected-recovered (SIR) compartment model.
 We examined the probability that a newly evolved pathogen would invade and persist into a population given the presence of an identical, endemic pathogen.
-Susceptible individuals are counted in class $S$ (Figure~\ref{f:sir}).
-There are three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen~1, Pathogen~2 or both, respectively.
-Recovered individuals, $R$, are immune to both pathogens, even if they have only been infected with one (i.e.\ there is complete cross-immunity).
-Furthermore, recovery from one pathogen moves an individual into the recovered class, even if the individual was coinfected (Figure~\ref{f:sir}).
-Though this study is restricted to two pathogens, this modelling choice allows the model to be easily expanded to include many pathogens, 
-The assumption of immediate recovery from all other diseases is likely to be reasonable \cite{munywoki2015influence}.
+Susceptible individuals were counted in class $S$ (Figure~\ref{f:sir}).
+There were three infected classes, $I_1$, $I_2$ and $I_{12}$, being individuals infected with Pathogen~1, Pathogen~2 or both, respectively.
+Recovered individuals, $R$, were immune to both pathogens, even if they have only been infected with one (i.e.\ there is complete cross-immunity).
+Furthermore, recovery from one pathogen moved an individual into the recovered class, even if the individual was coinfected (Figure~\ref{f:sir}).
+Though this study was restricted to two pathogens, this modelling choice allows the model to be easily expanded to include many pathogens. 
+Our assumption of immediate recovery from all other diseases is likely to be reasonable \cite{munywoki2015influence}.
 Any up-regulation of innate immune response will affect both pathogens equally.
 Furthermore, as the pathogens are identical, any acquired immunity would also affect both pathogens equally.
-The coinfection rate (the rate at which an infected individual is infected with a second pathogen) is adjusted compared to the infection rate by a factor $\alpha$.
-Birth and death rates ($\Lambda$ and $\mu$) are set as being equal meaning the population does not systematically increase or decrease.
-New born individuals enter the susceptible class.
-Infection and coinfection were assumed to cause no extra mortality as for a number of viruses, bats show no clinical signs of infection \cite{halpin2011pteropid, deThoisy2016bioecological}.
+The coinfection rate (the rate at which an infected individual is infected with a second pathogen) was adjusted compared to the infection rate by a factor $\alpha$.
+Birth and death rates ($\Lambda$ and $\mu$) were set as being equal meaning the population did not systematically increase or decrease.
+New born individuals entered the susceptible class.
+Infection and coinfection were assumed to cause no extra mortality as bats show no clinical signs of infection for a number of viruses \cite{halpin2011pteropid, deThoisy2016bioecological}.
 
 
-The population is modelled as a metapopulation, being divided into a number of groups (colonies).
+The population was modelled as a metapopulation, being divided into a number of groups (colonies).
 The existence of subspecies, measurements of genetic dissimilarity and ecological studies demonstrate that bat populations are structured to some extent \cite{kerth2011bats, mccracken1981social, burns2014correlates}.
 Therefore a fully-mixed population is a large oversimplification.
-The metapopulation is modelled as a network with groups being nodes and dispersal between groups being indicated by edges (Figure~S1).
-Individuals within a group interact randomly so that the group is fully mixed.
+The metapopulation was modelled as a network with groups being nodes and dispersal between groups being indicated by edges (Figure~S1).
+Individuals within a group interacted randomly so that the group was fully mixed.
 Dispersal between groups occurs at a rate $\xi$ between groups connected by an edge in the network.
 The dispersal rate from a group $y$ with degree $k_y$ to group $x$ is $\xi / k_y$.
-Note this rate is not affected by the degree and size of group $x$ and the total rate of dispersal is not affected by the degree of a group
+Note this rate was not affected by the degree and size of group $x$ and the total rate of dispersal was not affected by the degree of a group.
 We examined the full model using stochastic, continuous-time simulations, in \emph{R} \cite{R, metapopepi}.
 The full details of the model are given in Supplementary Methods~S1.
 
@@ -522,7 +522,7 @@ The full details of the model are given in Supplementary Methods~S1.
 \subsection{Deterministic model}
 \label{s:determ}
 
-We can get some initial insights into the behaviour of the system by examining a single-group, deterministic model (for details see Supplementary Methods~S2).
+We obtained some initial insights into the behaviour of the system by examining a single-group, deterministic model (for details see Supplementary Methods~S2).
 If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with vital dynamics \cite{Kermack1932} with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\Lambda n}{\gamma + \mu} - \frac{\mu }{\beta}$ where $\gamma$ is the recovery rate and $n$ is group size.
 When Pathogen~2 is introduced, its rate of change can be written as
 
@@ -542,7 +542,7 @@ Assuming equal birth and death rates, $\Lambda$ and $\mu$, were set to 0.05 per 
 Given the length of the simulations, groups were very unlikely to go extinct.
 We used three values of the transmission rate, $\beta$:  0.1, 0.2 and 0.3.
 The recovery rate $\gamma$ was set to one, giving an average infection duration of one year. 
-This is therefore a long lasting infection but not a chronic infection. 
+This was therefore a long lasting infection but not a chronic infection. 
 It is very difficult to directly estimate infection durations in wild populations but it seems that these infections might sometimes be long lasting \cite{peel2012henipavirus, plowright2015ecological}.
 However, other studies have found much shorter infectious periods \cite{amengual2007temporal}.
 These shorter infections are not studied further here. 
@@ -561,7 +561,7 @@ The dispersal rate $\xi$ was set to 0.01 which yields 17\% of individuals disper
 
 The effect of range size on disease dynamics occurred through changes in the metapopulation network.
 Range size was varied between 2500 and 40000 km\textsuperscript{2}.
-This corresponds to square areas with sides of \rinline{sqrt(min(area))} to \rinline{sqrt(max(area))} km.
+This corresponded to square areas with sides of \rinline{sqrt(min(area))} to \rinline{sqrt(max(area))} km.
 The metapopulation network was not necessarily connected (i.e.\ made up of a single connected component) as the network was created by randomly placing groups and only connecting groups within 100 km of each other.
 To ensure connected metapopulation networks would have required repeatedly resampling the group locations until a connected metapopulation  occurred.
 However, this would bias the mean degree, $\bar{k}$.
