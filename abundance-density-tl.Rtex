@@ -196,7 +196,7 @@ Host, population-level traits such as population size, density and geographic ra
 However, empirically identifying the independent influences of these traits has proven difficult as many of these traits directly depend on each other. 
 Here we develop a mechanistic, metapopulation, susceptible-infected-recovered model to identify the influences of independent population-level traits on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen
 We use bats as case study as they are highly social and an important source of zoonotic disease. 
-We show that larger populations and group sizes had a greater influence on the chances of pathogen invasion and persistence than increased population densities and number of groups. 
+We show that larger populations and group sizes had a greater influence on the chances of pathogen invasion and persistence than increased host density and number of groups. 
 As anthropogenic change affects these traits to different extents, this increased understanding of how traits independently determine pathogen richness will aid in predicting future zoonotic spill-over risk.
 
 
@@ -232,7 +232,7 @@ Epidemics such as the 2014 Ebola epidemic pose a major threat to human health an
 The probability of zoonotic spill-over depends, amongst other factors, on the number of pathogen species carried by reservoir hosts (pathogen richness) \cite{wolfe2000deforestation}. 
 Empirical, comparative studies across reservoir host species, suggest that host morphological and life-history traits, such as body size and longevity, correlate strongly with high pathogen richness \cite{kamiya2014determines, luis2013comparison}. 
 However, factors related to reservoir host population biology are also expected to affect disease dynamics and therefore influence pathogen richness. 
-Population-level traits such as increased increased host population density \cite{morand1998density, kamiya2014determines, nunn2003comparative}, geographic range size \cite{nunn2003comparative, turmelle2009correlates, kamiya2014determines} and population structure (nonrandom interactions between individuals) \cite{maganga2014bat, turmelle2009correlates} have been shown to correlate with high pathogen richness, although the relationship with group sizes in many studies has been equivocal \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative}. 
+Population-level traits such as increased increased host density \cite{morand1998density, kamiya2014determines, nunn2003comparative}, geographic range size \cite{nunn2003comparative, turmelle2009correlates, kamiya2014determines} and population structure (nonrandom interactions between individuals) \cite{maganga2014bat, turmelle2009correlates} have been shown to correlate with high pathogen richness, although the relationship with group sizes in many studies has been equivocal \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative}. 
 Important population-level traits, such as population size, have not been included in comparative studies, despite its importance in describing epidemiological populations \cite{begon2002clarification}. 
 
 
@@ -240,7 +240,7 @@ Important population-level traits, such as population size, have not been includ
 
 Collinearity between explanatory variables is a common problem in correlative studies, and this issue is exacerbated when there are clear, causal relationships between explanatory variables.
 There are two particularly clear relationships between the population-level factors associated with pathogen richness.
-Firstly, host population density, $d$, host population size, $N$, and geographic range size, $a$, are, by definition, linked by $d = N / a$ (electronic supplementary material, table~S1 for all parameters used) and this relationship has broad empirical support \cite{blackburn2006variations}.
+Firstly, host density, $d$, host population size, $N$, and geographic range size, $a$, are, by definition, linked by $d = N / a$ (electronic supplementary material, table~S1 for all parameters used) and this relationship has broad empirical support \cite{blackburn2006variations}.
 Secondly, host population size can be decomposed into two components, the number of groups, $m$, and the average size of a group, $n$, with $N = mn$.
 %While less clear, geographic range size and host population structure are also related.
 Correlative comparative studies will be especially poor at identifying which, if any, of these factors are causally related with pathogen richness.
@@ -254,7 +254,7 @@ Only by knowing which of these interrelated factors control pathogen richness wi
 %The alternative is mechanistic models.
 Mechanistic models provide one method for comparing the importance of intrinsically related factors and can provide a deeper understanding of the system than correlative approaches.
 Theoretical studies have established that a number of host population-level factors are important for epidemiological dynamics and the maintenance of pathogen richness.
-In particular, host population density, population structure and host group size are well established as having central roles in pathogen dynamics \cite{colizza2007invasion, may1979population, anderson1979population, colizza2007invasion}.
+In particular, host density, population structure and host group size are well established as having central roles in pathogen dynamics \cite{colizza2007invasion, may1979population, anderson1979population, colizza2007invasion}.
 A number of studies have found that increased host population structure can promote pathogen coexistence \cite{qiu2013vector, allen2004sis, nunes2006localized}.
 While these studies have examined whether these population-level factors can promote pathogen richness, none have attempted to distinguish which might be the most important.
 Mechanistic models that try to disentangle the interplay between population-level factors including host density, population size, geographic range size, population structure, group size and the number of groups are critically needed.
@@ -794,9 +794,9 @@ The numbers of groups used were 5, 10, 20, 40 and 80 while geographic range size
 Again, this gave population sizes of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
 
 
-Population density and geographic range size are identical in the second and third set of simulations.
+Host density and geographic range size are identical in the second and third set of simulations.
 Therefore, the only difference between these two sets of simulations was the factor used to increase population size; this factor being either group size or the number of groups.
-Therefore, to compare group size and the number of groups, we compared the second and third set of simulations.
+Therefore, to compare group size and the number of groups, we compared tdhe second and third set of simulations.
 
 
 
@@ -819,7 +819,7 @@ transMeansTitle <- 'Comparison of the probability of the affect of group size an
 %%end.rcode
 
 
-%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.4\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.show = 'hide'
+%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.4\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 4, fig.show = 'hide'
 
 # Convert to percentage change in density, colonysize or colony number.
 
@@ -868,10 +868,10 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
   geom_point() +
   geom_errorbar(aes(ymin = lower, ymax = upper),
               width=.2) +
-  ylab('Prop. Invasions') +
+  ylab('Prob. Invasions') +
   xlab('Population size') +
   ylim(0, 1) +
-  scale_colour_manual(name = "Focal Pop. factor", 
+  scale_colour_manual(name = "Population level factor", 
                       labels = c('Number of groups', 'Group size'), 
                       values = pokepal('Swampert', spread = 3)[2:1]) +
   scale_y_continuous(breaks = c(0, 0.5, 1), labels = c('0.0', '0.5', '1.0')) +
@@ -924,13 +924,13 @@ To examine the hypothesis that an increase in group size creates a stronger incr
 valueChangeMeansCapt <- '
 Comparison of the effect of group size (green lines, squares), number of groups (blue lines, circles) and host density (yellow lines, triangles) on probability of invasion.
 The $x$-axis shows the change ($\\times$0.25, 0.5, 1, 2 and $4$) in each of these factors  relative to the default value.
-Default values are: number of groups = 20, group size = 400 and host population density = 0.8 animals per km\\textsuperscript{2}.
+Default values are: number of groups = 20, group size = 400 and host density = 0.8 animals per km\\textsuperscript{2}.
 Each point is the mean of 100 simulations and bars are 95\\% confidence intervals.
 Curves are binomial GLM regression fits.
 Relationships are shown separately for each transmission value, $\\beta$.
 '
 
-valueChangeMeansTitle <- 'Comparison of the effect of group size, number of groups and host population density on probability of invasion'
+valueChangeMeansTitle <- 'Comparison of the effect of group size, number of groups and host density on probability of invasion'
 
 %%end.rcode
 
@@ -974,14 +974,14 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
                 width = .04,
                 position = position_dodge(width = 0.04)) +
   geom_point(size = 2.1, position = position_dodge(width = 0.04)) +
-  ylab('Prop. Invasions') +
+  ylab('Prob. Invasions') +
   xlab('Amount Varied') +
   
-  scale_colour_poke(name = 'Focal Population Factor', 
+  scale_colour_poke(name = 'Population-level factor', 
                     labels = c( 'Group size', 'Number of groups', 'Host density'),
                     pokemon = 'oddish',
                     spread = 3) +
-  scale_shape_manual(name = 'Focal Population Factor', 
+  scale_shape_manual(name = 'Population-level factor', 
                      labels = c( 'Group size', 'Number of groups', 'Host density'),
 										 values = 15:17) +
   scale_y_continuous(breaks = c(0, 0.5, 1), 
