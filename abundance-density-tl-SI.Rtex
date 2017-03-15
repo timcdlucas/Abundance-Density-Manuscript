@@ -614,7 +614,7 @@ plotKtitle <- 'Change in average network degree with increasing range size'
 
 %%end.rcode
 
-%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, cache = FALSE, fig.height = 4, fig.show = TRUE, out.width = '0.8\\textwidth'
+%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, cache = FALSE, fig.height = 4.8, fig.show = TRUE, out.width = '0.8\\textwidth'
 
 
 ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
@@ -762,7 +762,7 @@ transMeansTitle <- 'Comparison of the probability of the affect of colony size a
 %%end.rcode
 
 
-%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.8\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 5
+%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.8\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 5.8
 # Convert to percentage change in density, colonysize or colony number.
 
 d2 <- rbind(dens1Means %>% 

@@ -496,7 +496,7 @@ Susceptible individuals were counted in class $S$ (Figure~\ref{f:sir}) while inf
 Recovered individuals, $R$, were immune to both pathogens, even if they had only been infected with one (i.e.\ there is complete cross-immunity).
 Furthermore, recovery from one pathogen moved an individual into the recovered class, even if the individual was coinfected (figure~\ref{f:sir}).
 Though our study was restricted to two pathogens, this modelling choice allows the model to be easily expanded to include many pathogens. 
-Our assumption of immediate recovery from all other diseases is likely to be reasonable \cite{munywoki2015influence} as any up-regulation of innate immune response or acquired immunity would affect both pathogens equally.
+Our assumption of immediate recovery from all other pathogens is likely to be reasonable \cite{munywoki2015influence} as any up-regulation of innate immune response or acquired immunity would affect both pathogens equally.
 The coinfection rate (the rate at which an infected individual is infected with a second pathogen) was adjusted compared to the infection rate by a factor $\alpha$.
 Birth rate ($\Lambda$) was set equal to the death rate ($\mu$), meaning the population did not systematically increase or decrease.
 New born individuals entered the susceptible class.
@@ -538,20 +538,13 @@ Our more detailed simulations are therefore examining how effectively different 
 While some fixed parameters were chosen to approximate those found in wild bat populations, others were chosen for modelling reasons. 
 Assuming equal birth and death rates, $\Lambda$ and $\mu$, were set to 0.05 per year giving a generation time of 20 years \cite{jones2009pantheria}.
 Setting birth and death rates equal gives a stochastically varying population size but given the length of the simulations groups were very unlikely to go extinct.
-We used three values of the transmission rate, $\beta$:  0.1, 0.2 and 0.3.
-
-Although it is difficult to directly estimate infection durations in wild bat populations \cite{plowright2015ecological}, evidence suggests these can range from months to years \cite{peel2012henipavirus, sohayati2011evidence, rahman2010characterization}. 
-Here we set the recovery rate $\gamma$ to one, giving an average infection duration of one year which is a long lasting, but non-chronic, infection. 
-
-The recovery rate $\gamma$ was set to one, giving an average infection duration of one year. 
-This was therefore a long lasting infection but not a chronic infection. 
-It is very difficult to directly estimate infection durations in wild populations but it seems that these infections might sometimes be long lasting \cite{peel2012henipavirus, plowright2015ecological}. % todo text in pdf
-However, other studies have found much shorter infectious periods \cite{amengual2007temporal}.
-These shorter infections are not studied further here. 
-This yielded very high values of $R_0$ which was required so that a reasonable number of simulations experienced invasion of Pathogen~2.
+Although it is difficult to directly estimate infection durations in wild bat populations \cite{plowright2015ecological}, evidence suggests these can be on the scale of days \cite{amengual2007temporal} up to months or years \cite{peel2012henipavirus, sohayati2011evidence, rahman2010characterization}. 
+Here we set the infection duration, $\frac{1}{\gamma}$, to one year which is a long lasting, but non-chronic, infection. 
+As estimating transmission rates is particularly differcult we used three values of the transmission rate, $\beta$:  0.1, 0.2 and 0.3.
+These values were chosen as very high values of $R_0$ were required so that a reasonable number of simulations experienced an invasion of Pathogen~2.
 The coinfection adjustment parameter, $\alpha$, was set to 0.1.
 Therefore, an individual with a single infection is 90\% less likely to gain a second infection.
-Given the deterministic model, $\alpha = 0$ and $\alpha > 0$ are the two qualitatively different conditions.
+The deterministic model showed that $\alpha = 0$ and $\alpha > 0$ are qualitatively different with the number of individuals infected with the second pathogen being stable and increasing respectively.
 The case where Pathogen~2 does not invade and spread ($\alpha = 0$) is unlikely to be important for pathogen richness so we chose a small, non-zero value for $\alpha$.
 Dispersal was only allowed to occur between two groups if they were connected nodes in the metapopulation network.
 The metapopulation network was created for each simulation by randomly placing groups in a square space (electronic supplementary material, figure~S1), the size of which varied between 2500 and 40000 km\textsuperscript{2}.
