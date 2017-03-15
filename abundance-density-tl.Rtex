@@ -535,10 +535,14 @@ Our more detailed simulations are therefore examining how effectively different 
 \subsection{Parameter selection}
 \label{s:paramSelect}
 
-All fixed parameters were chosen to approximate those found in wild bat populations. 
+While some fixed parameters were chosen to approximate those found in wild bat populations, others were chosen for modelling reasons. 
 Assuming equal birth and death rates, $\Lambda$ and $\mu$, were set to 0.05 per year giving a generation time of 20 years \cite{jones2009pantheria}.
 Setting birth and death rates equal gives a stochastically varying population size but given the length of the simulations groups were very unlikely to go extinct.
 We used three values of the transmission rate, $\beta$:  0.1, 0.2 and 0.3.
+
+Although it is difficult to directly estimate infection durations in wild bat populations \cite{plowright2015ecological}, evidence suggests these can range from months to years \cite{peel2012henipavirus, sohayati2011evidence, rahman2010characterization}. 
+Here we set the recovery rate $\gamma$ to one, giving an average infection duration of one year which is a long lasting, but non-chronic, infection. 
+
 The recovery rate $\gamma$ was set to one, giving an average infection duration of one year. 
 This was therefore a long lasting infection but not a chronic infection. 
 It is very difficult to directly estimate infection durations in wild populations but it seems that these infections might sometimes be long lasting \cite{peel2012henipavirus, plowright2015ecological}. % todo text in pdf
@@ -553,14 +557,14 @@ Dispersal was only allowed to occur between two groups if they were connected no
 The metapopulation network was created for each simulation by randomly placing groups in a square space (electronic supplementary material, figure~S1), the size of which varied between 2500 and 40000 km\textsuperscript{2}.
 If groups were with 100km of each other, they were connected in the metapopulation network. % Explain (model based)
 The dispersal rate $\xi$ was set to 0.01 which yields 17\% of individuals dispersing in their lifetime. % Explain; birth dispersal ish
-
+This relates to a species where some, but not all, males disperse as juveniles \cite{kerth2002extreme, chen2008sex} 
 
 %\subsection{Population-level factors} % This isn't a full subsection...
 
 The effect of geographic range size on disease dynamics occurred through changes in the metapopulation network.
 Geographic range size was varied between 2500 and 40000 km\textsuperscript{2}. % Arbitrary
 This corresponded to square areas with sides of \rinline{sqrt(min(area))} to \rinline{sqrt(max(area))} km.
-The metapopulation network was not necessarily connected (i.e.\ made up of a single connected component) as the network was created by randomly placing groups and only connecting groups within 100 km of each other.
+The metapopulation network was not necessarily connected (i.e.\ made up of a single connected component) as the network was created by randomly placing groups and only connecting groups within 100 km of each other. % chen2008sex 100km. o2015genetic, vonhof2015range isolation by distance
 To ensure connected metapopulation networks would have required repeatedly resampling the group locations until a connected metapopulation  occurred.
 However, this would bias the mean degree, $\bar{k}$.
 Therefore, it was considered preferential to keep the unconnected networks.
@@ -922,7 +926,8 @@ To examine the hypothesis that an increase in group size creates a stronger incr
 %%begin.rcode valueChangeMeansCapt
 
 valueChangeMeansCapt <- '
-Comparison of the effect of group size (green lines, squares), number of groups (blue lines, circles) and host density (yellow lines, triangles) on probability of invasion.
+Comparison of the effect of population-level factors on probability of invasion. 
+Population-level factors are group size (green lines, squares), number of groups (blue lines, circles) and host density (yellow lines, triangles).
 The $x$-axis shows the change ($\\times$0.25, 0.5, 1, 2 and $4$) in each of these factors  relative to the default value.
 Default values are: number of groups = 20, group size = 400 and host density = 0.8 animals per km\\textsuperscript{2}.
 Each point is the mean of 100 simulations and bars are 95\\% confidence intervals.
@@ -975,7 +980,7 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
                 position = position_dodge(width = 0.04)) +
   geom_point(size = 2.1, position = position_dodge(width = 0.04)) +
   ylab('Prob. Invasions') +
-  xlab('Amount Varied') +
+  xlab('Relative change') +
   
   scale_colour_poke(name = 'Population-level factor', 
                     labels = c( 'Group size', 'Number of groups', 'Host density'),
