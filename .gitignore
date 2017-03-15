@@ -14,5 +14,6 @@ runlog.R
 *Cache*
 *.tex
 allCode.R
+email notes.txt
 *.xls
 *Data/DensSims - Copy.csv
