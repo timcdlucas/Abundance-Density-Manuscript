@@ -546,8 +546,8 @@ The coinfection adjustment parameter, $\alpha$, was set to 0.1.
 Therefore, an individual with a single infection is 90\% less likely to gain a second infection.
 The deterministic model showed that $\alpha = 0$ and $\alpha > 0$ are qualitatively different with the number of individuals infected with the second pathogen being stable and increasing respectively.
 The case where Pathogen~2 does not invade and spread ($\alpha = 0$) is unlikely to be important for pathogen richness so we chose a small, non-zero value for $\alpha$.
-The dispersal rate $\xi$ was set to 0.01 which yields 17\% of individuals dispersing in their lifetime. 
-This relates to a species with juvenile dispersal of a proportion of males and very few females \cite{kerth2002extreme, chen2008sex} 
+The dispersal rate $\xi$ was set to 0.01 which yields 17\% of individuals dispersing in their lifetime.
+This relates to a species with juvenile dispersal of a proportion of males and very few females \cite{kerth2002extreme, chen2008sex}.
 
 %\subsection{Population-level factors} % This isn't a full subsection...
 
@@ -555,7 +555,7 @@ The effect of geographic range size on disease dynamics occurred through changes
 Dispersal was only allowed to occur between two groups if they were connected nodes in the metapopulation network.
 The metapopulation network was created for each simulation by randomly placing groups in a square space which represented the geographic range of the species (electronic supplementary material, figure~S1).
 Groups within a threshold distance of each other were connected in the metapopulation network.
-This meant that the metapopulation network was not necessarily connected (i.e.\ made up of a single connected component).% chen2008sex 100km. o2015genetic, vonhof2015range isolation by distance
+This meant that the metapopulation network was not necessarily connected (i.e.\ made up of a single connected component).
 To ensure connected metapopulation networks would have required repeatedly resampling the group locations until a connected metapopulation  occurred.
 However, this would bias the mean degree, $\bar{k}$.
 Therefore, it was considered preferential to keep the unconnected networks.
@@ -564,23 +564,44 @@ Therefore, it was considered preferential to keep the unconnected networks.
 
 \subsection{Experimental setup}
 
-Three sets of simulations were run to examine whether \emph{i}) host population size had a stronger affect on pathogen persistence than host density and \emph{ii}) whether group size or the number of groups was the more important component of population size.
-In each simulation the host population was seeded with 20 individuals infected with Pathogen~1 in each group. 
-Pathogen~1 was then allowed to spread and reach equilibrium. 
-After \rinline{invadeT} events, five host individuals infected with Pathogen~2 were added to one randomly selected group. 
-The simulation was then run until a further \rinline{TotalTime} years had elapsed.
-The invasion of Pathogen~2 was considered successful if any individuals infected with Pathogen~2 remained at the end of the simulation.
-The population parameters that were directly varied were group size, the number of groups and geographic range size.
-In each case these parameters were assigned their default value multiplied by 0.25, 0.5, 1, 2 and 4.
-The default group size was 400 with a range of 100--1600 which is representative of many bat species \cite{jones2009pantheria}.
-The default number of groups was 20 with a range of 5--80.
-This minimum value is close the minimum possible for the metapopulation to still be considered a metapopulation, while the maximum value was constrained by computation costs.
+A total of \rinline{3 * nDensSims} simulations were run.
+In each simulation the each group in the host population was seeded with 20 individuals infected with Pathogen~1. 
+A `burn-in' of \rinline{invadeT} events was run to allow Pathogen~1 to spread and reach equilibrium. 
+Plotting of preliminary simulations was used to decide that \rinline{invadeT} events was enough events to ensure equilibrium.
+After this burn-in, five host individuals infected with Pathogen~2 were added to one randomly selected group. 
+The invasion and persistance of Pathogen~2 was considered successful if any individuals infected with Pathogen~2 remained at the end of the simulation.
+As simulations with many individuals and infection events had more events per unit time, the end of the simulation had to be defined in terms of time rather than the number of events.
+Simulations were run until a further \rinline{TotalTime} years had elapsed.
+This value was chosen so that pathogens had to persist for multiple host generations in order to be considered persistant.
+The results were also checked to confirm that decreasing this value did not change the results greatly and that this value was therefore long enough to distinguish between failure to invade as opposed to long-term stochastic extinction. 
+
+Three sets of \rinline{nDensSims} simulations were run in which three population parameters were varied: (\emph{i})  geographic range size (and therefore host density), (\emph{ii}) group size (and therefore population size), and (\emph{iii})  the number of groups (and therefore population size).
+In each case these parameters were assigned their default value multiplied by 0.25, 0.5, 1, 2 and 4 to allow comparisons between simulation sets.
+To examine whether host population size had a stronger affect on pathogen persistence than host density, results from simulation set (\emph{i}) was compared to those from (\emph{ii}) and (\emph{iii}).
+To examine whether group size or the number of groups was the more important component of population size, results from the simulation sets (\emph{ii})  were compared to those from (\emph{iii}).
+
+In the first set of simulations (\emph{i}), host density was varied by keeping population size constant ($N$ = 8000, $n$ = 400, $m$ = 20) while varying geographic range size.
+The values of geographic range size used were 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2} which gave density values of \rinline{depDens[-5]} and \rinline{depDens[5]} animals per km\textsuperscript{2}.
+In the second set of simulations (\emph{ii}), population size was varied by changing group size while the number of groups was kept constant.
+To keep host density constant, geographic range size was increased as population size increased.
+The values of group size used were 100, 200, 400, 800 and 1600 while geographic range size was set to 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2}.
+This gave population sizes of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
+In the third set of simulations (\emph{iii}), population size was varied by changing the number of groups while group size was kept constant.
+Again, to keep host density constant, geographic range size was increased as population size increased.
+The numbers of groups used were 5, 10, 20, 40 and 80 while geographic range size was set to 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2}.
+Again, this gave population sizes of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
+
 The default geographic range size was 10000 km\textsuperscript{2} with a range of 25000--40000 km\textsuperscript{2}. % todo, why? Group size, pantheria, number of groups? Computational... Need to be greater than 5 * 4. Range size, arbitrary...
 The spatial scale alone is arbitrary; only the ratio between the geographic range size and the threshold distance for groups being connected in the metapopulation network has any affect on simulation outcomes.
 We parameterised the spatial scale by select a threshold distance of 100 km.
 The upper and lower bounds of the geographic range size were selected to maximise the range of $\bar{k}$ (electronic supplementary material, figure~S2) while not having many simulations with networks that were unconnected.
 That is, we aimed for low host density populations to have relatively sparse population networks, while high host density populations had fully connected metapopulation networks.
 This reflects the existence of both isolation-by-distance \cite{chen2008sex, o2015genetic, vonhof2015range} and panmixia \cite{peel2013continent, petit1999male, calisher2006bats} in bat species.
+The default group size was 400 with a range of 100--1600 which is representative of many bat species \cite{jones2009pantheria}.
+The default number of groups was 20 with a range of 5--80.
+This minimum value is close to the minimum possible for the population to still be considered a metapopulation, while the maximum value was constrained by computational costs.
+
+
 
 
 
@@ -782,26 +803,6 @@ ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
 
 
 %%end.rcode
-
-
-
-In the first set of simulations, host density was varied by keeping population size constant ($N$ = 8000, $n$ = 400, $m$ = 20) while varying geographic range size.
-The values of geographic range size used were 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2} which gave density values of \rinline{depDens[-5]} and \rinline{depDens[5]} animals per km\textsuperscript{2}.
-
-In the second set of simulations, population size was varied by changing group size while the number of groups was kept constant.
-To keep host density constant, geographic range size was increased as population size increased.
-The values of group size used were 100, 200, 400, 800 and 1600 while geographic range size was set to 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2}.
-This gave population sizes of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
-
-In the third set of simulations, population size was varied by changing the number of groups while group size was kept constant.
-Again, to keep host density constant, geographic range size was increased as population size increased.
-The numbers of groups used were 5, 10, 20, 40 and 80 while geographic range size was set to 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2}.
-Again, this gave population sizes of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
-
-
-Host density and geographic range size are identical in the second and third set of simulations.
-Therefore, the only difference between these two sets of simulations was the factor used to increase population size; this factor being either group size or the number of groups.
-Therefore, to compare group size and the number of groups, we compared tdhe second and third set of simulations.
 
 
 
