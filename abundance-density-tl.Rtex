@@ -580,6 +580,17 @@ In each case these parameters were assigned their default value multiplied by 0.
 To examine whether host population size had a stronger affect on pathogen persistence than host density, results from simulation set (\emph{i}) was compared to those from (\emph{ii}) and (\emph{iii}).
 To examine whether group size or the number of groups was the more important component of population size, results from the simulation sets (\emph{ii})  were compared to those from (\emph{iii}).
 
+
+The default geographic range size was 10000 km\textsuperscript{2} with a range of 25000--40000 km\textsuperscript{2}. % todo, why? Group size, pantheria, number of groups? Computational... Need to be greater than 5 * 4. Range size, arbitrary...
+The spatial scale alone is arbitrary; only the ratio between the geographic range size and the threshold distance for groups being connected in the metapopulation network has any affect on simulation outcomes.
+We parameterised the spatial scale by select a threshold distance of 100 km.
+The upper and lower bounds of the geographic range size were selected to maximise the range of $\bar{k}$ (electronic supplementary material, figure~S2) while not having many simulations with networks that were unconnected.
+That is, we aimed for low host density populations to have relatively sparse population networks, while high host density populations had fully-connected metapopulation networks.
+This reflects the existence of both isolation-by-distance \cite{chen2008sex, o2015genetic, vonhof2015range} and panmixia \cite{peel2013continent, petit1999male, calisher2006bats} in bat species.
+The default group size was 400 with a range of 100--1600 which is representative of many bat species \cite{jones2009pantheria}.
+The default number of groups was 20 with a range of 5--80.
+This minimum value is close to the minimum possible for the population to still be considered a metapopulation, while the maximum value was constrained by computational costs.
+
 In the first set of simulations (\emph{i}), host density was varied by keeping population size constant ($N$ = 8000, $n$ = 400, $m$ = 20) while varying geographic range size.
 The values of geographic range size used were 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2} which gave density values of \rinline{depDens[-5]} and \rinline{depDens[5]} animals per km\textsuperscript{2}.
 In the second set of simulations (\emph{ii}), population size was varied by changing group size while the number of groups was kept constant.
@@ -591,15 +602,6 @@ Again, to keep host density constant, geographic range size was increased as pop
 The numbers of groups used were 5, 10, 20, 40 and 80 while geographic range size was set to 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2}.
 Again, this gave population sizes of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
 
-The default geographic range size was 10000 km\textsuperscript{2} with a range of 25000--40000 km\textsuperscript{2}. % todo, why? Group size, pantheria, number of groups? Computational... Need to be greater than 5 * 4. Range size, arbitrary...
-The spatial scale alone is arbitrary; only the ratio between the geographic range size and the threshold distance for groups being connected in the metapopulation network has any affect on simulation outcomes.
-We parameterised the spatial scale by select a threshold distance of 100 km.
-The upper and lower bounds of the geographic range size were selected to maximise the range of $\bar{k}$ (electronic supplementary material, figure~S2) while not having many simulations with networks that were unconnected.
-That is, we aimed for low host density populations to have relatively sparse population networks, while high host density populations had fully connected metapopulation networks.
-This reflects the existence of both isolation-by-distance \cite{chen2008sex, o2015genetic, vonhof2015range} and panmixia \cite{peel2013continent, petit1999male, calisher2006bats} in bat species.
-The default group size was 400 with a range of 100--1600 which is representative of many bat species \cite{jones2009pantheria}.
-The default number of groups was 20 with a range of 5--80.
-This minimum value is close to the minimum possible for the population to still be considered a metapopulation, while the maximum value was constrained by computational costs.
 
 
 
@@ -899,16 +901,17 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
 \subsection{Statistical analysis}
 
 
-In \rinline{nAllExtinct} simulations, both pathogens went extinct.
-All \rinline{nAllExtinct} simulations had either the smallest group size ($n$ = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups ($m = 5$, eight simulations).
-However, the number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: coefficient = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
-Results from these simulations were removed before further analyses.
-For each set of simulations, we fitted binomial GLMs with invasion of Pathogen 2 as the dependent variable.
+
+For each set of simulations, we fitted binomial GLMs in R \cite{R} with invasion of Pathogen~2 as the dependent variable.
 To enable comparison between GLMs we divided the explanatory variables by their default values.
 The explanatory variables for all three sets of simulations therefore became the proportional change relative to the default parameter value, in the range 0.25 -- 4.
 To investigate the hypothesis that an increase in host population size created a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density we compared the size (and 95\% confidence intervals) of the regression coefficients of group size and number of groups to host density.
-To examine the hypothesis that an increase in group size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups we compared regression coeffients of $m$ to $n$.
-
+To examine the hypothesis that an increase in group size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups we compared regression coefficients of $m$ to $n$.
+In \rinline{nAllExtinct} simulations out of \rinline{3 * nDensSims}, both pathogens went extinct.
+Of these simulations, 29 were in set \emph{ii} and eight were in set \emph{iii} (electronic supplementary material, tables~S2--4).
+All \rinline{nAllExtinct} simulations had either the smallest group size ($n$ = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups ($m = 5$, eight simulations).
+However, the number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: coefficient = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
+Results from these simulations were removed before further analyses.
 
 
 
@@ -947,7 +950,7 @@ valueChangeMeansTitle <- 'Comparison of the effect of group size, number of grou
 
 
 
-%%begin.rcode plotValueChangeMeans, fig.cap = valueChangeMeansCapt, fig.scap = valueChangeMeansTitle, out.width = '0.5\\textwidth', cache = FALSE, fig.height =  5
+%%begin.rcode plotValueChangeMeans, fig.cap = valueChangeMeansCapt, fig.scap = valueChangeMeansTitle, out.width = '0.5\\textwidth', cache = FALSE, fig.height =  6
 
 # Convert to percentage change in density, colonysize or colony number.
 
@@ -1008,23 +1011,23 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
 
 
 
-%\subsection{Host population size or density}
+\subsection{Does population size or host density affect probability of pathogen invasion more strongly?}
 
 Increasing host population size, either by increasing group size or number of groups, increased the probability of invasion (figure~\ref{fig:plotValueChangeMeans}, table~\ref{t:regrCoefs}).
 The positive relationship between group size and invasion was strong and significant at all transmission rates, while the relationship between number of groups was weaker but still strongly significant.
 In contrast, varying host density did not alter invasion probability except for when $\beta = 0.3$ where there was a marginally significant decrease in invasion probability with increased host density (GLM: coefficient = $\rinline{areaModel$estimate[6]}$, $p$ = \rinline{areaModel$p.value[6]}).
-The 95\% confidence intervals for group size does not overlap those for host density at any value of $\beta$.
+The 95\% confidence intervals for group size do not overlap those for host density at any value of $\beta$.
 The 95\% confidence intervals for number of groups only overlaps those for host density at $\beta = 0.2$.
 
 
-%\subsection{Group size or number of groups}
+\subsection{Does group size or number of groups affect probability of pathogen invasion more strongly?}
 
 The deterministic model showed that Pathogen~2 can invade even in a single subpopulation but the rate of spread depends on $R_0$ which in turn depends on group size.
 In the stochastic simulations, increasing either group size or the number of groups increased the probability of invasion but this effect was  stronger for group size (figure~\ref{fig:plotValueChangeMeans}, table~\ref{t:regrCoefs}).
 The 95\% confidence intervals of regression coefficients for group size do not overlap those for number of groups for the simulations with $\beta = 0.2$ or $0.3$ but the confidence intervals do overlap for the simulations where $\beta = 0.1$.
 
-At the default parameter settings, the probability of invasion and persistence of the second pathogen was rare (figure~\ref{fig:plotValueChangeMeans} and electronic supplementary material, tables~S2--4).
-These proportions significantly increased with transmission rate (GLM: coefficient = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
+%At the default parameter settings, the probability of invasion and persistence of the second pathogen was rare (figure~\ref{fig:plotValueChangeMeans} and electronic supplementary material, tables~S2--4).
+%These proportions significantly increased with transmission rate (GLM: coefficient = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
 
 \begin{table}
 \captionsetup{width=0.9\textwidth}
@@ -1140,7 +1143,7 @@ In contrast, species suffering range contractions \cite{thomas2004extinction} an
 \section*{Data accessibility}
 \sloppy
 The implementation of the model is available as an R package on GitHub \cite{metapopepi}. This can be found at \href{https://github.com/timcdlucas/MetapopEpi}{https://github.com/timcdlucas/MetapopEpi}.
-All code and simulation output data is available on GitHub at \href{https://github.com/timcdlucas/Abundance-Density-Manuscript}{https://github.com/timcdlucas/Abundance-Density-Manuscript}.
+All other code and simulation output data is available on GitHub at \href{https://github.com/timcdlucas/Abundance-Density-Manuscript}{https://github.com/timcdlucas/Abundance-Density-Manuscript}.
 \fussy
 
 
