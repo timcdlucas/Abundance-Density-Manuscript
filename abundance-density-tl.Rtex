@@ -42,18 +42,56 @@
 	style=numeric-comp, 
   sorting=none,
   firstinits=true, 
+	bibstyle=authoryear,
 	maxcitenames=2, 
   terseinits=true,
   maxbibnames=10
 ]{biblatex}
 
+\renewcommand*{\revsdnamepunct}{}
 \renewcommand{\cite}[1]{\parencite{#1}}
 
 \renewcommand*{\multicitedelim}{\addcomma}
 
+\DeclareNameAlias{sortname}{last-first}
+\DeclareNameAlias{default}{last-first}
+
+
 % no "In: "
 \renewbibmacro{in:}{%
   \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
+
+\DeclareFieldFormat[article]{title}{#1} 
+%\DeclareFieldFormat[article]{number}{}
+\DeclareFieldFormat[article]{volume}{\textbf{#1}}
+
+
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+%  \setunit*{\adddot}% DELETED
+  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
+  %\printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+
+% remove pp
+\DefineBibliographyStrings{english}{%
+	page = {},
+  pages = {},
+}
+
+\usepackage{xpatch}
+
+\xpatchbibmacro{date+extrayear}{%
+  \printtext[parens]%
+}{%
+  \setunit{\space}%
+  \printtext%
+}{}{}
+
+	
+
+\DeclareFieldFormat{doi}{(#1)}
 
 
 \addbibresource{epilit.bib}
@@ -70,7 +108,7 @@
 \usepackage{graphicx}
 
 \usepackage[width = 0.5\textwidth]{caption}
-\usepackage{verbatim, graphicx, xcomment, microtype, array}
+\usepackage{verbatim, graphicx, xcomment, array}
 %\usepackage{amsmath}
 
 
@@ -1126,7 +1164,7 @@ This suggests that the mechanism studied here --- invasion of recently evolved p
 
 It is clear that many species are suffering strong population changes due to global change \cite{thomas2004extinction}.
 These changes might affect geographic range size \cite{thomas2004extinction}, population size \cite{craigie2010large}, population connectivity \cite{rivera2015habitat, fonturbel2014forest} or group size \cite{lehmann2010apes, atwood2006influence} to different extents.
-The monitoring of these different aspects of population change, especially in bats, can often be difficult and may require further developments in acoustic monitoring to be effective \cite{walters2013challenges, measey2016counting, lucas2015generalised}.
+The monitoring of these different aspects of population change, especially in bats, can often be difficult and may require further developments in monitoring to be effective, for example developing random encounter models using acoustic detectors \cite{walters2013challenges, measey2016counting, lucas2015generalised}.
 Our results suggest that pathogen communities will respond differently depending on which factors are most strongly affected by global change.
 In short, species suffering reductions in groups size \cite{lehmann2010apes, atwood2006influence} are predicted to experience decreases in pathogen richness in the long term and there is some evidence that this process is occurring \cite{altizer2007threatened, turmelle2009correlates}.
 Species that are experiencing increases in group size \cite{lehmann2010apes} would be expected to gain new pathogen species.
