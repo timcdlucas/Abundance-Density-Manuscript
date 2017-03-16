@@ -1006,25 +1006,17 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
 
 %%end.rcode
 
-
-
-
-
-
-\subsection{Does population size or host density affect probability of pathogen invasion more strongly?}
-
-Increasing host population size, either by increasing group size or number of groups, increased the probability of invasion (figure~\ref{fig:plotValueChangeMeans}, table~\ref{t:regrCoefs}).
+\subsection{Population size and host density}
+The estimated GLM coefficients were always larger for simulations where population size was varied (sets \emph{ii} and \emph{iii}) than when host density (set \emph{i}) was varied (table~\ref{t:regrCoefs}).
+Increasing population size, either by increasing group size or number of groups, increased the probability of invasion (figure~\ref{fig:plotValueChangeMeans}).
 The positive relationship between group size and invasion was strong and significant at all transmission rates, while the relationship between number of groups was weaker but still strongly significant.
-In contrast, varying host density did not alter invasion probability except for when $\beta = 0.3$ where there was a marginally significant decrease in invasion probability with increased host density (GLM: coefficient = $\rinline{areaModel$estimate[6]}$, $p$ = \rinline{areaModel$p.value[6]}).
-The 95\% confidence intervals for group size do not overlap those for host density at any value of $\beta$.
-The 95\% confidence intervals for number of groups only overlaps those for host density at $\beta = 0.2$.
+In contrast, varying host density did not alter invasion probability except for when $\beta = 0.3$ where there was a significant decrease in invasion probability with increased host density (GLM: coefficient = $\rinline{areaModel$estimate[6]}$, $p$ = \rinline{areaModel$p.value[6]}).
+The 95\% confidence intervals for group size did not overlap those for host density at any value of $\beta$ while the 95\% confidence intervals for number of groups only overlapped those for host density at $\beta = 0.2$.
 
-
-\subsection{Does group size or number of groups affect probability of pathogen invasion more strongly?}
-
-The deterministic model showed that Pathogen~2 can invade even in a single subpopulation but the rate of spread depends on $R_0$ which in turn depends on group size.
-In the stochastic simulations, increasing either group size or the number of groups increased the probability of invasion but this effect was  stronger for group size (figure~\ref{fig:plotValueChangeMeans}, table~\ref{t:regrCoefs}).
-The 95\% confidence intervals of regression coefficients for group size do not overlap those for number of groups for the simulations with $\beta = 0.2$ or $0.3$ but the confidence intervals do overlap for the simulations where $\beta = 0.1$.
+\subsection{Group size and number of groups}
+In all cases, the estimated GLM coefficients were larger for simulations where group size was varied (set \emph{ii}) than when the number of groups (sets \emph{iii}) was varied (table~\ref{t:regrCoefs}).
+Increasing either group size or the number of groups increased the probability of invasion but this effect was  stronger for group size (figure~\ref{fig:plotValueChangeMeans}).
+The 95\% confidence intervals of regression coefficients for group size did not overlap those for number of groups for the simulations with $\beta = 0.2$ or $0.3$ but the confidence intervals did overlap for the simulations when $\beta = 0.1$.
 
 %At the default parameter settings, the probability of invasion and persistence of the second pathogen was rare (figure~\ref{fig:plotValueChangeMeans} and electronic supplementary material, tables~S2--4).
 %These proportions significantly increased with transmission rate (GLM: coefficient = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
