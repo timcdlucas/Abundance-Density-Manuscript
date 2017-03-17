@@ -1108,8 +1108,16 @@ $\beta$ & \emph{Variable} & \emph{Estimate} & (95\% \emph{CI}) & $p$\\
 
 %\tmpsection{Restate results}
 
-Overall, our results suggest that population size promotes pathogen richness considerably more than host density does in the context of metapopulations or group living.
-Furthermore, the results suggest that the most important component of population size is group size; a large population made up of large groups rather than many, small groups promotes pathogen invasion to the greatest degree.
+% Population-level traits such as increased increased host density \cite{morand1998density, kamiya2014determines, nunn2003comparative}, geographic range size \cite{nunn2003comparative, turmelle2009correlates, kamiya2014determines} and population structure (nonrandom interactions between individuals) \cite{maganga2014bat, turmelle2009correlates} have been shown to correlate with high pathogen richness, although the relationship with group sizes in many studies has been equivocal \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative}. 
+
+Overall, our results suggest that population size promotes pathogen richness while host density promotes pathogen richness weakly if at all.
+This is in contrast to the many comparative studies that find host density to be a significant predictor of pathogen richness \cite{morand1998density, kamiya2014determines, nunn2003comparative}.
+This suggests that in these studies, host density is acting as a proxy for population size rather than being a causal factor.
+Comparative studies examining group size have found conflicting results \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative}.
+Our results are in agreement with those studies that find a relationship between group size and pathogen richness.
+Overall out results suggest that a large population made up of large groups promotes pathogen invasion to  greater extent than a large population made up of many, small groups or a small but dense population.
+
+
 These results lead to a number of other conclusions.
 All else being equal, increasing geographic range size (with density remaining constant) will not strongly increase pathogen richness unless the increased geographic range size promotes larger groups.
 Furthermore, social species that live in large groups are likely to harbour more pathogen species, even if the larger groups require more space and therefore dispersal between groups is reduced.
