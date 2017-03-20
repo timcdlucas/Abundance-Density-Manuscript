@@ -167,7 +167,6 @@ source('misc/KnitrOptions.R')
 source('misc/theme_tcdl.R')
 theme_set(theme_grey() + theme_pub)
 
-
 %%end.rcode
 
 %%begin.rcode libs, cache = FALSE, result = FALSE
@@ -602,24 +601,24 @@ Therefore, it was considered preferential to keep the unconnected networks.
 
 \subsection{Experimental setup}
 
-A total of \rinline{3 * nDensSims} simulations were run.
-In each simulation the each group in the host population was seeded with 20 individuals infected with Pathogen~1. 
+A total of 4500 simulations were run.
+In each simulation, each group in the host population was seeded with 20 individuals infected with Pathogen~1. 
 A `burn-in' of \rinline{invadeT} events was run to allow Pathogen~1 to spread and reach equilibrium. 
-Plotting of preliminary simulations was used to decide that \rinline{invadeT} events was enough events to ensure equilibrium.
+Plotting of preliminary simulations was used to decide that \rinline{invadeT} events was enough to ensure equilibrium.
 After this burn-in, five host individuals infected with Pathogen~2 were added to one randomly selected group. 
 The invasion and persistance of Pathogen~2 was considered successful if any individuals infected with Pathogen~2 remained at the end of the simulation.
 As simulations with many individuals and infection events had more events per unit time, the end of the simulation had to be defined in terms of time rather than the number of events.
-Simulations were run until a further \rinline{TotalTime} years had elapsed.
+Simulations were run until \rinline{TotalTime} years had elapsed since the introduction of Pathogen~2.
 This value was chosen so that pathogens had to persist for multiple host generations in order to be considered persistant.
 The results were also checked to confirm that decreasing this value did not change the results greatly and that this value was therefore long enough to distinguish between failure to invade as opposed to long-term stochastic extinction. 
 
-Three sets of \rinline{nDensSims} simulations were run in which three population parameters were varied: (\emph{i})  geographic range size (and therefore host density), (\emph{ii}) group size (and therefore population size), and (\emph{iii})  the number of groups (and therefore population size).
-In each case these parameters were assigned their default value multiplied by 0.25, 0.5, 1, 2 and 4 to allow comparisons between simulation sets.
+Three sets of 1500 simulations were run in which three population parameters were varied: (\emph{i})  geographic range size (and therefore host density), (\emph{ii}) group size (and therefore population size), and (\emph{iii})  the number of groups (and therefore population size).
+To allow comparisons between simulation sets, the parameter that was being varied in each set was assigned its default value multiplied by 0.25, 0.5, 1, 2 and 4. 
 To examine whether host population size had a stronger affect on pathogen persistence than host density, results from simulation set (\emph{i}) was compared to those from (\emph{ii}) and (\emph{iii}).
 To examine whether group size or the number of groups was the more important component of population size, results from the simulation sets (\emph{ii})  were compared to those from (\emph{iii}).
 
 
-The default geographic range size was 10000 km\textsuperscript{2} with a range of 25000--40000 km\textsuperscript{2}. % todo, why? Group size, pantheria, number of groups? Computational... Need to be greater than 5 * 4. Range size, arbitrary...
+The default geographic range size was 10000 km\textsuperscript{2} with a range of 25000--40000 km\textsuperscript{2}.
 The spatial scale alone is arbitrary; only the ratio between the geographic range size and the threshold distance for groups being connected in the metapopulation network has any affect on simulation outcomes.
 We parameterised the spatial scale by select a threshold distance of 100 km.
 The upper and lower bounds of the geographic range size were selected to maximise the range of $\bar{k}$ (electronic supplementary material, figure~S2) while not having many simulations with networks that were unconnected.
@@ -841,7 +840,6 @@ ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
   ylab(expression(paste('Mean degree, ', italic(bar(k))))) +
   ylim(0, 20)
 
-
 %%end.rcode
 
 
@@ -908,13 +906,12 @@ percChangePreds2 <- rbind(colonySizePredictions2, colonyNumberPredictions2)
 percChangePreds2$transmission <- factor(percChangePreds2$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
 
 
-
 ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
   geom_line(data = percChangePreds2, aes(x = pop, y = .fitted, colour = vary)) +
   geom_point() +
   geom_errorbar(aes(ymin = lower, ymax = upper),
               width=.2) +
-  ylab('Prob. Invasions') +
+  ylab('Prob. Invasion') +
   xlab('Population size') +
   ylim(0, 1) +
   scale_colour_manual(name = "Population level factor", 
@@ -943,9 +940,9 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
 For each set of simulations, we fitted binomial GLMs in R \cite{R} with invasion of Pathogen~2 as the dependent variable.
 To enable comparison between GLMs we divided the explanatory variables by their default values.
 The explanatory variables for all three sets of simulations therefore became the proportional change relative to the default parameter value, in the range 0.25 -- 4.
-To investigate the hypothesis that an increase in host population size created a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density we compared the size (and 95\% confidence intervals) of the regression coefficients of group size and number of groups to host density.
-To examine the hypothesis that an increase in group size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups we compared regression coefficients of $m$ to $n$.
-In \rinline{nAllExtinct} simulations out of \rinline{3 * nDensSims}, both pathogens went extinct.
+To investigate whether an increase in host population size created a stronger increase in invasion probability (of the second pathogen) than an equal increase in host density we compared the size (and 95\% confidence intervals) of the regression coefficients of group size and number of groups to host density.
+To examine whether an increase in group size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups we compared regression coefficients of $m$ to $n$.
+In \rinline{nAllExtinct} simulations out of 4500, both pathogens went extinct.
 Of these simulations, 29 were in set \emph{ii} and eight were in set \emph{iii} (electronic supplementary material, tables~S2--4).
 All \rinline{nAllExtinct} simulations had either the smallest group size ($n$ = 100, \rinline{smallAllExtinct} simulations) or the fewest number of groups ($m = 5$, eight simulations).
 However, the number of simulations where both pathogens went extinct did not depend on transmission rate (GLM: coefficient = \rinline{transExtinctTest$estimate[2]}, $p$ = \rinline{transExtinctTest$p.value[2]}).
@@ -1014,17 +1011,14 @@ percChangePreds$vary <- factor(percChangePreds$vary, levels = levels(d$vary))
 percChangePreds$transmission <- factor(percChangePreds$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
 
 
-
-
 ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
   geom_line(data = percChangePreds, aes(x = ValueChange, y = .fitted, colour = vary)) +
   geom_errorbar(aes(ymin = lower, ymax = upper),
                 width = .04,
                 position = position_dodge(width = 0.04)) +
   geom_point(size = 2.1, position = position_dodge(width = 0.04)) +
-  ylab('Prob. Invasions') +
+  ylab('Prob. Invasion') +
   xlab('Relative change') +
-  
   scale_colour_poke(name = 'Population-level factor', 
                     labels = c( 'Group size', 'Number of groups', 'Host density'),
                     pokemon = 'oddish',
@@ -1115,7 +1109,19 @@ This is in contrast to the many comparative studies that find host density to be
 This suggests that in these studies, host density is acting as a proxy for population size rather than being a causal factor.
 Comparative studies examining group size have found conflicting results \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative}.
 Our results are in agreement with those studies that find a relationship between group size and pathogen richness.
-Overall out results suggest that a large population made up of large groups promotes pathogen invasion to  greater extent than a large population made up of many, small groups or a small but dense population.
+Overall our results suggest that a large population made up of large groups promotes pathogen invasion to  greater extent than a large population made up of many, small groups or a small but dense population.
+% vitone worms. Says pos, but looks weak to me (not sig in phylo analysis).
+% gay 2014 ColonySize negative?
+% rifkin meta-analysis non-sig.
+In simulation sets \emph{ii} and \emph{iii} we inc
+Our results also suggest that host geographic range size does not promote pathogen richness, yet a number of studies have found evidence of this relationship \cite{kamiya2014determines, nunn2003comparative}.
+This may be because in wild species, increased host geographic size tends to entail a greater variety of environmental conditions and a greater number of sympatric species which is known to also affect pathogen richness \cite{brierley2016quantifying}.
+Studies have suggested that the relationship between social group size and pathogen richness is weak \cite{rifkin2012animals, vitone2004body, gay2014parasite}.
+
+
+However, we have found that group size is the most important population-level factor.
+This suggests that the mechanism studied here --- invasion of recently evolved pathogens --- may not be the major mechanism by which pathogen richness is created in wild populations. %todo
+
 
 
 These results lead to a number of other conclusions.
@@ -1145,9 +1151,7 @@ We also restrict ourselves to the context of competition between two pathogens i
 As the pathogen modelled here is directly transmitted there is no transmission between individuals in separate subpopulations.
 Infection via shared food sources or contact between individuals from different subpopulations would act to reduce population structure.
 As above, if there is high rates of infection between subpopulations, the population becomes effectively unstructured and changes to the underlying metapopulation will have no effect on pathogen competition.
-However, these alternate transmission routes are likely to be more directly density dependent.
-Further modelling would be required to examine whether the results here would change with the inclusion of alternate transmission routes.
-However, only empirical studies would be able to indicate the relative importance of these different transmission routes in wild populations.
+Further modelling would be required to examine whether the results here would change with the inclusion of alternate transmission routes while only empirical studies would be able to indicate the relative importance of these different transmission routes in wild populations.
 
 
 
@@ -1156,14 +1160,10 @@ However, only empirical studies would be able to indicate the relative importanc
 
 Many comparative studies measure some aspect of a species population size or structure, yet it is rarely discussed how these are related.
 Instead most studies use the data that are available, without considering \emph{a priori} how the explanatory variables are causally related (statistical correlations between explanatory variables are however often handled appropriately).
-For example, host density is often used in studies \cite{morand1998density, lindenfors2007parasite, nunn2003comparative} yet density is directly associated with population size.
-Our results suggest that it is in fact population size that is important (in the context of social species as studied here) and previous authors have suggested it is the more natural descriptor of population size \cite{begon2002clarification}.
+For example, host density is often used in studies \cite{morand1998density, lindenfors2007parasite, nunn2003comparative}, yet density is directly associated with population size.
+Our results suggest that it is in fact population size that is important (in the context of social species as studied here), and previous authors have suggested it is the more natural descriptor of population size \cite{begon2002clarification}.
 Therefore, density could be acting as a proxy for population size in these comparative studies.
 These causal relationships between population-level factors should be considered more carefully in future comparative studies.
-Our results also suggest that host geographic range size does not promote pathogen richness, yet a number of studies have found evidence of this relationship \cite{kamiya2014determines, nunn2003comparative}.
-Studies have suggested that the relationship between social group size and pathogen richness is weak \cite{rifkin2012animals, vitone2004body, gay2014parasite}.
-However, we have found that group size is the most important population-level factor.
-This suggests that the mechanism studied here --- invasion of recently evolved pathogens --- may not be the major mechanism by which pathogen richness is created in wild populations.
 
 
 
@@ -1193,14 +1193,14 @@ We have no competing interests.
 \section*{Author's contributions}
 
 TCDL wrote the simulations and performed the analysis.
-TCDL, HMH and KEJ all helped design the study.
+TCDL, HMH and KEJ co-designed the study.
 TCDL drafted the manuscript.
 TCDL, HMH and KEJ all edited the manuscript and gave final approval for publication.
 
 \section*{Acknowledgements}
 We thank Andy Fenton and David Murrell for comments on the manuscript and help with the analytical model. 
-The Dynamic Drivers of Disease in Africa Consortium, NERC project no. NE-J001570-1 was funded with support from the Ecosystem Services for Poverty Alleviation Programme (ESPA). 
-The ESPA programme is funded by the Department for International Development (DFID), the Economic and Social Research Council (ESRC) and the Natural Environment Research Council (NERC)
+This work, The Dynamic Drivers of Disease in Africa Consortium, NERC project no. NE-J001570-1 was funded with support from the Ecosystem Services for Poverty Alleviation Programme (ESPA). 
+The ESPA programme is funded by the Department for International Development (DFID), the Economic and Social Research Council (ESRC) and the Natural Environment Research Council (NERC).
 
 
 \section*{Funding}

@@ -99,7 +99,6 @@ $^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for He
 #   Use 'hide' to remove them.
 extraFigs <- 'hide'
 
-
 #knitr options
 #  Set figure prefix as A so that no figures will be overwritten.
 opts_chunk$set(cache.path = '.SICache/', fig.path = 'figure/')
@@ -616,7 +615,6 @@ plotKtitle <- 'Change in average network degree with increasing range size'
 
 %%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, cache = FALSE, fig.height = 4.8, fig.show = TRUE, out.width = '0.8\\textwidth'
 
-
 ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
   geom_boxplot(outlier.size = 1, size = 0.3, outlier.colour = grey(0.3), 
     notch = TRUE, width = 0.4, notchwidth = 0.6) +
@@ -802,7 +800,6 @@ colonyNumberPredictions2 <- dens2 %>%
 percChangePreds2 <- rbind(colonySizePredictions2, colonyNumberPredictions2)
 
 percChangePreds2$transmission <- factor(percChangePreds2$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
-
 
 
 ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
