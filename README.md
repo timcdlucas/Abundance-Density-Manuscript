@@ -1,5 +1,5 @@
 
-A mechanistic model to compare the importance of interrelated population measures: population size, population density and colony size
+A mechanistic model to compare the importance of interrelated population measures
 =======================================================================================
 
 Repo for manuscript and analysis.
@@ -9,7 +9,7 @@ This paper is a reworking of one of my [thesis](https://github.com/timcdlucas/Ph
 For submission to Proceedings of the Royal Society: B
 
 It comprises simulations that test whether it is abundance, density, colony size, number of colonies or distribution area which most strongly affects pathogen richness.
-The simulations are run using my package [metapopEpi](https://github.com/timcdlucas/metapopEpi).
+The simulations are run using my R package [metapopEpi](https://github.com/timcdlucas/metapopEpi).
 
 
 
