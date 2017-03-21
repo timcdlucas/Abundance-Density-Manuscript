@@ -25,3 +25,22 @@ However, empirically identifying the independent influences of these traits has 
 Here we develop a mechanistic, metapopulation, susceptible-infected-recovered model to identify the influences of independent population-level traits on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen, using a case study of bats; a highly social mammalian order. 
 We show that larger population and group sizes had a greater influence on the chances of pathogen invasion and persistence than increased population densities (and therefore decreased population structure) and number of groups. 
 As anthropogenic change affects these traits to different extents, this increased understanding of how traits independently determine pathogen richness will aid in predicting future zoonotic spill-over risk.
+
+
+
+
+
+Figures
+-------
+
+![
+Comparison of the effect of population-level factors on probability of invasion. 
+Population-level factors are group size (green lines, squares), number of groups (blue lines, circles) and host density (yellow lines, triangles).
+The x-axis shows the change (x0.25, 0.5, 1, 2 and 4) in each of these factors  relative to the default value.
+Default values are: number of groups = 20, group size = 400 and host density = 0.8 animals per km<sup>2</sup>.
+Each point is the mean of 100 simulations and bars are 95% confidence intervals.
+Curves are binomial GLM regression fits.
+Relationships are shown separately for each transmission value, β.
+](figures/plotValueChangeMeans-1.png)
+
+
