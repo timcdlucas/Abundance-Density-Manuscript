@@ -823,7 +823,7 @@ All simulations had 20 groups, meaning 19 is the maximum value of $\\bar{k}$.
 '
 
 plotKtitle <- 'Change in average network degree with increasing geographic range size'
-
+%%end.rcode
 
 %%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, out.width = '0.4\\textwidth', cache = FALSE, plot.height = 2.3, fig.show = 'hide'
 
@@ -968,7 +968,7 @@ Results from these simulations were removed before further analyses.
 valueChangeMeansCapt <- '
 Comparison of the effect of population-level factors on probability of invasion. 
 Population-level factors are group size (green lines, squares), number of groups (blue lines, circles) and host density (yellow lines, triangles).
-The $x$-axis shows the change ($\\times$0.25, 0.5, 1, 2 and $4$) in each of these factors  relative to the default value.
+The $x$-axis shows the change ($\\times$0.25, 0.5, 1, 2 and 4) in each of these factors  relative to the default value.
 Default values are: number of groups = 20, group size = 400 and host density = 0.8 animals per km\\textsuperscript{2}.
 Each point is the mean of 100 simulations and bars are 95\\% confidence intervals.
 Curves are binomial GLM regression fits.
