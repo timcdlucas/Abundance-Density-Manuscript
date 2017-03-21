@@ -34,6 +34,23 @@ Figures
 -------
 
 ![
+  Schematic of the two-pathogen SIR model used. 
+  Individuals are in one of five epidemiological classes, susceptible (orange, S), infected with Pathogen 1, Pathogen 2 or both (blue, I<sub>1</sub>, I<sub>2</sub>, I<sub>12</sub>, respectively) or recovered and immune from further infection (green, R).
+  Transitions between classes occur as indicated by solid arrows and depend on transmission rate (β), coinfection adjustment factor (α) and recovery rate (γ).
+  Births (Λ)  and deaths (μ) are indicated by dashed arrows.
+  Note that individuals in I<sub>12</sub> move into R, not back toI<sub>1</sub> or I<sub>2</sub>. 
+  That is, recovery from one pathogen causes immediate recovery from the other pathogen.
+](figures/SIRoption1.svg)
+  Figure 1: Schematic of the two-pathogen SIR model used. 
+  Individuals are in one of five epidemiological classes, susceptible (orange, S), infected with Pathogen 1, Pathogen 2 or both (blue, I<sub>1</sub>, I<sub>2</sub>, I<sub>12</sub>, respectively) or recovered and immune from further infection (green, R).
+  Transitions between classes occur as indicated by solid arrows and depend on transmission rate (β), coinfection adjustment factor (α) and recovery rate (γ).
+  Births (Λ)  and deaths (μ) are indicated by dashed arrows.
+  Note that individuals in I<sub>12</sub> move into R, not back toI<sub>1</sub> or I<sub>2</sub>. 
+  That is, recovery from one pathogen causes immediate recovery from the other pathogen.
+
+
+
+![
 Comparison of the effect of population-level factors on probability of invasion. 
 Population-level factors are group size (green lines, squares), number of groups (blue lines, circles) and host density (yellow lines, triangles).
 The x-axis shows the change (x0.25, 0.5, 1, 2 and 4) in each of these factors  relative to the default value.
@@ -42,5 +59,12 @@ Each point is the mean of 100 simulations and bars are 95% confidence intervals.
 Curves are binomial GLM regression fits.
 Relationships are shown separately for each transmission value, β.
 ](figure/plotValueChangeMeans-1.png)
+Figure 2: Comparison of the effect of population-level factors on probability of invasion. 
+Population-level factors are group size (green lines, squares), number of groups (blue lines, circles) and host density (yellow lines, triangles).
+The x-axis shows the change (x0.25, 0.5, 1, 2 and 4) in each of these factors  relative to the default value.
+Default values are: number of groups = 20, group size = 400 and host density = 0.8 animals per km<sup>2</sup>.
+Each point is the mean of 100 simulations and bars are 95% confidence intervals.
+Curves are binomial GLM regression fits.
+Relationships are shown separately for each transmission value, β.
 
 
