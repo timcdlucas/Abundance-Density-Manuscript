@@ -40,7 +40,7 @@ Figures
   Births (Λ)  and deaths (μ) are indicated by dashed arrows.
   Note that individuals in I<sub>12</sub> move into R, not back toI<sub>1</sub> or I<sub>2</sub>. 
   That is, recovery from one pathogen causes immediate recovery from the other pathogen.
-](https://cdn.rawgit.com/timcdlucas/Abundance-Density-Manuscript/edits/figure/SIRoption1.svg)
+](figure/SIRoption1.png)
 
   Figure 1: Schematic of the two-pathogen SIR model used. 
   Individuals are in one of five epidemiological classes, susceptible (orange, S), infected with Pathogen 1, Pathogen 2 or both (blue, I<sub>1</sub>, I<sub>2</sub>, I<sub>12</sub>, respectively) or recovered and immune from further infection (green, R).
