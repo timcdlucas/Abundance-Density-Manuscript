@@ -41,6 +41,6 @@ Default values are: number of groups = 20, group size = 400 and host density = 0
 Each point is the mean of 100 simulations and bars are 95% confidence intervals.
 Curves are binomial GLM regression fits.
 Relationships are shown separately for each transmission value, β.
-](figures/plotValueChangeMeans-1.png)
+](figure/plotValueChangeMeans-1.png)
 
 
