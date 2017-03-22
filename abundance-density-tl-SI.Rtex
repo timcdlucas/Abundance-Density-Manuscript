@@ -106,19 +106,19 @@ source('misc/KnitrOptions.R')
 
 %%end.rcode
 
-%%begin.rcode libs
-
+%%begin.rcode libs, cache = FALSE
 
 # ggplot2 theme.
 source('misc/theme_tcdl.R')
 theme_set(theme_grey() + theme_pub)
-
 
 library(xtable)
 library(palettetown)
 library(binom)
 library(ggplot2)
 library(dplyr)
+
+library(broom)
 
 %%end.rcode
 
@@ -810,8 +810,8 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
   ylab('Prop. Invasions') +
   xlab('Population size') +
   ylim(0, 1) +
-  scale_colour_manual(name = "Focal Pop. factor", 
-                      labels = c('Colony Number', 'Colony Size'), 
+  scale_colour_manual(name = "Population-level factor", 
+                      labels = c('Number of groups', 'Group Size'), 
                       values = pokepal('Swampert', spread = 3)[2:1]) +
   scale_y_continuous(breaks = c(0, 0.5, 1), labels = c('0.0', '0.5', '1.0')) +
   scale_x_continuous(limits = c(0, 32000), 
@@ -824,10 +824,54 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
 
 
 
+
+%%begin.rcode plotCoeffsCapts
+plotCoeffsCapt <- '
+GLM regression coefficients for for three sets of simulations at three transmission, $\\beta$ values.
+To examine whether host density or population size affects pathogen invasion more strongly we compare the orange and blue bars.
+To examine whether group size or number of groups affects pathogen invasion more strongly we compare the second and third bar in each facet.
+'
+
+plotCoeffsTitle <- 'Regression coefficients'
+%%end.rcode
+
+
+
+%%begin.rcode plotCoeffs, fig.cap = plotCoeffsCapt, fig.scap = plotCoeffsTitle, out.width = '0.8\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.width = 9
+
+allModels <- rbind(areaModel %>% mutate(varied = 'Host density'),
+                   colonyNumberModel %>% mutate(varied = 'Number of groups'),
+                   colonySizeModel %>% mutate(varied = 'Group size')) %>%
+               filter(term == 'ValueChange') %>%
+               mutate(variedSort = factor(varied, levels = unique(varied)[c(2, 3, 1)])) %>%
+               mutate(Density = ifelse(varied == 'Host density', 'Host density', 'Pop. size'))
+allModels$transmission <- factor(allModels$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
+
+ggplot(allModels, aes(x = variedSort, y = estimate, colour = Density)) + 
+  facet_grid(. ~ transmission, labeller = label_parsed) +
+  geom_point() +
+  geom_errorbar(aes(ymax = conf.high, ymin = conf.low), width = 0.3) +
+  xlab('Population-level factor') +
+  ylab('Regression estimate') +
+  scale_colour_poke(pokemon = 'Charizard', spread = 2, guide_legend(title = '')) +
+  coord_flip() +
+  theme(legend.position = 'bottom')
+
+%%end.rcode
+
+
+
+
 \clearpage
 \small
 \printbibliography 
 
 \end{document}
+
+
+
+
+
+
 
 
