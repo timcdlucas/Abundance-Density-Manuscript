@@ -214,14 +214,14 @@ library(assertthat)
 %\subsection*{Addresses:}{\ }\\
 \noindent\textsuperscript{1}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E~6BT, United Kingdom. 0000-0003-4694-8107\\
 \textsuperscript{2}Department of Statistical Science, University College London, Gower Street, London, WC1E~6BT, United Kingdom.\\ 
-\textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1~4RY, United Kingdom. 0000-0001-5231-3293\\ 
+\textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E~6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1~4RY, United Kingdom. 0000-0001-5231-3293\\ 
 $^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, OX3~7FZ, United Kingdom. \\
 \vspace{3mm}
 \noindent \textsuperscript{$\ast$}Corresponding authors: Tim C.D. Lucas: timcdlucas@gmail.com, Kate E. Jones: kate.e.jones@ucl.ac.uk
 
 
 
-\subsection*{Word count:} 4113
+\subsection*{Word count:} 7081
 \subsection*{Running header:} Host population-level drivers of pathogen richness
 
 \clearpage
@@ -269,8 +269,8 @@ Epidemics such as the 2014 Ebola epidemic pose a major threat to human health an
 The probability of zoonotic spill-over depends, amongst other factors, on the number of pathogen species carried by reservoir hosts (pathogen richness) \cite{wolfe2000deforestation}. 
 Empirical, comparative studies across reservoir host species, suggest that host morphological and life-history traits, such as body size and longevity, correlate strongly with high pathogen richness \cite{kamiya2014determines, luis2013comparison}. 
 However, factors related to reservoir host population biology are also expected to affect disease dynamics and therefore influence pathogen richness. 
-Population-level traits such as increased increased host density \cite{morand1998density, kamiya2014determines, nunn2003comparative}, geographic range size \cite{nunn2003comparative, turmelle2009correlates, kamiya2014determines} and population structure (nonrandom interactions between individuals) \cite{maganga2014bat, turmelle2009correlates} have been shown to correlate with high pathogen richness, although the relationship with group sizes in many studies has been equivocal \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative}. 
-Important population-level traits, such as population size, have not been included in comparative studies, despite its importance in describing epidemiological populations \cite{begon2002clarification}. 
+Population-level traits such as increased increased host density \cite{morand1998density, kamiya2014determines, nunn2003comparative}, geographic range size \cite{nunn2003comparative, turmelle2009correlates, kamiya2014determines} and population structure (nonrandom interactions between individuals) \cite{maganga2014bat, turmelle2009correlates} have been shown to correlate with high pathogen richness, although the relationship with group sizes in many studies has been equivocal \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative, turmelle2009correlates}. 
+Population size, an important population-level trait, has rarely been included in comparative studies, despite its importance in describing epidemiological populations \cite{begon2002clarification}. 
 
 
 %4. then talk about the limitations of taking a comparative approach 
@@ -303,7 +303,7 @@ Mechanistic models that try to disentangle the interplay between population-leve
 Here, we use multipathogen models to individually vary host population-level parameters.
 We examine a simple deterministic model to establish whether a newly evolved pathogen can invade into an unstructured population in the presnce of strong competition from an endemic pathogen strain. 
 We then examine a stochastic, metapopulation model that was parameterised to broadly mimic wild bat populations.
-We used bats as a case study as the size of bat groups (colonies) is very variable and bat colonies are often very stable \cite{kerth2011bats, mccracken1981social, jones2009pantheria}.
+We used bats as a case study as the size of bat groups (colonies) is very variable and bat colonies are often very stable \cite{kerth2011bats, mccracken1981social, jones2009pantheria, kerth2008causes}.
 Furthermore, bats are particularly relevant in the context of zoonotic disease as they are thought to be reservoirs for a number of important, recent outbreaks \cite{calisher2006bats, li2005bats}.
 We examined how the interrelated population-level factors affect the ability of a newly evolved pathogen to invade and persist in a population in the presence of an endemic pathogen strain.
 We used these simulations to examine two specific hypotheses.
@@ -573,7 +573,7 @@ Our more detailed simulations are therefore examining how effectively different 
 \label{s:paramSelect}
 
 While some fixed parameters were chosen to approximate those found in wild bat populations, others were chosen for modelling reasons. 
-Assuming equal birth and death rates, $\Lambda$ and $\mu$, were set to 0.05 per year giving a generation time of 20 years \cite{jones2009pantheria}.
+Assuming equal birth and death rates, $\Lambda$ and $\mu$, were set to 0.05 per year giving a generation time of 20 years \cite{jones2009pantheria, kerth2008causes}.
 Setting birth and death rates equal gives a stochastically varying population size but given the length of the simulations groups were very unlikely to go extinct.
 Although it is difficult to directly estimate infection durations in wild bat populations \cite{plowright2015ecological}, evidence suggests these can be on the scale of days \cite{amengual2007temporal} up to months or years \cite{peel2012henipavirus, sohayati2011evidence, rahman2010characterization}. 
 Here we set the infection duration, $\frac{1}{\gamma}$, to one year which is a long lasting, but non-chronic, infection. 
@@ -584,7 +584,7 @@ Therefore, an individual with a single infection is 90\% less likely to gain a s
 The deterministic model showed that $\alpha = 0$ and $\alpha > 0$ are qualitatively different with the number of individuals infected with the second pathogen being stable and increasing respectively.
 The case where Pathogen~2 does not invade and spread ($\alpha = 0$) is unlikely to be important for pathogen richness so we chose a small, non-zero value for $\alpha$.
 The dispersal rate $\xi$ was set to 0.01 which yields 17\% of individuals dispersing in their lifetime.
-This relates to a species with juvenile dispersal of a proportion of males and very few females \cite{kerth2002extreme, chen2008sex}.
+This relates to a species with juvenile dispersal of a proportion of males and very few females \cite{kerth2008causes, chen2008sex}.
 
 %\subsection{Population-level factors} % This isn't a full subsection...
 
@@ -1104,35 +1104,19 @@ $\beta$ & \emph{Variable} & \emph{Estimate} & (95\% \emph{CI}) & $p$\\
 
 % Population-level traits such as increased increased host density \cite{morand1998density, kamiya2014determines, nunn2003comparative}, geographic range size \cite{nunn2003comparative, turmelle2009correlates, kamiya2014determines} and population structure (nonrandom interactions between individuals) \cite{maganga2014bat, turmelle2009correlates} have been shown to correlate with high pathogen richness, although the relationship with group sizes in many studies has been equivocal \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative}. 
 
-Overall, our results suggest that population size promotes pathogen richness while host density promotes pathogen richness weakly if at all.
+Overall, our results suggest that population size promotes pathogen richness strongly.
+In contrast, host density was found to promote pathogen richness weakly if at all.
 This is in contrast to the many comparative studies that find host density to be a significant predictor of pathogen richness \cite{morand1998density, kamiya2014determines, nunn2003comparative}.
 This suggests that in these studies, host density is acting as a proxy for population size rather than being a causal factor.
-Comparative studies examining group size have found conflicting results \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative}.
-Our results are in agreement with those studies that find a relationship between group size and pathogen richness.
-Overall our results suggest that a large population made up of large groups promotes pathogen invasion to  greater extent than a large population made up of many, small groups or a small but dense population.
-% vitone worms. Says pos, but looks weak to me (not sig in phylo analysis).
-% gay 2014 ColonySize negative?
-% rifkin meta-analysis non-sig.
-In simulation sets \emph{ii} and \emph{iii} we inc
+Our results also suggest that a population made up of large groups would have higher pathogen richness than a population made up of made smaller groups.
+Comparitive studies examining group size have had conflicting results \cite{vitone2004body, gay2014parasite, nunn2003comparative, turmelle2009correlates} with a meta-analysis finding a non-significant relationship between group size and pathogen richness \cite{rifkin2012animals}.
+The largest study on bats specifically found a negative relationship \cite{gay2014parasite} between group (colony) size and pathogen richness.
+Therefore while our study is potentially in conflict with the empirical literature, more definitive empirical studies are needed.
+This conflict may also indicate a difference between pathogen richness accumulation (the focus of this study) and total pathogen richness.
 Our results also suggest that host geographic range size does not promote pathogen richness, yet a number of studies have found evidence of this relationship \cite{kamiya2014determines, nunn2003comparative}.
-This may be because in wild species, increased host geographic size tends to entail a greater variety of environmental conditions and a greater number of sympatric species which is known to also affect pathogen richness \cite{brierley2016quantifying}.
-Studies have suggested that the relationship between social group size and pathogen richness is weak \cite{rifkin2012animals, vitone2004body, gay2014parasite}.
-
-
-However, we have found that group size is the most important population-level factor.
-This suggests that the mechanism studied here --- invasion of recently evolved pathogens --- may not be the major mechanism by which pathogen richness is created in wild populations. %todo
-
-
-
-These results lead to a number of other conclusions.
-All else being equal, increasing geographic range size (with density remaining constant) will not strongly increase pathogen richness unless the increased geographic range size promotes larger groups.
-Furthermore, social species that live in large groups are likely to harbour more pathogen species, even if the larger groups require more space and therefore dispersal between groups is reduced.
-The results also suggest that, for related, strongly competing strains, the factor that most strongly allows new pathogens to invade is the number of susceptible individuals in the local group.
-As long as there are enough susceptible individuals that the new pathogen species does not go extinct during the stochastic, early stages of the epidemic, the new pathogen will persist.
-This is explicitly shown by the deterministic model.
-In the stochastic model, dispersal is a very slow process compared to infection, and therefore the global pool of susceptibles is largely unimportant. 
-This is probably why increasing the number of groups did not increase pathogen invasion rate as quickly as the size of a group did.
-The negative association between density and invasion probability at $\beta = 0.3$ is unexpected.
+In studies that do not also include population size or host density, geographic range size may be acting as a proxy for population size.
+Alternatively this may be because in wild species, increased host geographic size tends to entail a greater variety of environmental conditions and a greater number of sympatric species which is known to also affect pathogen richness \cite{brierley2016quantifying} and these factors are not considered in this study.
+Finally, we found a negative association between density and invasion probability at $\beta = 0.3$ and this was unexpected.
 Due to the small size of the estimated coefficient, the marginal p-value and the lack of a consistent relationship at other $\beta$ values, we suspect that this is not a real effect.
 However, given that increased density affects disease dynamics by decreasing population structure, this negative relationship does fit with studies that suggest that population structure should allow pathogen coexistence \cite{maganga2014bat, turmelle2009correlates, allen2004sis}
 
@@ -1147,9 +1131,10 @@ However, given that increased density affects disease dynamics by decreasing pop
 % \tmpsection{Only two pathogens, direct transmission}
 
 This study is limited to one mechanism by which pathogen richness can be increased; the invasion and persistence of a newly evolved pathogen.
+Other process such as pathogen extinction are also likely to be important \cite{vickery1998parasite}.
 We also restrict ourselves to the context of competition between two pathogens in a social host species.
 As the pathogen modelled here is directly transmitted there is no transmission between individuals in separate subpopulations.
-Infection via shared food sources or contact between individuals from different subpopulations would act to reduce population structure.
+Infection via shared food sources or contact between individuals from different subpopulations (e.g. during swarming \cite{kerth2008causes}) would act to reduce population structure.
 As above, if there is high rates of infection between subpopulations, the population becomes effectively unstructured and changes to the underlying metapopulation will have no effect on pathogen competition.
 Further modelling would be required to examine whether the results here would change with the inclusion of alternate transmission routes while only empirical studies would be able to indicate the relative importance of these different transmission routes in wild populations.
 

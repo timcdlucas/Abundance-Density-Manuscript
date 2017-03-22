@@ -46,7 +46,7 @@ Figures
   Individuals are in one of five epidemiological classes, susceptible (orange, S), infected with Pathogen 1, Pathogen 2 or both (blue, I<sub>1</sub>, I<sub>2</sub>, I<sub>12</sub>, respectively) or recovered and immune from further infection (green, R).
   Transitions between classes occur as indicated by solid arrows and depend on transmission rate (β), coinfection adjustment factor (α) and recovery rate (γ).
   Births (Λ)  and deaths (μ) are indicated by dashed arrows.
-  Note that individuals in I<sub>12</sub> move into R, not back toI<sub>1</sub> or I<sub>2</sub>. 
+  Note that individuals in I<sub>12</sub> move into R, not back to I<sub>1</sub> or I<sub>2</sub>. 
   That is, recovery from one pathogen causes immediate recovery from the other pathogen.
 
 
