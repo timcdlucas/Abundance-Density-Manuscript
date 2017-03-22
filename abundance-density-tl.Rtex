@@ -1143,13 +1143,13 @@ Further modelling would be required to examine whether the results here would ch
 
 %\subsection{Comparative studies}
 
-Many comparative studies measure some aspect of a species population size or structure, yet it is rarely discussed how these are related.
+Many comparative studies measure population-level factors, yet it is rarely discussed how these are related.
 Instead most studies use the data that are available, without considering \emph{a priori} how the explanatory variables are causally related (statistical correlations between explanatory variables are however often handled appropriately).
 For example, host density is often used in studies \cite{morand1998density, lindenfors2007parasite, nunn2003comparative}, yet density is directly associated with population size.
 Our results suggest that it is in fact population size that is important (in the context of social species as studied here), and previous authors have suggested it is the more natural descriptor of population size \cite{begon2002clarification}.
 Therefore, density could be acting as a proxy for population size in these comparative studies.
 These causal relationships between population-level factors should be considered more carefully in future comparative studies.
-
+In particular, the inclusion of an interaction term between geographic range size and host density could be used to test for the importance of population size.
 
 
 
