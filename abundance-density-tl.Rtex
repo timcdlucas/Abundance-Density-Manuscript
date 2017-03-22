@@ -221,7 +221,7 @@ $^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for He
 
 
 
-\subsection*{Word count:} 6961
+\subsection*{Word count:} 6806
 \subsection*{Running header:} Host population-level drivers of pathogen richness
 
 \clearpage
@@ -563,7 +563,7 @@ When Pathogen~2 is introduced, its rate of change can be written as
 \end{align}
 which is greater than zero when $\alpha\left( \Lambda R_0 - \mu \right) I_2 > 0$ (with $R_0 = \frac{\beta N }{\gamma + \mu}$ being the basic reproduction number and being equal for the two identical pathogens).
 As $\Lambda = \mu$ due to the assumption of a stable population size,  $\Lambda R_0 - \mu$ is greater than one.
-Therefore, this $\frac{dI_2}{dt} > 0$ as long as $\alpha$ is greater than zero.
+Therefore, $\frac{dI_2}{dt} > 0$ as long as $\alpha$ is greater than zero.
 That is, as long as cross-immunity is not complete, Pathogen~2 will invade in this deterministic model.
 This means that it is only stochastic extinction that would prevent a pathogen from persisting in a population.
 Our more detailed simulations are therefore examining how effectively different population-level factors alleviate stochastic extinction.
@@ -613,8 +613,8 @@ The results were also checked to confirm that decreasing this value did not qual
 
 Three sets of 1500 simulations were run in which three population parameters were varied: (\emph{i})  geographic range size (and therefore host density), (\emph{ii}) group size (and therefore population size), and (\emph{iii})  the number of groups (and therefore population size).
 To allow comparisons between simulation sets, the parameter that was being varied in each set was assigned its default value multiplied by 0.25, 0.5, 1, 2 and 4. 
-To examine whether host density  had a stronger affect on pathogen invasion than population size, results from simulation set (\emph{i}) was compared to those from (\emph{ii}) and (\emph{iii}).
-To examine whether group size or the number of groups was the more important component of population size, results from the simulation sets (\emph{ii})  were compared to those from (\emph{iii}).
+To examine whether host density  had a stronger affect on pathogen invasion than population size, results from simulation set \emph{i} was compared to those from sets \emph{ii} and \emph{iii}.
+To examine whether group size or the number of groups was the more important component of population size, results from the simulation set \emph{ii} were compared to those from \emph{iii}.
 
 
 The default geographic range size was 10000 km\textsuperscript{2} with a range of 25000--40000 km\textsuperscript{2}.
@@ -1153,7 +1153,7 @@ The monitoring of these different aspects of population change, especially in ba
 Our results suggest that pathogen communities will respond differently depending on which factors are most strongly affected by global change.
 In short, species suffering reductions in groups size \cite{lehmann2010apes, atwood2006influence} are predicted to experience decreases in pathogen richness in the long term and there is some evidence that this process is occurring \cite{altizer2007threatened, turmelle2009correlates}.
 Species that are experiencing increases in group size \cite{lehmann2010apes} would be expected to gain new pathogen species.
-In contrast, species suffering range contractions \cite{thomas2004extinction} and decreases in population size, without corresponding decrease in group size, \cite{craigie2010large} are expected to experience smaller changes in pathogen richness.
+In contrast, species suffering range contractions \cite{thomas2004extinction} and decreases in population size, without corresponding decreases in group size, \cite{craigie2010large} are expected to experience smaller changes in pathogen richness.
 
 \section*{Data accessibility}
 \sloppy
