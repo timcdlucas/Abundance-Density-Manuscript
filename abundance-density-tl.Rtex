@@ -268,7 +268,7 @@ Zoonotic diseases are a major source of human infectious disease \cite{jones2008
 Epidemics from emerging, zoonotic diseases pose a major threat to human health and economic development \cite{world2016ebola, ebola2015worldbank}.
 The probability of zoonotic spill-over depends, amongst other factors, on the number of pathogen species carried by reservoir hosts (pathogen richness) \cite{wolfe2000deforestation}. 
 Empirical, comparative studies across reservoir host species, suggest that host morphological and life-history traits, such as body size and longevity, correlate strongly with high pathogen richness \cite{kamiya2014determines, luis2013comparison}. 
-However, factors related to reservoir host population biology are also expected to affect disease dynamics and therefore influence pathogen richness. 
+However, traits related to reservoir host population biology are also expected to affect disease dynamics and therefore influence pathogen richness. 
 Population-level traits such as increased host density \cite{morand1998density, kamiya2014determines, nunn2003comparative}, geographic range size \cite{nunn2003comparative, turmelle2009correlates, kamiya2014determines} and population structure (nonrandom interactions between individuals) \cite{maganga2014bat, turmelle2009correlates} have been shown to correlate with high pathogen richness, although the relationship with group size (number of individuals in a social group) in many studies has been equivocal \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative, turmelle2009correlates}. 
 Population size (total number of individuals), an important population-level trait, has rarely been included in comparative studies, despite its importance in describing epidemiological populations \cite{begon2002clarification}. 
 
@@ -276,25 +276,25 @@ Population size (total number of individuals), an important population-level tra
 %4. then talk about the limitations of taking a comparative approach 
 
 Collinearity between explanatory variables is a common problem in correlative studies, and this issue is exacerbated when there are clear, causal relationships between explanatory variables.
-There are two particularly clear relationships between the population-level factors associated with pathogen richness.
+There are two particularly clear relationships between the population-level traits associated with pathogen richness.
 Firstly, host density, $d$, host population size, $N$, and geographic range size, $a$, are, by definition, linked by $d = N / a$ (see electronic supplementary material, table~S1 for all parameters used) and this relationship has broad empirical support \cite{blackburn2006variations}.
 Secondly, host population size can be decomposed into two components, the number of groups, $m$, and the average size of a group, $n$, with $N = mn$.
 %While less clear, geographic range size and host population structure are also related.
-Correlative, comparative studies would be especially poor at identifying which, if any, of these factors are causally related with pathogen richness.
+Correlative, comparative studies would be especially poor at identifying which, if any, of these traits are causally related with pathogen richness.
 This lack of discriminatory power is particularly important with respect to global change and its effects on zoonotic disease emergence.
-Population-level factors such as host population size and geographic range size, although interrelated, will respond differently to global change and the response will be species specific.
+Population-level traits such as host population size and geographic range size, although interrelated, will respond differently to global change and the response will be species specific.
 Some host species may suffer range contractions while their density remains constant \cite{thomas2004extinction}.
 Other host species might retain their distribution but have a depressed population density \cite{craigie2010large}.
-Only by knowing which of these interrelated factors control pathogen richness will we be able to predict future changes in pathogen richness.
+Only by knowing which of these interrelated traits control pathogen richness will we be able to predict future changes in pathogen richness.
 
 
 %The alternative is mechanistic models.
-Mechanistic models provide one method for comparing the importance of intrinsically related factors and can provide a deeper understanding of the system than correlative approaches.
-Theoretical studies have established that a number of host population-level factors are important for epidemiological dynamics and the maintenance of pathogen richness.
+Mechanistic models provide one method for comparing the importance of intrinsically related traits and can provide a deeper understanding of the system than correlative approaches.
+Theoretical studies have established that a number of host population-level traits are important for epidemiological dynamics and the maintenance of pathogen richness.
 In particular, host density, population structure and host group size are well established as having central roles in pathogen dynamics \cite{colizza2007invasion, may1979population, anderson1979population, colizza2007invasion}.
 A number of studies have found that increased host population structure can promote pathogen coexistence \cite{qiu2013vector, allen2004sis, nunes2006localized}.
-While these studies have examined whether these population-level factors can promote pathogen richness, none have attempted to distinguish which might be the most important.
-Mechanistic models that try to disentangle the interplay between population-level factors including host density, population size, geographic range size, population structure, group size and the number of groups are critically needed.
+While these studies have examined whether these population-level traits can promote pathogen richness, none have attempted to distinguish which might be the most important.
+Mechanistic models that try to disentangle the interplay between population-level traits including host density, population size, geographic range size, population structure, group size and the number of groups are critically needed.
 
 
 %7. what you are going to do that is new (ie tease apart these interdependencies) - using case study on bats (and why this is a good group to ask this particular question on)
@@ -305,7 +305,7 @@ We examine a simple deterministic model to establish whether a newly evolved pat
 We then examine a stochastic, metapopulation model that was parameterised to broadly mimic wild bat populations.
 We used bats as a case study as the size of bat groups (colonies) is very variable and bat colonies are often very stable \cite{kerth2011bats, mccracken1981social, jones2009pantheria, kerth2008causes}.
 Furthermore, bats are particularly relevant in the context of zoonotic disease as they are thought to be reservoirs for a number of recent, important outbreaks \cite{calisher2006bats, li2005bats}.
-We examined how the interrelated population-level factors affect the ability of a newly evolved pathogen to invade and persist in a population in the presence of an endemic pathogen strain.
+We examined how the interrelated population-level traits affect the ability of a newly evolved pathogen to invade and persist in a population in the presence of an endemic pathogen strain.
 We used these simulations to examine two specific hypotheses.
 First, we investigated whether host population size or density more strongly promotes the invasion of a new pathogen.
 Secondly, we investigated whether the invasion of a new pathogen is more strongly promoted by group size or the number of groups.
@@ -567,7 +567,7 @@ As $\Lambda = \mu$ due to the assumption of a stable population size,  $\Lambda 
 Therefore, $\frac{dI_2}{dt} > 0$ as long as $\alpha$ is greater than zero.
 That is, as long as cross-immunity is not complete, Pathogen~2 will invade in this deterministic model.
 This means that it is only stochastic extinction that would prevent a pathogen from persisting in a population.
-Our more detailed simulations are therefore examining how effectively different population-level factors alleviate stochastic extinction.
+Our more detailed simulations are therefore examining how effectively different population-level traits alleviate stochastic extinction.
 
 \subsection{Parameter selection}
 \label{s:paramSelect}
@@ -914,7 +914,7 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
   ylab('Prob. Invasion') +
   xlab('Population size') +
   ylim(0, 1) +
-  scale_colour_manual(name = "Population level factor", 
+  scale_colour_manual(name = "Population-level trait", 
                       labels = c('Number of groups', 'Group size'), 
                       values = pokepal('Swampert', spread = 3)[2:1]) +
   scale_y_continuous(breaks = c(0, 0.5, 1), labels = c('0.0', '0.5', '1.0')) +
@@ -966,9 +966,9 @@ Results from these simulations were removed before further fitting GLMs.
 %%begin.rcode valueChangeMeansCapt
 
 valueChangeMeansCapt <- '
-Comparison of the effect of population-level factors on probability of invasion. 
-Population-level factors are group size (green lines, squares), number of groups (blue lines, circles) and host density (yellow lines, triangles).
-The $x$-axis shows the change ($\\times$0.25, 0.5, 1, 2 and 4) in each of these factors  relative to the default value.
+Comparison of the effect of population-level traits on probability of invasion. 
+Population-level traits are group size (green lines, squares), number of groups (blue lines, circles) and host density (yellow lines, triangles).
+The $x$-axis shows the change ($\\times$0.25, 0.5, 1, 2 and 4) in each of these traits relative to the default value.
 Default values are: number of groups = 20, group size = 400 and host density = 0.8 animals per km\\textsuperscript{2}.
 Each point is the mean of 100 simulations and bars are 95\\% confidence intervals.
 Curves are binomial GLM regression fits.
@@ -1019,11 +1019,11 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
   geom_point(size = 2.1, position = position_dodge(width = 0.04)) +
   ylab('Prob. Invasion') +
   xlab('Relative change') +
-  scale_colour_poke(name = 'Population-level factor', 
+  scale_colour_poke(name = 'Population-level trait', 
                     labels = c( 'Group size', 'Number of groups', 'Host density'),
                     pokemon = 'oddish',
                     spread = 3) +
-  scale_shape_manual(name = 'Population-level factor', 
+  scale_shape_manual(name = 'Population-level trait', 
                      labels = c( 'Group size', 'Number of groups', 'Host density'),
 										 values = 15:17) +
   scale_y_continuous(breaks = c(0, 0.5, 1), 
@@ -1135,12 +1135,12 @@ However, given that in our study, increased density affects disease dynamics by 
 
 %\subsection{Comparative studies}
 
-Many comparative studies measure population-level factors, yet it is rarely discussed how these are related.
+Many comparative studies measure population-level trait, yet it is rarely discussed how these are related.
 Instead most studies use the data that are available, without considering \emph{a priori} how the explanatory variables are causally related (statistical correlations between explanatory variables are however often handled appropriately).
 For example, host density is often used in studies \cite{morand1998density, lindenfors2007parasite, nunn2003comparative}, yet density is directly associated with population size.
 Our results suggest that it is in fact population size that is important, and previous authors have suggested that population size is the more natural measure to describe populations than host density \cite{begon2002clarification}.
 Therefore, density could be acting as a proxy for population size in these comparative studies.
-These causal relationships between population-level factors should be considered more carefully in future comparative studies.
+These causal relationships between population-level traits should be considered more carefully in future comparative studies.
 In particular, the inclusion of an interaction term between geographic range size and host density could be used to test for the importance of population size.
 Furthermore, measurements of host density from the literature should be treated carefully; for example, were the original authors estimating global density or measuring local density in an area of unusually high host density?
 
@@ -1151,7 +1151,7 @@ Furthermore, measurements of host density from the literature should be treated 
 It is clear that many species are suffering strong population changes due to global change \cite{thomas2004extinction}.
 These changes might affect geographic range size \cite{thomas2004extinction}, population size \cite{craigie2010large}, population connectivity \cite{rivera2015habitat, fonturbel2014forest} or group size \cite{lehmann2010apes, atwood2006influence} to different degrees.
 The monitoring of these different aspects of population change, especially in bats, can often be difficult and may require further developments in monitoring to be effective, for example developing random encounter models using acoustic detectors \cite{walters2013challenges, measey2016counting, lucas2015generalised}.
-Our results suggest that pathogen communities will respond differently depending on which factors are most strongly affected by global change.
+Our results suggest that pathogen communities will respond differently depending on which traits are most strongly affected by global change.
 In short, species suffering reductions in groups size \cite{lehmann2010apes, atwood2006influence} are predicted to experience a decrease in pathogen richness in the long term and there is some evidence that this process is occurring \cite{altizer2007threatened, turmelle2009correlates}.
 Species that are experiencing an increase in group size \cite{lehmann2010apes} would be expected to gain new pathogen species.
 In contrast, species suffering a reduction in geographic range size \cite{thomas2004extinction} or a decrease in population size \cite{craigie2010large}, without a corresponding decrease in group size,  are expected to experience smaller changes in pathogen richness.
