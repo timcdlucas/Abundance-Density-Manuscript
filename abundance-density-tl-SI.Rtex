@@ -14,7 +14,8 @@
 
 \usepackage[width = 0.9\textwidth]{caption}
 \usepackage{verbatim, geometry, fancyhdr,  graphicx, xcomment, microtype, array}
-%\usepackage{amsmath}
+
+\DeclareGraphicsExtensions{pdf, eps, png}
 
 \geometry{margin=1in}
 
@@ -68,7 +69,7 @@
 \begin{document}
 
 
-\title[Lucas et al. A comparison of the importance of population measures on pathogen richness]{A mechanistic model to compare the importance of interrelated population measures on pathogen richness: host population size, density and colony size}
+\title[Lucas et al.: Host population-level drivers of pathogen richness]{Electronic Supplementary Material: A mechanistic model to compare the importance of interrelated population-level measures on pathogen richness}
 \author[Tim C.D. Lucas, Hilde M. Wilkinson-Herbots and Kate E. Jones]{Tim C.D. Lucas\textsuperscript{1$\ast\dagger$}, Hilde M. Wilkinson-Herbots\textsuperscript{2} and Kate E. Jones\textsuperscript{3$\ast$}}
 \date{}
 
@@ -79,11 +80,10 @@
 
 
 %\subsection*{Addresses:}{\ }\\
-\noindent\textsuperscript{1}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom. 0000-0003-4694-8107\\
-\textsuperscript{2}Department of Statistical Science, University College London, Gower Street, London, WC1E 6BT, United Kingdom\\ 
-\textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E 6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1 4RY, United Kingdom. 0000-0001-5231-3293\\ 
-$^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, United Kingdom. \\
-
+\noindent\textsuperscript{1}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E~6BT, United Kingdom. 0000-0003-4694-8107\\
+\textsuperscript{2}Department of Statistical Science, University College London, Gower Street, London, WC1E~6BT, United Kingdom.\\ 
+\textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E~6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1~4RY, United Kingdom. 0000-0001-5231-3293\\ 
+$^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, OX3~7FZ, United Kingdom. \\
 \vspace{3mm}
 \noindent \textsuperscript{$\ast$}Corresponding authors: Tim C.D. Lucas: timcdlucas@gmail.com, Kate E. Jones: kate.e.jones@ucl.ac.uk
 
@@ -121,9 +121,6 @@ library(dplyr)
 library(broom)
 
 %%end.rcode
-
-
-\section{Supplementary materials and methods: Stochastic simulations} \label{sup:stochmodel}
 
 
 \begin{table}[h!]
@@ -167,6 +164,11 @@ $\epsilon$ & Binomially distributed regression error term & & \\
 
 \label{t:params}
 \end{table}
+
+\clearpage
+
+\section{Supplementary materials and methods: Stochastic simulations} \label{sup:stochmodel}
+
 
 
 We examined the model using stochastic, continuous-time simulations implemented in \emph{R} \cite{R}.
@@ -311,7 +313,7 @@ Therefore, $\frac{dI_2}{dt}$ is greater than zero as long as $\alpha$ is greater
 
 
 \clearpage
-\section{Supplementary Results}
+
 
 
 
@@ -492,7 +494,7 @@ The mean number of connections per subpopulation, $\\bar{k}$, is shown for each 
 
 
 
-%%begin.rcode colonyNetworkPlots, fig.height = 5, fig.cap = colonyNetCapt, fig.scap = colonyNetTitle, out.width = '0.8\\textwidth', fig.showtext = TRUE
+%%begin.rcode colonyNetworkPlots, fig.height = 5, fig.cap = colonyNetCapt, fig.scap = colonyNetTitle, out.width = '0.7\\textwidth', fig.showtext = TRUE
 
 
 set.seed(3)
@@ -613,7 +615,7 @@ plotKtitle <- 'Change in average network degree with increasing range size'
 
 %%end.rcode
 
-%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, cache = FALSE, fig.height = 4.8, fig.show = TRUE, out.width = '0.8\\textwidth'
+%%begin.rcode plotK, fig.cap = plotKcapt, fig.scap = plotKtitle, cache = FALSE, fig.height = 4, fig.show = TRUE, out.width = '0.7\\textwidth'
 
 ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
   geom_boxplot(outlier.size = 1, size = 0.3, outlier.colour = grey(0.3), 
@@ -760,7 +762,7 @@ transMeansTitle <- 'Comparison of the probability of the affect of colony size a
 %%end.rcode
 
 
-%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.8\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 5.8
+%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.7\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 4.8
 # Convert to percentage change in density, colonysize or colony number.
 
 d2 <- rbind(dens1Means %>% 
@@ -810,7 +812,7 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
   ylab('Prop. Invasions') +
   xlab('Population size') +
   ylim(0, 1) +
-  scale_colour_manual(name = "Population-level factor", 
+  scale_colour_manual(name = "Population-level trait", 
                       labels = c('Number of groups', 'Group Size'), 
                       values = pokepal('Swampert', spread = 3)[2:1]) +
   scale_y_continuous(breaks = c(0, 0.5, 1), labels = c('0.0', '0.5', '1.0')) +
@@ -837,7 +839,7 @@ plotCoeffsTitle <- 'Regression coefficients'
 
 
 
-%%begin.rcode plotCoeffs, fig.cap = plotCoeffsCapt, fig.scap = plotCoeffsTitle, out.width = '0.8\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.width = 9
+%%begin.rcode plotCoeffs, fig.cap = plotCoeffsCapt, fig.scap = plotCoeffsTitle, out.width = '0.7\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.width = 9
 
 allModels <- rbind(areaModel %>% mutate(varied = 'Host density'),
                    colonyNumberModel %>% mutate(varied = 'Number of groups'),
@@ -851,7 +853,7 @@ ggplot(allModels, aes(x = variedSort, y = estimate, colour = Density)) +
   facet_grid(. ~ transmission, labeller = label_parsed) +
   geom_point() +
   geom_errorbar(aes(ymax = conf.high, ymin = conf.low), width = 0.3) +
-  xlab('Population-level factor') +
+  xlab('Population-level trait') +
   ylab('Regression estimate') +
   scale_colour_poke(pokemon = 'Charizard', spread = 2, guide_legend(title = '')) +
   coord_flip() +
