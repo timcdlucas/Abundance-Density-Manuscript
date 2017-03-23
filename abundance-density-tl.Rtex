@@ -43,9 +43,10 @@
   sorting=none,
   firstinits=true, 
 	bibstyle=authoryear,
-	maxcitenames=2, 
+	maxcitenames=2,
   terseinits=true,
-  maxbibnames=10
+  maxbibnames=10,
+	minbibnames=10
 ]{biblatex}
 
 \renewcommand*{\revsdnamepunct}{}
@@ -92,7 +93,7 @@
 	
 
 \DeclareFieldFormat{doi}{(#1)}
-
+\DeclareFieldFormat{url}{(#1)}
 
 \addbibresource{epilit.bib}
 % This has to go below fontenc for some reason
@@ -111,6 +112,7 @@
 \usepackage{verbatim, graphicx, xcomment, array}
 %\usepackage{amsmath}
 
+\DeclareGraphicsExtensions{pdf, eps, png}
 
 
 
