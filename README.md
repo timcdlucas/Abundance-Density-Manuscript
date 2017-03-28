@@ -1,6 +1,6 @@
 
-A mechanistic model to compare the importance of interrelated population measures
-=======================================================================================
+Role of inter-related population-level host traits in determining pathogen richness and zoonotic risk
+======================================================================================================
 
 Repo for manuscript and analysis.
 

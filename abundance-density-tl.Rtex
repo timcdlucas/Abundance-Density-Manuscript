@@ -203,7 +203,7 @@ library(assertthat)
 %%end.rcode
 
 
-\title[Lucas et al.: Host population-level drivers of pathogen richness]{A mechanistic model to compare the importance of interrelated population-level measures on pathogen richness}
+\title[Lucas et al.: Population-level drivers of pathogen richness]{Role of inter-related population-level host traits in determining pathogen richness and zoonotic risk}
 \author[Tim C.D. Lucas, Hilde M. Wilkinson-Herbots and Kate E. Jones]{Tim C.D. Lucas\textsuperscript{1$\ast\dagger$}, Hilde M. Wilkinson-Herbots\textsuperscript{2} and Kate E. Jones\textsuperscript{3$\ast$}}
 \date{}
 
@@ -230,10 +230,10 @@ $^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for He
 
 \section*{Abstract}
 
-Zoonotic diseases are an increasingly important source of human infectious diseases, and host pathogen richness of reservoir species is a critical driver of spill-over risk. 
+Zoonotic diseases are an increasingly important source of human infectious diseases, and host pathogen richness of reservoir host species is a critical driver of spill-over risk. 
 Population-level traits of hosts such as population size, host density and geographic range size have all been shown to be important determinants of host pathogen richness. 
 However, empirically identifying the independent influences of these traits has proven difficult as many of these traits directly depend on each other. 
-Here we develop a mechanistic, metapopulation, susceptible-infected-recovered model to identify the influences of independent population-level traits on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen
+Here we develop a mechanistic, metapopulation, susceptible-infected-recovered model to identify the influences of independent population-level traits on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen.
 We use bats as a case study as they are highly social and an important source of zoonotic disease. 
 We show that larger populations and group sizes had a greater influence on the chances of pathogen invasion and persistence than increased host density or the number of groups. 
 As anthropogenic change affects these traits to different extents, this increased understanding of how traits independently determine pathogen richness will aid in predicting future zoonotic spill-over risk.
@@ -269,9 +269,9 @@ Pathogen competition, zoonotic disease, metapopulations, host pathogen richness,
 Zoonotic diseases are a major source of human infectious disease \cite{jones2008global, taylor2001risk}.
 Epidemics of emerging, zoonotic diseases pose a major threat to human health and economic development \cite{world2016ebola, ebola2015worldbank}.
 The probability of zoonotic spill-over depends on, amongst other factors, the number of pathogen species carried by reservoir hosts (pathogen richness) \cite{wolfe2000deforestation}. 
-Empirical, comparative studies across reservoir host species, suggest that host morphological and life-history traits, such as body size and longevity, correlate strongly with high pathogen richness \cite{kamiya2014determines, luis2013comparison}. 
+Empirical, comparative studies across reservoir host species, suggest that host morphological and life-history traits, such as large body size and longevity, correlate strongly with high pathogen richness \cite{kamiya2014determines, luis2013comparison}. 
 However, traits related to reservoir host population biology are also expected to affect disease dynamics and therefore influence pathogen richness. 
-Population-level traits such as increased host density \cite{morand1998density, kamiya2014determines, nunn2003comparative}, geographic range size \cite{nunn2003comparative, turmelle2009correlates, kamiya2014determines} and population structure (nonrandom interactions between individuals) \cite{maganga2014bat, turmelle2009correlates} have been shown to correlate with high pathogen richness, although the evidence for a relationship with group size (number of individuals in a social group) has been equivocal in many studies \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative, turmelle2009correlates}. 
+Population-level traits such as increased host density \cite{morand1998density, kamiya2014determines, nunn2003comparative}, large geographic range size \cite{nunn2003comparative, turmelle2009correlates, kamiya2014determines} and greater population structure (nonrandom interactions between individuals) \cite{maganga2014bat, turmelle2009correlates} have been shown to correlate with high pathogen richness, although the evidence for a relationship with group size (number of individuals in a social group) has been equivocal in many studies \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative, turmelle2009correlates}. 
 Population size (total number of individuals), an important population-level trait, has rarely been included in comparative studies, despite its importance in describing epidemiological populations \cite{begon2002clarification}. 
 
 
@@ -1041,14 +1041,14 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
 %%end.rcode
 
 \subsection{Population size and host density}
-The estimated GLM coefficients were always larger for simulations where population size was varied (sets \emph{ii} and \emph{iii}) than when host density (set \emph{i}) was varied (table~\ref{t:regrCoefs}).
+The estimated GLM coefficients were always larger for simulations where population size was varied (sets \emph{ii} and \emph{iii}) than when host density (set \emph{i}) was varied (table~\ref{t:regrCoefs}, electronic supplementary material figure~S4).
 Increasing population size, either by increasing group size or number of groups, increased the probability of invasion (figure~\ref{fig:plotValueChangeMeans}).
 The positive relationship between group size and invasion was strong and significant at all transmission rates, while the relationship between number of groups and invasion was weaker but still significant.
 In contrast, varying host density did not alter invasion probability except for when $\beta = 0.3$ where there was a significant decrease in invasion probability with increased host density (GLM: coefficient = $\rinline{areaModel$estimate[6]}$, $p$ = \rinline{areaModel$p.value[6]}).
 The 95\% confidence intervals for group size did not overlap those for host density at any value of $\beta$ while the 95\% confidence intervals for number of groups only overlapped those for host density at $\beta = 0.2$.
 
 \subsection{Group size and number of groups}
-In all cases, the estimated GLM coefficients were larger for simulations where group size was varied (set \emph{ii}) than when the number of groups (set \emph{iii}) was varied (table~\ref{t:regrCoefs}).
+In all cases, the estimated GLM coefficients were larger for simulations where group size was varied (set \emph{ii}) than when the number of groups (set \emph{iii}) was varied (table~\ref{t:regrCoefs}, electronic supplementary material figure~S3 and S4).
 Increasing either group size or the number of groups increased the probability of invasion but this effect was  stronger for group size (figure~\ref{fig:plotValueChangeMeans}).
 The 95\% confidence intervals of regression coefficients for group size did not overlap those for number of groups for the simulations with $\beta = 0.2$ or $0.3$ but the confidence intervals did overlap for the simulations when $\beta = 0.1$.
 
