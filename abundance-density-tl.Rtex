@@ -941,7 +941,7 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
 
 For each set of simulations, we fitted binomial GLMs in R \cite{R} with invasion of Pathogen~2 as the dependent variable.
 To enable comparison between GLMs we divided the explanatory variables by their default values and transformed by the log base 2.
-The explanatory variables for all three sets of simulations therefore became the proportional change relative to the default parameter value, logged to be in the range -2 -- 2.
+The explanatory variables for all three sets of simulations therefore became the proportional change relative to the default parameter value, logged to be evenly spaced between -2 and 2.
 To investigate whether an increase in host population size created a stronger increase in probablity of pathogen invasion than an equal increase in host density we compared the size (and 95\% confidence intervals) of the regression coefficients of host density (\emph{i}) to group size (\emph{ii}) and number of groups (\emph{iii}). 
 To examine whether an increase in group size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups we compared regression coefficients of group size (\emph{ii}) to number of groups (\emph{iii}).
 In \rinline{nAllExtinct} simulations out of 4500, both pathogens went extinct.
