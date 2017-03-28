@@ -49,6 +49,21 @@
 	minbibnames=10
 ]{biblatex}
 
+\defbibenvironment{bibliography}
+  {\list
+     {\printtext[labelnumberwidth]{%
+    \printfield{prefixnumber}%
+    [\printfield{labelnumber}]}}
+     {\setlength{\labelwidth}{\labelnumberwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}%
+      \renewcommand*{\makelabel}[1]{\hss##1}}
+  {\endlist}
+  {\item}
+
 \renewcommand*{\revsdnamepunct}{}
 \renewcommand{\cite}[1]{\parencite{#1}}
 
