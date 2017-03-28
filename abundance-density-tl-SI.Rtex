@@ -134,15 +134,15 @@ The justifications for parameter values are given in the main manuscript.}
 Symbol & Explanation & Units & Value\\
 \midrule
 $\rho$ & Number of pathogens && 2\\
-$x, y$ & Colony index &&\\
+$x, y$ & Group (colony) index &&\\
 $p$ &  Pathogen index i.e.\ $p\in\{1,2\}$ for pathogens 1 and 2 & &\\
 $q$ & Disease class i.e.\ $q\in\{1,2,12\}$&\\
-$S_x$ & Number of susceptible individuals in colony $x$ &&\\
-$I_{qx}$ & Number of individuals infected with disease(s) $q \in \{1, 2, 12\}$ in colony $x$ &&\\
-$R_x$ & Number of individuals in colony $x$ in the recovered with immunity class  &&\\
+$S_x$ & Number of susceptible individuals in group $x$ &&\\
+$I_{qx}$ & Number of individuals infected with disease(s) $q \in \{1, 2, 12\}$ in group $x$ &&\\
+$R_x$ & Number of individuals in group $x$ in the recovered with immunity class  &&\\
 $N$ & Total Population size && 2,000 -- 32,000\\
-$m$ & Number of colonies&& 5 -- 80\\
-$n$ & Colony size && 100 -- 600\\
+$m$ & Number of groups && 5 -- 80\\
+$n$ & Group size && 100 -- 600\\
 $a$ & Area & km\textsuperscript{2}& 2,500 -- 40,000\\
 $d$ & Density & individuals.km$^{-1}$ &  0.2 -- 3.2\\
 $\beta$ & Transmission rate &  & 0.1 -- 0.4\\
@@ -152,7 +152,7 @@ $\xi$ & Dispersal rate & year$^{-1}.$individual$^{-1}$ & 0.01\\
 $\Lambda$ & Birth rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
 $\mu$ & Death rate & year$^{-1}.$individual$^{-1}$ & 0.05\\
 $g$  & Population growth rate &   & 1\\
-$k_y$ & Degree of node $y$ (number of colonies that individuals from colony $y$ can disperse to) &&\\
+$k_y$ & Degree of node $y$ (number of groups that individuals from group $y$ can disperse to) &&\\
 $\delta$ & Waiting time until next event & years &\\
 $e_i$ & The rate at which event $i$ occurs & year$^{-1}$&\\
 $R_0$ & The (single subpopulation) basic reproduction number & infections &  \\
@@ -199,7 +199,7 @@ Assuming asexual reproduction, that all classes reproduce at the same rate and t
 \begin{align}
   s_x \rightarrow s_x + 1 \;\;\;\text{at a rate of}\;\; \Lambda\left( s_{x}+\sum_q i_{qx} + r_{x}\right) 
 \end{align}
-where $s_x \rightarrow s_x + 1$ is the event that the number of susceptibles in colony $x$ will increase by 1 (a single birth) and $\sum_q i_{qx}$ is the sum of all infection classes $q~\in~\{1, 2, 12\}$.
+where $s_x \rightarrow s_x + 1$ is the event that the number of susceptibles in group $x$ will increase by 1 (a single birth) and $\sum_q i_{qx}$ is the sum of all infection classes $q~\in~\{1, 2, 12\}$.
 The rates of death, given a death rate $\mu$, and no increased mortality due to infection, are given by
 \begin{align}
   s_x \rightarrow s_x-1  &\;\;\;\text{at a rate of}\;\; \mu s_x, \\
@@ -226,7 +226,7 @@ Note that lower values of $\alpha$ give lower rates of coinfection as in \textci
 
 
 
-The rate of migration from colony $y$ (with degree $k_y$) to colony $x$, given a dispersal rate $\xi$ is given by
+The rate of migration from group $y$ (with degree $k_y$) to group $x$, given a dispersal rate $\xi$ is given by
 \begin{align}
   s_x \rightarrow s_x+1,\;\;\; s_y \rightarrow s_y-1 &\;\;\text{at a rate of}\;\; \frac{\xi s_y}{k_y},\\
   i_{qx} \rightarrow i_{qx}+1,\;\;\; i_{qy} \rightarrow i_{qy}-1 &\;\;\text{at a rate of}\;\; \frac{\xi i_{qy}}{k_y},\\
@@ -379,14 +379,14 @@ popMeans <- pop %>%
 
 
 popTitle <- "
-Raw data for range size simulations
+Raw data for geographic range size simulations
   "
 
 popCapt <- "
-Raw data for range size simulations.
+Raw data for geographic range size simulations.
 The population parameters are shown along with the number of invasions and the number of simulations.
 Note that simulations where both pathogens went extinct have been removed (100 simulations were originally run for each parameter set).
-$\\beta$ is the transmission rate, $n$ is colony size, $m$ is the number of colonies and $N$ is the total population size.
+$\\beta$ is the transmission rate, $n$ is group size, $m$ is the number of groups and $N$ is the total population size.
 "
 
 
@@ -410,14 +410,14 @@ print(xtable(popMeans,
 
 
 dens1Title <- "
-Raw data for colony size simulations
+Raw data for group size simulations
   "
 
 dens1Capt <- "
-Raw data for colony size simulations. 
+Raw data for group size simulations. 
 The population parameters are shown along with the number of invasions and the number of simulations.
 Note that simulations where both pathogens went extinct have been removed (100 simulations were originally run for each parameter set).
-$\\beta$ is the transmission rate, $n$ is colony size, $m$ is the number of colonies and $N$ is the total population size.
+$\\beta$ is the transmission rate, $n$ is group size, $m$ is the number of groups and $N$ is the total population size.
 "
 
 
@@ -443,14 +443,14 @@ print(xtable(dens1Means,
 
 
 dens2Title <- "
-Raw data for number of colonies simulations
+Raw data for number of groups simulations
   "
 
 dens2Capt <- "
-Raw data for number of colonies simulations.
+Raw data for number of groups simulations.
 The population parameters are shown along with the number of invasions and the number of simulations.
 Note that simulations where both pathogens went extinct have been removed (100 simulations were originally run for each parameter set).
-$\\beta$ is the transmission rate, $n$ is colony size, $m$ is the number of colonies and $N$ is the total population size.
+$\\beta$ is the transmission rate, $n$ is group size, $m$ is the number of groups and $N$ is the total population size.
 "
 
 
@@ -473,17 +473,17 @@ print(xtable(dens2Means,
 
 %%begin.rcode colonyNetCaptions
 
-colonyNetTitle <- 'Relationship between range size and metapopulation network structure'
+colonyNetTitle <- 'Relationship between geographic range size and metapopulation network structure'
 
 colonyNetCapt <- '
-The relationship between range size and metapopulation network structure.
-Colonies are shown by circles.
-Colonies that are close enough for animals to disperse between (i.e.\\  within 100 km of each other) are joined by a line.
-Colonies are placed randomly in spaces of various sizes (grey dashed lines).
-A and C) the default range size (10000 km\\textsuperscript{2}).
-B and D) the largest range size (40000 km\\textsuperscript{2}).
-A and B) the smallest number of colonies (five).
-C and D) the default number of colonies (20).
+The relationship between geographic range size and metapopulation network structure.
+Groups are shown by circles.
+Groups that are close enough for animals to disperse between (i.e.\\  within 100 km of each other) are joined by a line.
+Groups are placed randomly in spaces of various sizes (grey dashed lines).
+A and C) the default geographic range size (10000 km\\textsuperscript{2}).
+B and D) the largest geographic range size (40000 km\\textsuperscript{2}).
+A and B) the smallest number of groups (five).
+C and D) the default number of groups (20).
 The mean number of connections per subpopulation, $\\bar{k}$, is shown for each metapopulation.
 '
 
@@ -605,13 +605,13 @@ mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, family = 'sans', at = -22)
 %%begin.rcode plotKcapt
 
 plotKcapt <- '
-Change in average metapopulation network degree ($\\bar{k}$) with increasing range size. 
+Change in average metapopulation network degree ($\\bar{k}$) with increasing geographic range size. 
 Bars show the median, boxes show the interquartile range, vertical lines show the range and grey dots indicate outlier values.
 Notches indicate the 95\\% confidence interval of the median.
-All simulations had 20 colonies, meaning 19 is the maximum value of $\\bar{k}$.
+All simulations had 20 groups, meaning 19 is the maximum value of $\\bar{k}$.
 '
 
-plotKtitle <- 'Change in average network degree with increasing range size'
+plotKtitle <- 'Change in average network degree with increasing geographic range size'
 
 %%end.rcode
 
@@ -751,13 +751,13 @@ areaPredictions <- pop %>%
 %%begin.rcode transMeansCapt
 
 transMeansCapt <- '
-Comparison of the effect of host population size on probability of invasion when population size is altered by changing colony size or colony number.
+Comparison of the effect of host population size on probability of invasion when population size is altered by changing group size or number of groups.
 Relationships are shown separately for each transmission value, $\\beta$.
-It can be seen that changes in colony size give a much greater increase in invasion probability than changes in colony number.
+It can be seen that changes in group size give a much greater increase in invasion probability than changes in the number of groups.
 Note that this is the same data as Figure~3 but with the $x$-axis scaled by population size, rather than relative parameter change.
 '
 
-transMeansTitle <- 'Comparison of the probability of the affect of colony size and number of groups on probability of invasion'
+transMeansTitle <- 'Comparison of the probability of the affect of group size and number of groups on probability of invasion'
 
 %%end.rcode
 
