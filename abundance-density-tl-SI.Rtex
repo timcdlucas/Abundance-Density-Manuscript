@@ -321,13 +321,13 @@ Therefore, $\frac{dI_2}{dt}$ is greater than zero as long as $\alpha$ is greater
 dens1 <- read.csv('Data/DensSims.csv') %>% dplyr::select(-X)
 
 dens1Means <- dens1 %>%
-                filter(nExtantDis > 0) %>%
+                #filter(nExtantDis > 0) %>%
                 group_by(transmission, colonySize, colonyNumber) %>%
                 summarise(`Area \\tiny{($\\times 1000$ km$^2$)}` = mean(area / 1000),
                           `$N$ \\tiny{($\\times 1000$)}` = mean(as.numeric(as.character(pop)) / 1000) , 
                           `Density \\tiny{(km$^{-2}$)}`  = mean(as.numeric(as.character(pop))) / mean(as.numeric(as.character(area))),
                           Invasions = sum(nExtantDis == 2), 
-                          Sims = n()) %>%
+                          `Both Extinct` = sum(nExtantDis == 0)) %>%
                 rename(`$\\beta$` = transmission, `$n$` = colonySize, `$m$` = colonyNumber)
 
 
@@ -336,13 +336,13 @@ dens1Means <- dens1 %>%
 dens2 <- read.csv('Data/Dens2Sims.csv') %>% dplyr::select(-X)
 
 dens2Means <- dens2 %>%
-                filter(nExtantDis > 0) %>%
+                #filter(nExtantDis > 0) %>%
                 group_by(transmission, colonySize, colonyNumber) %>%
                 summarise(`Area \\tiny{($\\times 1000$ km$^2$)}` = mean(area / 1000),
                           `$N$ \\tiny{($\\times 1000$)}` = mean(as.numeric(as.character(pop)) / 1000) , 
                           `Density \\tiny{(km$^{-2}$)}`  = mean(as.numeric(as.character(pop))) / mean(as.numeric(as.character(area))),
                           Invasions = sum(nExtantDis == 2), 
-                          Sims = n()) %>%
+                          `Both Extinct` = sum(nExtantDis == 0)) %>%
                 rename(`$\\beta$` = transmission, `$n$` = colonySize, `$m$` = colonyNumber)
 
 # Constant population, altered area
@@ -350,7 +350,7 @@ dens2Means <- dens2 %>%
 pop <- read.csv('Data/PopSims.csv') %>% dplyr::select(-X)
 
 popMeans <- pop %>%
-                filter(nExtantDis > 0) %>%
+                #filter(nExtantDis > 0) %>%
                 group_by(transmission, area) %>%
                 summarise(`$\\beta$` = mean(transmission),
                           `$n$` = mean(colonySize),
@@ -359,7 +359,7 @@ popMeans <- pop %>%
                           `$N$ \\tiny{($\\times 1000$)}` = mean(as.numeric(as.character(pop)) / 1000) , 
                           `Density \\tiny{(km$^{-2}$)}` = mean(as.numeric(as.character(pop))) / mean(as.numeric(as.character(area))),
                           Invasions = sum(nExtantDis == 2), 
-                          Sims = n()) %>%
+                          `Both Extinct` = sum(nExtantDis == 0)) %>%
                 ungroup %>%
                 dplyr::select(-area, -transmission)
 %%end.rcode
@@ -644,7 +644,7 @@ dens1 <- read.csv(text = rmerrors) %>%
            dplyr::select(-X) 
 
 dens1Means <- dens1 %>%
-                dplyr::filter(nExtantDis > 0) %>%
+                #dplyr::filter(nExtantDis > 0) %>%
                 group_by(transmission, colonySize, colonyNumber) %>%
                 summarise(success = sum(nExtantDis == 2), sampleSize = n(), pop = mean(pop)) %>%
                 ungroup %>% 
@@ -657,14 +657,14 @@ dens1Means <- dens1 %>%
 colonySizeModel   <- dens1 %>% 
                        mutate(invasion = nExtantDis == 2 ) %>%
                        mutate(ValueChange = log10(colonySize / median(colonySize))) %>%
-                       filter(nExtantDis != 0) %>%
+                       #filter(nExtantDis != 0) %>%
                        group_by(transmission) %>%
                        do(glm(invasion ~ ValueChange, data = ., family = 'binomial') %>% tidy(conf.int = TRUE)) 
 
 colonySizePredictions <- dens1 %>% 
                            mutate(invasion = nExtantDis == 2 ) %>%
                            mutate(ValueChange = colonySize / median(colonySize)) %>%
-                           filter(nExtantDis != 0) %>%
+                           #filter(nExtantDis != 0) %>%
                            group_by(transmission) %>%
                            do(augment(glm(invasion ~ log10(ValueChange), data = ., family = 'binomial'),
                                       newdata = data.frame(ValueChange = seq(min(.$ValueChange), max(.$ValueChange), 
@@ -680,7 +680,7 @@ colonySizePredictions <- dens1 %>%
 dens2 <- read.csv('Data/Dens2Sims.csv') %>% dplyr::select(-X) %>% as.data.frame
 
 dens2Means <- dens2 %>%
-                dplyr::filter(nExtantDis > 0) %>%
+                #dplyr::filter(nExtantDis > 0) %>%
                 group_by(transmission, colonySize, colonyNumber) %>%
                 summarise(success = sum(nExtantDis == 2), sampleSize = n(), pop = mean(pop)) %>% 
                 ungroup %>%
@@ -693,7 +693,7 @@ dens2Means <- dens2 %>%
 colonyNumberModel <- dens2 %>% 
                        mutate(invasion = nExtantDis == 2 ) %>%
                        mutate(ValueChange = log10(colonyNumber / median(colonyNumber))) %>%
-                       filter(nExtantDis != 0) %>%
+                       #filter(nExtantDis != 0) %>%
                        group_by(transmission) %>%
                        do(glm(invasion ~ ValueChange, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
                        
@@ -701,7 +701,7 @@ colonyNumberModel <- dens2 %>%
 colonyNumberPredictions <- dens2 %>% 
                              mutate(invasion = nExtantDis == 2 ) %>%
                              mutate(ValueChange = colonyNumber / median(colonyNumber)) %>%
-                             filter(nExtantDis != 0) %>%
+                             #filter(nExtantDis != 0) %>%
                              group_by(transmission) %>%
                              do(augment(glm(invasion ~ log10(ValueChange), data = ., family = 'binomial'),
                                         newdata = data.frame(ValueChange = seq(min(.$ValueChange), max(.$ValueChange), 
@@ -715,7 +715,7 @@ colonyNumberPredictions <- dens2 %>%
 pop <- read.csv('Data/PopSims.csv') %>% dplyr::select(-X) %>% as.data.frame
 
 popMeans <- pop %>%
-                dplyr::filter(nExtantDis > 0) %>%
+                #dplyr::filter(nExtantDis > 0) %>%
                 group_by(transmission, dens) %>%
                 summarise(success = sum(nExtantDis == 2), sampleSize = n()) %>%
                 ungroup %>%
@@ -727,7 +727,7 @@ popMeans <- pop %>%
 areaModel <- pop %>% 
                mutate(invasion = nExtantDis == 2 ) %>%
                mutate(ValueChange = log10(dens / median(dens))) %>%
-               filter(nExtantDis != 0) %>%
+               #filter(nExtantDis != 0) %>%
                group_by(transmission) %>%
                do(glm(invasion ~ ValueChange, data = ., family = 'binomial') %>% tidy(conf.int = TRUE))
 
@@ -735,7 +735,7 @@ areaModel <- pop %>%
 areaPredictions <- pop %>% 
                      mutate(invasion = nExtantDis == 2 ) %>%
                      mutate(ValueChange = dens / median(dens)) %>%
-                     filter(nExtantDis != 0) %>%
+                     #filter(nExtantDis != 0) %>%
                      group_by(transmission) %>%
                      do(augment(glm(invasion ~ log10(ValueChange), data = ., family = 'binomial'),
                                 newdata = data.frame(ValueChange = seq(min(.$ValueChange), max(.$ValueChange), 
@@ -781,7 +781,7 @@ d2$transmission <- factor(d2$transmission, labels = c('beta == 0.1', '0.2', '0.3
 
 colonySizePredictions2 <- dens1 %>% 
                              mutate(invasion = nExtantDis == 2 ) %>%
-                             filter(nExtantDis != 0) %>%
+                             #filter(nExtantDis != 0) %>%
                              group_by(transmission) %>%
                              do(augment(glm(invasion ~ pop, data = ., family = 'binomial'),
                                         newdata = data.frame(pop = seq(min(.$pop), max(.$pop), 
@@ -791,7 +791,7 @@ colonySizePredictions2 <- dens1 %>%
                        
 colonyNumberPredictions2 <- dens2 %>% 
                              mutate(invasion = nExtantDis == 2 ) %>%
-                             filter(nExtantDis != 0) %>%
+                             #filter(nExtantDis != 0) %>%
                              group_by(transmission) %>%
                              do(augment(glm(invasion ~ pop, data = ., family = 'binomial'),
                                         newdata = data.frame(pop = seq(min(.$pop), max(.$pop), 

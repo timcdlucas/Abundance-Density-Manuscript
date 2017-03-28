@@ -784,12 +784,12 @@ transTest <- rbind(dens1, dens2, pop) %>%
 
 
 nAllExtinct <- rbind(dens1, dens2, pop) %>%
-                 #filter(nExtantDis == 0) %>%
+                 filter(nExtantDis == 0) %>%
                  nrow
 
 
 whichTransAllExtinct <- rbind(dens1, dens2, pop) %>%
-                          #filter(nExtantDis == 0) %>%
+                          filter(nExtantDis == 0) %>%
                           group_by(transmission) %>%
                           summarise(n = n())
 
