@@ -238,7 +238,7 @@ $^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for He
 
 
 
-\subsection*{Word count:} 6886
+\subsection*{Word count:} 7034
 \subsection*{Running header:} Host population-level drivers of pathogen richness
 
 \clearpage
@@ -248,7 +248,7 @@ $^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for He
 Zoonotic diseases are an increasingly important source of human infectious diseases, and host pathogen richness of reservoir host species is a critical driver of spill-over risk. 
 Population-level traits of hosts such as population size, host density and geographic range size have all been shown to be important determinants of host pathogen richness. 
 However, empirically identifying the independent influences of these traits has proven difficult as many of these traits directly depend on each other. 
-Here we develop a mechanistic, metapopulation, susceptible-infected-recovered model to identify the influences of independent population-level traits on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen.
+Here we develop a mechanistic, metapopulation, susceptible-infected-recovered model to identify the independent influences of these population-level traits on the ability of a newly evolved pathogen to invade and persist in host populations in the presence of an endemic pathogen.
 We use bats as a case study as they are highly social and an important source of zoonotic disease. 
 We show that larger populations and group sizes had a greater influence on the chances of pathogen invasion and persistence than increased host density or the number of groups. 
 As anthropogenic change affects these traits to different extents, this increased understanding of how traits independently determine pathogen richness will aid in predicting future zoonotic spill-over risk.
@@ -326,7 +326,7 @@ We examined how the interrelated population-level traits affect the ability of a
 We used these simulations to examine two specific hypotheses.
 First, we investigated whether host population size or density more strongly promotes the invasion of a new pathogen.
 Secondly, we investigated whether the invasion of a new pathogen is more strongly promoted by group size or the number of groups.
-We found that population size has a much stronger affect on the invasion of a new pathogen than host density.
+We found that population size has a much stronger effect on the invasion of a new pathogen than host density.
 We also found that increasing population size by increasing group size promotes pathogen invasion much more than increasing population size by increasing the number of groups.
 
 
@@ -558,7 +558,7 @@ New born individuals entered the susceptible class.
 Infection and coinfection were assumed to cause no extra mortality as bats show no clinical signs of infection for a number of viruses \cite{halpin2011pteropid, deThoisy2016bioecological}.
 
 
-Population structure is present is bats as demonstrated by the existence of subspecies, measurements of genetic dissimilarity and behavioural studies  \cite{kerth2011bats, mccracken1981social, burns2014correlates}.
+Population structure is present in bat populations as demonstrated by the existence of subspecies, measurements of genetic dissimilarity and behavioural studies  \cite{kerth2011bats, mccracken1981social, burns2014correlates}.
 Therefore assuming a fully-mixed population is an oversimplification.
 Consequently, the population was modelled as a metapopulation network with groups being nodes and dispersal between groups being indicated by edges (electronic supplementary material, figure~S1).
 Individuals within a group interacted randomly so that the group was fully mixed.
@@ -573,18 +573,18 @@ The full details of the model are given in electronic supplementary material~S1.
 \label{s:determ}
 
 We examined a single-group, deterministic model to establish a baseline expectation for whether a newly evolved pathogen strain could invade into a population in the presence of an identical strain given the assumptions of our two-pathogen SIR model (for details see electronic supplementary material~S2).
-If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with vital dynamics \cite{Kermack1932} with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\Lambda n}{\gamma + \mu} - \frac{\mu }{\beta}$ where $\gamma$ is the recovery rate and $n$ is group size.
+If we first consider the endemic pathogen (Pathogen~1) we have a typical SIR model with vital dynamics \cite{Kermack1932} with equilibrium values $S^\ast = \frac{\mu + \gamma}{\beta}$ and $I_1^\ast = \frac{\Lambda n}{\gamma + \mu} - \frac{\mu }{\beta}$ where $\gamma$ is the recovery rate and $n$ is the group size.
 When Pathogen~2 is introduced, its rate of change can be written as
 
 \begin{align}
 \frac{dI_2}{dt} & = \beta S^\ast I_2 + \alpha \beta I_1^\ast I_2 - (\gamma + \mu) I_2 \label{path2I}
 \end{align}
 which is greater than zero when $\alpha\left( \Lambda R_0 - \mu \right) I_2 > 0$ (with $R_0 = \frac{\beta N }{\gamma + \mu}$ being the basic reproduction number and being equal for the two identical pathogens).
-As $\Lambda = \mu$ due to the assumption of a stable population size,  $\Lambda R_0 - \mu$ is greater than one.
-Therefore, $\frac{dI_2}{dt} > 0$ as long as $\alpha$ is greater than zero.
-That is, as long as cross-immunity is not complete, Pathogen~2 will invade in this deterministic model.
-This means that it is only stochastic extinction that would prevent a pathogen from persisting in a population.
-Our more detailed simulations are therefore examining how effectively different population-level traits alleviate stochastic extinction.
+As $\Lambda = \mu$ due to the assumption of a stable population size,  $\Lambda R_0 - \mu$ is greater than zero
+Therefore, $\frac{dI_2}{dt} > 0$ provided $\alpha$ is greater than zero.
+That is, provided cross-immunity is not complete, Pathogen~2 will invade in this deterministic model.
+This means that it is only stochastic extinction that would prevent a pathogen from invading in a population.
+Our more detailed simulations are therefore examining how effectively different population-level traits alleviate stochastic extinction or allow longer term persistence.
 
 \subsection{Parameter selection}
 \label{s:paramSelect}
@@ -598,7 +598,7 @@ As estimating transmission rates is particularly difficult we used three values 
 These values were chosen as very high values of $R_0$ were required so that a reasonable number of simulations experienced an invasion of Pathogen~2.
 The coinfection adjustment parameter, $\alpha$, was set to 0.1.
 Therefore, an individual with a single infection was 90\% less likely to gain a second infection.
-The deterministic model showed that $\alpha = 0$ and $\alpha > 0$ are qualitatively different with the number of individuals infected with the Pathogen~2 being stable and increasing respectively.
+The deterministic model showed that $\alpha = 0$ and $\alpha > 0$ are qualitatively different with the number of individuals infected with  Pathogen~2 being stable and increasing respectively.
 The case where Pathogen~2 does not invade and spread ($\alpha = 0$) is not important for pathogen richness so we chose a small, non-zero value for $\alpha$.
 The dispersal rate $\xi$ was set to 0.01 which yields 17\% of individuals dispersing in their lifetime.
 This relates to a species with juvenile dispersal of a proportion of males and very few females \cite{kerth2008causes, chen2008sex}.
@@ -623,20 +623,20 @@ In each simulation, each group in the host population was seeded with 20 individ
 A `burn-in' of \rinline{invadeT} events was run to allow Pathogen~1 to spread and reach equilibrium. 
 Plotting of preliminary simulations was used to decide that \rinline{invadeT} events was enough to ensure equilibrium.
 After this burn-in, five host individuals infected with Pathogen~2 were added to one randomly selected group. 
-The invasion and persistance of Pathogen~2 was considered successful if any individuals infected with Pathogen~2 remained at the end of the simulation.
+The invasion and persistence of Pathogen~2 was considered successful if any individuals infected with Pathogen~2 remained at the end of the simulation.
 As simulations with many individuals and infection events had more events per unit time, the end of the simulation had to be defined in terms of time rather than the number of events.
 Simulations were run until \rinline{TotalTime} years had elapsed since the introduction of Pathogen~2.
-This value was chosen so that pathogens had to persist for multiple host generations in order to be considered persistant.
-The results were also checked to confirm that decreasing this value did not qualitatively change the results. 
+This value was chosen so that pathogens had to persist for multiple host generations in order to be considered persistent.
+%The results were also checked to confirm that decreasing this value did not qualitatively change the results. 
 
 Three sets of 1500 simulations were run in which three population parameters were varied: (\emph{i})  geographic range size (with corresponding change in host density), (\emph{ii}) group size (with corresponding change in population size), and (\emph{iii})  the number of groups (with corresponding change in population size).
 To allow comparisons between simulation sets, the parameter that was being varied in each set was assigned its default value multiplied by 0.25, 0.5, 1, 2 and 4. 
-To examine whether host density  had a stronger effect on pathogen invasion than population size, results from simulation set \emph{i} was compared to those from sets \emph{ii} and \emph{iii}.
-To examine whether group size or the number of groups was the more important component of population size, results from the simulation set \emph{ii} were compared to those from \emph{iii}.
+To examine whether host density  had a stronger effect on pathogen invasion than population size, results from simulation set \emph{i} were compared to those from sets \emph{ii} and \emph{iii}.
+To examine whether group size or the number of groups was the more important component of population size, results from simulation set \emph{ii} were compared to those from \emph{iii}.
 
 
-The default geographic range size was 10000 km\textsuperscript{2} with a range of 25000--40000 km\textsuperscript{2}.
-The spatial scale alone is arbitrary; only the ratio between the geographic range size and the threshold distance for groups being connected in the metapopulation network has any affect on simulation outcomes.
+The default geographic range size was 10000 km\textsuperscript{2} with a range of 2500--40000 km\textsuperscript{2}.
+The spatial scale alone is arbitrary; only the ratio between the geographic range size and the threshold distance for groups being connected in the metapopulation network has any effect on simulation outcomes.
 We parameterised the spatial scale by arbitrarily selecting a threshold distance of 100 km.
 The upper and lower bounds of the geographic range size were then selected to maximise the range of $\bar{k}$ (electronic supplementary material, figure~S2) while not having many simulations with networks that were unconnected.
 That is, we aimed for low host density populations to have relatively sparse population networks, while high host density populations had fully-connected metapopulation networks.
@@ -646,14 +646,14 @@ The default number of groups was 20 with a range of 5--80.
 This minimum value is close to the minimum possible for the population to still be considered a metapopulation, while the maximum value was constrained by computational costs.
 
 In the first set of simulations (\emph{i}), host density was varied by keeping population size constant ($N$ = 8000, $n$ = 400, $m$ = 20) while varying geographic range size.
-The values of geographic range size used were 2500, 5000, 10000, 20000 and 40000 km\textsuperscript{2} which gave density values of \rinline{depDens[-5]} and \rinline{depDens[5]} animals per km\textsuperscript{2}.
+The values of geographic range size used were 2500, 5000, 10000, 20000 and 40000 km\textsuperscript{2} which gave density values of \rinline{depDens[5:2]} and \rinline{depDens[1]} animals per km\textsuperscript{2}.
 In the second set of simulations (\emph{ii}), population size was varied by changing group size while the number of groups was kept constant.
 To keep host density constant, geographic range size was increased as population size increased.
 The values of group size used were 100, 200, 400, 800 and 1600 while geographic range size was set to 2500, 5000, 10000, 20000 and 40000 km\textsuperscript{2}.
 This gave population sizes of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
 In the third set of simulations (\emph{iii}), population size was varied by changing the number of groups while group size was kept constant.
 Again, to keep host density constant, geographic range size was increased as population size increased.
-The numbers of groups used were 5, 10, 20, 40 and 80 while geographic range size was set to 40000, 20000, 10000, 5000 and 2500 km\textsuperscript{2}.
+The numbers of groups used were 5, 10, 20, 40 and 80 while geographic range size was set to 2500, 5000, 10000, 20000 and 40000 km\textsuperscript{2}.
 Again, this gave population sizes of 2000, 4000, 8000, 16000 and 32000 while host density remained at 0.8 hosts per km\textsuperscript{2}.
 
 
@@ -954,7 +954,7 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
 
 
 
-For each set of simulations, we fitted binomial GLMs in R \cite{R} with invasion of Pathogen~2 as the dependent variable.
+For each set of simulations, we fitted binomial GLMs in R \cite{R} with the proportion of invasions of Pathogen~2 as the response variable.
 To enable comparison between GLMs we divided the explanatory variables by their default values and transformed by the log base 2.
 The explanatory variables for all three sets of simulations therefore became the proportional change relative to the default parameter value, logged to be evenly spaced between -2 and 2.
 To investigate whether an increase in host population size created a stronger increase in probablity of pathogen invasion than an equal increase in host density we compared the size (and 95\% confidence intervals) of the regression coefficients of host density (\emph{i}) to group size (\emph{ii}) and number of groups (\emph{iii}). 
@@ -988,7 +988,7 @@ Population-level traits are group size (green lines, squares), number of groups 
 The $x$-axis shows the change ($\\times$0.25, 0.5, 1, 2 and 4) in each of these traits relative to the default value.
 Default values are: number of groups = 20, group size = 400 and host density = 0.8 animals per km\\textsuperscript{2}.
 Each point is the mean of 100 simulations and bars are 95\\% confidence intervals.
-Curves are binomial GLM regression fits.
+Each curve was obtained by fitting a binomial GLM.
 Relationships are shown separately for each transmission value, $\\beta$.
 '
 
@@ -1059,13 +1059,13 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
 The estimated GLM coefficients were always larger for simulations where population size was varied (sets \emph{ii} and \emph{iii}) than when host density (set \emph{i}) was varied (table~\ref{t:regrCoefs}, electronic supplementary material figure~S4).
 Increasing population size, either by increasing group size or number of groups, increased the probability of invasion (figure~\ref{fig:plotValueChangeMeans}).
 The positive relationship between group size and invasion was strong and significant at all transmission rates, while the relationship between number of groups and invasion was weaker but still significant.
-In contrast, varying host density did not alter invasion probability except for when $\beta = 0.3$ where there was a significant decrease in invasion probability with increased host density (GLM: coefficient = $\rinline{areaModel$estimate[6]}$, $p$ = \rinline{areaModel$p.value[6]}).
-The 95\% confidence intervals for group size did not overlap those for host density at any value of $\beta$ while the 95\% confidence intervals for number of groups only overlapped those for host density at $\beta = 0.2$.
+In contrast, varying host density did not significantly alter invasion probability except for when $\beta = 0.3$ where there was a significant decrease in invasion probability with increased host density (GLM: coefficient = $\rinline{areaModel$estimate[6]}$, $p$ = \rinline{areaModel$p.value[6]}).
+The 95\% confidence intervals for the coefficients of group size did not overlap with those for the coefficients of host density at any value of $\beta$ while the 95\% confidence intervals for number of groups only overlapped with those for host density at $\beta = 0.2$.
 
 \subsection{Group size and number of groups}
 In all cases, the estimated GLM coefficients were larger for simulations where group size was varied (set \emph{ii}) than when the number of groups (set \emph{iii}) was varied (table~\ref{t:regrCoefs}, electronic supplementary material figure~S3 and S4).
 Increasing either group size or the number of groups increased the probability of invasion but this effect was  stronger for group size (figure~\ref{fig:plotValueChangeMeans}).
-The 95\% confidence intervals of regression coefficients for group size did not overlap those for number of groups for the simulations with $\beta = 0.2$ or $0.3$ but the confidence intervals did overlap for the simulations when $\beta = 0.1$.
+The 95\% confidence intervals of regression coefficients for group size did not overlap with those for number of groups for the simulations with $\beta = 0.2$ or $0.3$ but the confidence intervals did overlap for the simulations when $\beta = 0.1$.
 
 %At the default parameter settings, the probability of invasion and persistence of the second pathogen was rare (figure~\ref{fig:plotValueChangeMeans} and electronic supplementary material, tables~S2--4).
 %These proportions significantly increased with transmission rate (GLM: coefficient = \rinline{transTest$estimate[2]}, $p$ = \rinline{transTest$p.value[2]}).
@@ -1074,7 +1074,7 @@ The 95\% confidence intervals of regression coefficients for group size did not 
 \captionsetup{width=0.9\textwidth}
 \caption[Regression results]{
 Regression results comparing effects of group size, number of groups and host density.
-Coefficient estimates and 95\% confidence intervals of each variable are from binomial GLM regressions with invasion as the dependent variable and all explanatory variables being standardised by dividing by the default parameter value.
+Estimated regression coefficients and their 95\% confidence intervals are from binomial GLM regressions with the proportion of invasions as the response variable and all explanatory variables being standardised by dividing by the default parameter value and then taking the log base 2.
 Group size and number of groups were varied while keeping density equal while density was varied by changing geographic range size while keeping population size equal.
 Results are given for three transmission ($\beta$) values.
 }
@@ -1082,7 +1082,7 @@ Results are given for three transmission ($\beta$) values.
 \centering
 \begin{tabular}{@{}rlrrr@{}}
 \toprule
-$\beta$ & \emph{Variable} & \emph{Estimate} & (95\% \emph{CI}) & $p$\\
+$\beta$ & \emph{Variable} & \emph{Coefficient} & (95\% \emph{CI}) & $p$\\
 \midrule
 0.1   &    Group size   & \rinline{colonySizeModel$estimate[2]} & (\rinline{colonySizeModel$conf.low[2]}, \rinline{colonySizeModel$conf.high[2]}) & $< 10^{-4}$ \\
 &    Number of groups & \rinline{sprintf('%.2f', colonyNumberModel$estimate[2])} & (\rinline{colonyNumberModel$conf.low[2]}, \rinline{colonyNumberModel$conf.high[2]}) & \rinline{colonyNumberModel$p.value[2]} \\
@@ -1129,13 +1129,13 @@ Alternatively, the local measurements of host density could be indicative of som
 Our results also suggest that a population made up of large groups would have higher pathogen richness than a population made up of many smaller groups.
 Comparative studies examining group size have had conflicting results \cite{vitone2004body, gay2014parasite, nunn2003comparative, turmelle2009correlates} with a meta-analysis finding a non-significant relationship between group size and pathogen richness \cite{rifkin2012animals}.
 The largest study specifically on bats found a negative relationship between group size and pathogen richness \cite{gay2014parasite}.
-Therefore while our results regarding group size is potentially in conflict with the empirical literature, more definitive empirical studies are needed.
+Therefore while our results regarding group size are potentially in conflict with the empirical literature, more definitive empirical studies are needed.
 This conflict may also indicate a difference between pathogen richness accumulation (the focus of this study) and total pathogen richness.
 Our results also suggest that host geographic range size does not promote pathogen richness, yet a number of studies have found evidence of this relationship \cite{kamiya2014determines, nunn2003comparative}.
 In studies that do not also include population size or host density, geographic range size may be acting as a proxy for population size.
 Alternatively this empirical association may be because in wild species, increased host geographic size tends to entail a greater variety of environmental conditions and a greater number of sympatric species which is known to also affect pathogen richness \cite{brierley2016quantifying} and these factors are not considered in this study.
 Finally, we found an unexpected negative association between density and invasion probability at $\beta = 0.3$.
-Due to the small size of the estimated coefficient, the marginal p-value and the lack of a consistent relationship at other $\beta$ values, we suspect that this is not a real effect.
+Due to the small size of the estimated coefficient, the marginal p-value and the lack of a consistent relationship at other $\beta$ values, we suspect that this is not a real effect but merely due to chance.
 However, given that in our study, increased density affects disease dynamics by decreasing population structure, this negative relationship does fit with studies that suggest that population structure should allow pathogen coexistence \cite{maganga2014bat, turmelle2009correlates, allen2004sis}.
 
 %The difference in size between these two effects might decrease in systems with higher dispersal rates.
@@ -1147,6 +1147,13 @@ However, given that in our study, increased density affects disease dynamics by 
 
 
 % \tmpsection{Only two pathogens, direct transmission}
+
+This study is limited to one mechanism by which pathogen richness can be increased; the invasion and persistence of a newly evolved pathogen.
+However, other processes such as pathogen extinction are also likely to be important \cite{vickery1998parasite}.
+We also restrict ourselves to the context of competition between two pathogens in a social host species.
+As the pathogen modelled here is directly transmitted there is no transmission between individuals in separate subpopulations.
+Infection via shared food sources or contact between individuals from different subpopulations (e.g.\ during swarming \cite{kerth2008causes}) would act to reduce population structure and therefore host density might become more important while colony size becomes less important. 
+Further modelling would be required to examine whether the results here would change with the inclusion of alternate transmission routes while only empirical studies would be able to indicate the relative importance of these different transmission routes in wild populations.
 
 
 
