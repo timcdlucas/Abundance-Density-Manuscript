@@ -957,7 +957,7 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
 For each set of simulations, we fitted binomial GLMs in R \cite{R} with the proportion of invasions of Pathogen~2 as the response variable.
 To enable comparison between GLMs we divided the explanatory variables by their default values and transformed by the log base 2.
 The explanatory variables for all three sets of simulations therefore became the proportional change relative to the default parameter value, logged to be evenly spaced between -2 and 2.
-To investigate whether an increase in host population size created a stronger increase in probablity of pathogen invasion than an equal increase in host density we compared the size (and 95\% confidence intervals) of the regression coefficients of host density (\emph{i}) to group size (\emph{ii}) and number of groups (\emph{iii}). 
+To investigate whether an increase in host population size created a stronger increase in probability of pathogen invasion than an equal increase in host density we compared the size (and 95\% confidence intervals) of the regression coefficients of host density (\emph{i}) to group size (\emph{ii}) and number of groups (\emph{iii}). 
 To examine whether an increase in group size creates a stronger increase in invasion probability than a proportionally equal increase in number of groups we compared regression coefficients of group size (\emph{ii}) to number of groups (\emph{iii}).
 In \rinline{nAllExtinct} simulations out of 4500, both pathogens went extinct.
 Of these simulations, 29 were in set \emph{ii} and eight were in set \emph{iii} (electronic supplementary material, tables~S2--4).
@@ -1151,8 +1151,8 @@ However, given that in our study, increased density affects disease dynamics by 
 This study is limited to one mechanism by which pathogen richness can be increased; the invasion and persistence of a newly evolved pathogen.
 However, other processes such as pathogen extinction are also likely to be important \cite{vickery1998parasite}.
 We also restrict ourselves to the context of competition between two pathogens in a social host species.
-As the pathogen modelled here is directly transmitted there is no transmission between individuals in separate subpopulations.
-Infection via shared food sources or contact between individuals from different subpopulations (e.g.\ during swarming \cite{kerth2008causes}) would act to reduce population structure and therefore host density might become more important while colony size becomes less important. 
+As the pathogen modelled here is directly transmitted there is no transmission between individuals in separate groups
+Infection via shared food sources or contact between individuals from different groups (e.g.\ during swarming \cite{kerth2008causes}) would act to reduce population structure and therefore host density might become more important while colony size becomes less important. 
 Further modelling would be required to examine whether the results here would change with the inclusion of alternate transmission routes while only empirical studies would be able to indicate the relative importance of these different transmission routes in wild populations.
 
 
