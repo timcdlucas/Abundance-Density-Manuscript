@@ -142,10 +142,10 @@ $I_{qx}$ & Number of individuals infected with disease(s) $q \in \{1, 2, 12\}$ i
 $R_x$ & Number of individuals in group $x$ in the recovered with immunity class  &&\\
 $N$ & Total Population size && 2,000 -- 32,000\\
 $m$ & Number of groups && 5 -- 80\\
-$n$ & Group size && 100 -- 600\\
+$n$ & Group size && 100 -- 1600\\
 $a$ & Area & km\textsuperscript{2}& 2,500 -- 40,000\\
-$d$ & Density & individuals.km$^{-1}$ &  0.2 -- 3.2\\
-$\beta$ & Transmission rate &  & 0.1 -- 0.4\\
+$d$ & Density & individuals.km$^{-2}$ &  0.2 -- 3.2\\
+$\beta$ & Transmission rate &  & 0.1 -- 0.3\\
 $\alpha$ & Coinfection adjustment factor  & & 0.1\\
 $\gamma$ & Recovery rate & year$^{-1}.$individual$^{-1}$ & 1\\
 $\xi$ & Dispersal rate & year$^{-1}.$individual$^{-1}$ & 0.01\\
@@ -156,9 +156,9 @@ $k_y$ & Degree of node $y$ (number of groups that individuals from group $y$ can
 $\delta$ & Waiting time until next event & years &\\
 $e_i$ & The rate at which event $i$ occurs & year$^{-1}$&\\
 $R_0$ & The (single subpopulation) basic reproduction number & infections &  \\
-$b_i$ & Regression coefficient & & \\
-$c$ & Regression intercept & & \\
-$\epsilon$ & Binomially distributed regression error term & & \\
+%$b_i$ & Regression coefficient & & \\
+%$c$ & Regression intercept & & \\
+%$\epsilon$ & Binomially distributed regression error term & & \\
 \bottomrule
 \end{tabular}
 
@@ -175,11 +175,11 @@ We examined the model using stochastic, continuous-time simulations implemented 
 The implementation is available as an \emph{R} package on GitHub \cite{metapopepi}.
 The model can be written as a continuous-time Markov chain.
 The Markov chain contains the random variables $((S_x)_{x = 1\ldots m}, (I_{x, q})_{x =1\ldots m,\:q \in \{1, 2, 12\}}, (R_x)_{x = 1\ldots m})$.
-Here, $(S_x)_{x = 1\ldots m}$ is a length $m$ vector of the number of susceptibles in each colony.
-$(I_{x, q})_{x =1\ldots m, q \in \{1, 2, 12\}}$ is a length $m \times 3$ vector describing the number of individuals of each disease class ($q \in \{1, 2, 12\}$) in each colony.
+Here, $(S_x)_{x = 1\ldots m}$ is a length $m$ vector of the number of susceptibles in each group
+$(I_{x, q})_{x =1\ldots m, q \in \{1, 2, 12\}}$ is a length $m \times 3$ vector describing the number of individuals of each disease class ($q \in \{1, 2, 12\}$) in each group.
 Finally, $(R_x)_{x = 1\ldots m}$ is a length $m$ vector of the number of individuals in the recovered class.
-The model is a Markov chain where extinction of both pathogen species and extinction of the host species are absorbing states.
-The expected time for either host to go extinct is much larger than the duration of the simulations.
+The model is a Markov chain where extinction of either pathogen species and extinction of the host population are absorbing states.
+The expected time for the host population to go extinct is much larger than the duration of the simulations.
 
 At any time, suppose the system is in state $((s_x), (i_{x,q}), (r_x))$.
 At each step in the simulation we calculate the rate at which each possible event might occur.
@@ -265,7 +265,10 @@ We then have a typical SIR model with vital dynamics \cite{Kermack1932}.
 
 \subsubsection{Equilibrium values of single pathogen model}
 
+
 To find the equilibrium number of susceptibles, $S^\ast$, we set $\frac{dI_1}{dt} = 0$.
+We then have the trvial. steady state of $S^* = n$ and  $I_1^* = 0$.
+To find the endemic steady state ($I_1^* \ne 0$) we write
 
 \begin{align}
 \beta S^\ast I_1 &= (\gamma + \mu) I_1,\\
@@ -282,15 +285,18 @@ I_1^\ast = & \frac{\Lambda n}{\gamma + \mu} - \frac{\mu }{\beta} \label{istar}.
 
 \subsubsection{Second pathogen}
 
-If we assume that Pathogen 2 is introduced when the endemic pathogen is at equilibrium, the dynamics of Pathogen 2 are governed by
+We assume that Pathogen 2 is introduced when the endemic pathogen is at equilibrium.
+The introduction of Pathogen 2 will cause the system to shift to a new equilibrium.
+However, we continue to use $S^*$ and I_1^*$ to mean the values above.
+Initially, the dynamics of Pathogen 2 are governed by
 
 \begin{align}
 \frac{dI_2}{dt} & = \beta S^\ast I_2 + \alpha \beta I_1^\ast I_2 - (\gamma + \mu) I_2 \label{path2I}
 \end{align}
 
-where $\beta S^\ast I_2$ is the number of infections,  $ \alpha \beta I_1^\ast I_2$ is the number of coinfections and $ (\gamma + \mu) I_2 $ is the number of deaths and recoveries. 
+where $\beta S^\ast I_2$ is the number of infections per unit time,  $ \alpha \beta I_1^\ast I_2$ is the number of coinfections per unit time and $(\gamma + \mu) I_2 $ is the number of deaths and recoveries per unit time. 
 $I_2$ is therefore the number of individuals infected with Pathogen 2 regardless of whether they are infected with Pathogen 1.
-In this sense it is the combined size of classes $I_2$ and $I_12$  as used in the stochastic model (Section \ref{sup:stochmodel}).
+In this sense it is the combined size of classes $I_2$ and $I_{12}$  as used in the stochastic model (Section \ref{sup:stochmodel}).
 For simplicity here we simply label this group $I_2$.
 Substituting in Equations \ref{sstar} and \ref{istar}, and noting that $R_0 = \frac{\beta n }{\gamma + \mu}$  we get 
 
@@ -308,8 +314,8 @@ This is greater than zero when
 
 As $I_2$ is positive, this is greater than zero when $ \Lambda R_0 - \mu > 0$ and $\alpha > 0$. 
 As $\Lambda = \mu$ due to the assumption of stable population size, $ \Lambda R_0 - \mu > 0$ is true as long as $R_0 > 1$. 
-$R_0$ is greater than one (as proved by the fact that Pathogen 1 is endemic), 
-Therefore, $\frac{dI_2}{dt}$ is greater than zero as long as $\alpha$ is greater than zero.
+$R_0$ is greater than one (as we have assumed that Pathogen 1 is endemic), 
+Therefore, $\frac{dI_2}{dt}$ is greater than zero provided $\alpha$ is greater than zero.
 
 
 \clearpage
@@ -385,7 +391,7 @@ Raw data for geographic range size simulations
 popCapt <- "
 Raw data for geographic range size simulations.
 The population parameters are shown along with the number of invasions and the number of simulations.
-Note that simulations where both pathogens went extinct have been removed (100 simulations were originally run for each parameter set).
+%Note that simulations where both pathogens went extinct have been removed (100 simulations were originally run for each parameter set).
 $\\beta$ is the transmission rate, $n$ is group size, $m$ is the number of groups and $N$ is the total population size.
 "
 
@@ -416,7 +422,7 @@ Raw data for group size simulations
 dens1Capt <- "
 Raw data for group size simulations. 
 The population parameters are shown along with the number of invasions and the number of simulations.
-Note that simulations where both pathogens went extinct have been removed (100 simulations were originally run for each parameter set).
+%Note that simulations where both pathogens went extinct have been removed (100 simulations were originally run for each parameter set).
 $\\beta$ is the transmission rate, $n$ is group size, $m$ is the number of groups and $N$ is the total population size.
 "
 
@@ -449,7 +455,7 @@ Raw data for number of groups simulations
 dens2Capt <- "
 Raw data for number of groups simulations.
 The population parameters are shown along with the number of invasions and the number of simulations.
-Note that simulations where both pathogens went extinct have been removed (100 simulations were originally run for each parameter set).
+%Note that simulations where both pathogens went extinct have been removed (100 simulations were originally run for each parameter set).
 $\\beta$ is the transmission rate, $n$ is group size, $m$ is the number of groups and $N$ is the total population size.
 "
 
