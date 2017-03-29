@@ -637,6 +637,44 @@ ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
 
 
 
+
+%%begin.rcode plotCoeffsCapts
+plotCoeffsCapt <- '
+GLM regression coefficients for for three sets of simulations at three transmission, $\\beta$ values.
+To examine whether host density or population size affects pathogen invasion more strongly we compare the orange and blue bars.
+To examine whether group size or number of groups affects pathogen invasion more strongly we compare the second and third bar in each facet.
+'
+
+plotCoeffsTitle <- 'Regression coefficients'
+%%end.rcode
+
+
+
+%%begin.rcode plotCoeffs, fig.cap = plotCoeffsCapt, fig.scap = plotCoeffsTitle, out.width = '0.7\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.width = 9
+
+allModels <- rbind(areaModel %>% mutate(varied = 'Host density'),
+                   colonyNumberModel %>% mutate(varied = 'Number of groups'),
+                   colonySizeModel %>% mutate(varied = 'Group size')) %>%
+               filter(term == 'ValueChange') %>%
+               mutate(variedSort = factor(varied, levels = unique(varied)[c(2, 3, 1)])) %>%
+               mutate(Density = ifelse(varied == 'Host density', 'Host density', 'Pop. size'))
+allModels$transmission <- factor(allModels$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
+
+ggplot(allModels, aes(x = variedSort, y = estimate, colour = Density)) + 
+  facet_grid(. ~ transmission, labeller = label_parsed) +
+  geom_point() +
+  geom_errorbar(aes(ymax = conf.high, ymin = conf.low), width = 0.3) +
+  xlab('Population-level trait') +
+  ylab('Regression estimate') +
+  scale_colour_poke(pokemon = 'Charizard', spread = 2, guide_legend(title = '')) +
+  coord_flip() +
+  theme(legend.position = 'bottom')
+
+%%end.rcode
+
+
+
+
 %%begin.rcode calcMeans
 # Constant density, altered colony size
 # Need to remove rows with errors to auto find classes of columns
@@ -829,40 +867,6 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
 
 
 
-
-%%begin.rcode plotCoeffsCapts
-plotCoeffsCapt <- '
-GLM regression coefficients for for three sets of simulations at three transmission, $\\beta$ values.
-To examine whether host density or population size affects pathogen invasion more strongly we compare the orange and blue bars.
-To examine whether group size or number of groups affects pathogen invasion more strongly we compare the second and third bar in each facet.
-'
-
-plotCoeffsTitle <- 'Regression coefficients'
-%%end.rcode
-
-
-
-%%begin.rcode plotCoeffs, fig.cap = plotCoeffsCapt, fig.scap = plotCoeffsTitle, out.width = '0.7\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.width = 9
-
-allModels <- rbind(areaModel %>% mutate(varied = 'Host density'),
-                   colonyNumberModel %>% mutate(varied = 'Number of groups'),
-                   colonySizeModel %>% mutate(varied = 'Group size')) %>%
-               filter(term == 'ValueChange') %>%
-               mutate(variedSort = factor(varied, levels = unique(varied)[c(2, 3, 1)])) %>%
-               mutate(Density = ifelse(varied == 'Host density', 'Host density', 'Pop. size'))
-allModels$transmission <- factor(allModels$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
-
-ggplot(allModels, aes(x = variedSort, y = estimate, colour = Density)) + 
-  facet_grid(. ~ transmission, labeller = label_parsed) +
-  geom_point() +
-  geom_errorbar(aes(ymax = conf.high, ymin = conf.low), width = 0.3) +
-  xlab('Population-level trait') +
-  ylab('Regression estimate') +
-  scale_colour_poke(pokemon = 'Charizard', spread = 2, guide_legend(title = '')) +
-  coord_flip() +
-  theme(legend.position = 'bottom')
-
-%%end.rcode
 
 
 
