@@ -287,7 +287,7 @@ I_1^\ast = & \frac{\Lambda n}{\gamma + \mu} - \frac{\mu }{\beta} \label{istar}.
 
 We assume that Pathogen 2 is introduced when the endemic pathogen is at equilibrium.
 The introduction of Pathogen 2 will cause the system to shift to a new equilibrium.
-However, we continue to use $S^*$ and I_1^*$ to mean the values above.
+However, we continue to use $S^*$ and $I_1^*$ to mean the values above.
 Initially, the dynamics of Pathogen 2 are governed by
 
 \begin{align}
