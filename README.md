@@ -4,7 +4,7 @@ Role of inter-related population-level host traits in determining pathogen richn
 
 Repo for manuscript and analysis.
 
-This paper is a reworking of one of my [thesis](https://github.com/timcdlucas/PhDThesis) chapters.
+This paper is a reworking of [Chapter 4 of my thesis](https://github.com/timcdlucas/PhDThesis)  ([with commit history](https://github.com/timcdlucas/PhDThesis/commits/master/Chapter4.Rtex)).
 
 For submission to Proceedings of the Royal Society: B
 
