@@ -118,6 +118,8 @@ library(binom)
 library(ggplot2)
 library(dplyr)
 
+library(MetapopEpi)
+
 library(broom)
 
 %%end.rcode
@@ -271,7 +273,7 @@ We then have the trvial. steady state of $S^* = n$ and  $I_1^* = 0$.
 To find the endemic steady state ($I_1^* \ne 0$) we write
 
 \begin{align}
-\beta S^\ast I_1 &= (\gamma + \mu) I_1,\\
+\beta S^\ast I_1^\ast &= (\gamma + \mu) I_1^\ast,\\
 S^\ast &= \frac{\gamma + \mu}{\beta} \label{sstar}.
 \end{align}
 
@@ -332,8 +334,7 @@ dens1Means <- dens1 %>%
                 summarise(`Area \\tiny{($\\times 1000$ km$^2$)}` = mean(area / 1000),
                           `$N$ \\tiny{($\\times 1000$)}` = mean(as.numeric(as.character(pop)) / 1000) , 
                           `Density \\tiny{(km$^{-2}$)}`  = mean(as.numeric(as.character(pop))) / mean(as.numeric(as.character(area))),
-                          Invasions = sum(nExtantDis == 2), 
-                          `Both Extinct` = sum(nExtantDis == 0)) %>%
+                          Invasions = sum(nExtantDis == 2)) %>%
                 rename(`$\\beta$` = transmission, `$n$` = colonySize, `$m$` = colonyNumber)
 
 
@@ -347,8 +348,7 @@ dens2Means <- dens2 %>%
                 summarise(`Area \\tiny{($\\times 1000$ km$^2$)}` = mean(area / 1000),
                           `$N$ \\tiny{($\\times 1000$)}` = mean(as.numeric(as.character(pop)) / 1000) , 
                           `Density \\tiny{(km$^{-2}$)}`  = mean(as.numeric(as.character(pop))) / mean(as.numeric(as.character(area))),
-                          Invasions = sum(nExtantDis == 2), 
-                          `Both Extinct` = sum(nExtantDis == 0)) %>%
+                          Invasions = sum(nExtantDis == 2)) %>%
                 rename(`$\\beta$` = transmission, `$n$` = colonySize, `$m$` = colonyNumber)
 
 # Constant population, altered area
@@ -364,8 +364,7 @@ popMeans <- pop %>%
                           `Area \\tiny{($\\times 1000$ km$^2$)}` = mean(area / 1000),
                           `$N$ \\tiny{($\\times 1000$)}` = mean(as.numeric(as.character(pop)) / 1000) , 
                           `Density \\tiny{(km$^{-2}$)}` = mean(as.numeric(as.character(pop))) / mean(as.numeric(as.character(area))),
-                          Invasions = sum(nExtantDis == 2), 
-                          `Both Extinct` = sum(nExtantDis == 0)) %>%
+                          Invasions = sum(nExtantDis == 2)) %>%
                 ungroup %>%
                 dplyr::select(-area, -transmission)
 %%end.rcode
@@ -390,7 +389,7 @@ Raw data for geographic range size simulations
 
 popCapt <- "
 Raw data for geographic range size simulations.
-The population parameters are shown along with the number of invasions and the number of simulations.
+The population parameters are shown along with the number of invasions.
 $\\beta$ is the transmission rate, $n$ is group size, $m$ is the number of groups and $N$ is the total population size.
 "
 
@@ -398,8 +397,8 @@ $\\beta$ is the transmission rate, $n$ is group size, $m$ is the number of group
 print(xtable(popMeans,
              caption = c(popCapt, popTitle), 
              label = "C-pop",
-             digits = c(0, 1, 0, 0, 1, 0, 1, 0, 0),
-             align = c('r', '@{}r', 'r', 'r', 'r', 'r', 'r', 'r', 'r@{}')), 
+             digits = c(0, 1, 0, 0, 1, 0, 1, 0),
+             align = c('r', '@{}r', 'r', 'r', 'r', 'r', 'r', 'r@{}')), 
       size = "small", #Change size; useful for bigger tables
       include.rownames = FALSE, #Don't print rownames
       include.colnames = TRUE,
@@ -420,7 +419,7 @@ Raw data for group size simulations
 
 dens1Capt <- "
 Raw data for group size simulations. 
-The population parameters are shown along with the number of invasions and the number of simulations.
+The population parameters are shown along with the number of invasions.
 $\\beta$ is the transmission rate, $n$ is group size, $m$ is the number of groups and $N$ is the total population size.
 "
 
@@ -428,8 +427,8 @@ $\\beta$ is the transmission rate, $n$ is group size, $m$ is the number of group
 print(xtable(dens1Means,
              caption = c(dens1Capt, dens1Title), 
              label = "C-dens1",
-             digits = c(0, 1, 0, 0, 1, 0, 1, 0, 0),
-             align = c('r', '@{}r', 'r', 'r', 'r', 'r', 'r', 'r', 'r@{}')), 
+             digits = c(0, 1, 0, 0, 1, 0, 1, 0),
+             align = c('r', '@{}r', 'r', 'r', 'r', 'r', 'r', 'r@{}')), 
       size = "small", #Change size; useful for bigger tables
       include.rownames = FALSE, #Don't print rownames
       include.colnames = TRUE,
@@ -452,7 +451,7 @@ Raw data for number of groups simulations
 
 dens2Capt <- "
 Raw data for number of groups simulations.
-The population parameters are shown along with the number of invasions and the number of simulations.
+The population parameters are shown along with the number of invasions.
 $\\beta$ is the transmission rate, $n$ is group size, $m$ is the number of groups and $N$ is the total population size.
 "
 
@@ -460,8 +459,8 @@ $\\beta$ is the transmission rate, $n$ is group size, $m$ is the number of group
 print(xtable(dens2Means,
              caption = c(dens2Capt, dens2Title), 
              label = "C-dens2",
-             digits = c(0, 1, 0, 0, 1, 0, 1, 0, 0),
-             align = c('r', '@{}r', 'r', 'r', 'r', 'r', 'r', 'r', 'r@{}')), 
+             digits = c(0, 1, 0, 0, 1, 0, 1, 0),
+             align = c('r', '@{}r', 'r', 'r', 'r', 'r', 'r', 'r@{}')), 
       size = "small", #Change size; useful for bigger tables
       include.rownames = FALSE, #Don't print rownames
       include.colnames = TRUE,
@@ -637,44 +636,6 @@ ggplot(dens1, aes(x = factor(area), y = meanK, colour = 'a', fill = 'a')) +
 
 
 
-
-%%begin.rcode plotCoeffsCapts
-plotCoeffsCapt <- '
-GLM regression coefficients for for three sets of simulations at three transmission, $\\beta$ values.
-To examine whether host density or population size affects pathogen invasion more strongly we compare the orange and blue bars.
-To examine whether group size or number of groups affects pathogen invasion more strongly we compare the second and third bar in each facet.
-'
-
-plotCoeffsTitle <- 'Regression coefficients'
-%%end.rcode
-
-
-
-%%begin.rcode plotCoeffs, fig.cap = plotCoeffsCapt, fig.scap = plotCoeffsTitle, out.width = '0.7\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.5, fig.width = 9
-
-allModels <- rbind(areaModel %>% mutate(varied = 'Host density'),
-                   colonyNumberModel %>% mutate(varied = 'Number of groups'),
-                   colonySizeModel %>% mutate(varied = 'Group size')) %>%
-               filter(term == 'ValueChange') %>%
-               mutate(variedSort = factor(varied, levels = unique(varied)[c(2, 3, 1)])) %>%
-               mutate(Density = ifelse(varied == 'Host density', 'Host density', 'Pop. size'))
-allModels$transmission <- factor(allModels$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
-
-ggplot(allModels, aes(x = variedSort, y = estimate, colour = Density)) + 
-  facet_grid(. ~ transmission, labeller = label_parsed) +
-  geom_point() +
-  geom_errorbar(aes(ymax = conf.high, ymin = conf.low), width = 0.3) +
-  xlab('Population-level trait') +
-  ylab('Regression estimate') +
-  scale_colour_poke(pokemon = 'Charizard', spread = 2, guide_legend(title = '')) +
-  coord_flip() +
-  theme(legend.position = 'bottom')
-
-%%end.rcode
-
-
-
-
 %%begin.rcode calcMeans
 # Constant density, altered colony size
 # Need to remove rows with errors to auto find classes of columns
@@ -789,6 +750,47 @@ areaPredictions <- pop %>%
 %%end.rcode
 
 
+
+%%begin.rcode plotCoeffsCapts
+plotCoeffsCapt <- '
+GLM regression coefficients for for three sets of simulations at three transmission, $\\beta$ values.
+To examine whether host density or population size affects pathogen invasion more strongly we compare the orange and blue bars.
+To examine whether group size or number of groups affects pathogen invasion more strongly we compare the second and third bar in each facet.
+'
+
+plotCoeffsTitle <- 'Regression coefficients'
+%%end.rcode
+
+
+
+%%begin.rcode plotCoeffs, fig.cap = plotCoeffsCapt, fig.scap = plotCoeffsTitle, out.width = '0.7\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 3.9, fig.width = 9
+
+allModels <- rbind(areaModel %>% mutate(varied = 'Host density'),
+                   colonyNumberModel %>% mutate(varied = 'Number of groups'),
+                   colonySizeModel %>% mutate(varied = 'Group size')) %>%
+               filter(term == 'ValueChange') %>%
+               mutate(variedSort = factor(varied, levels = unique(varied)[c(2, 3, 1)])) %>%
+               mutate(Density = ifelse(varied == 'Host density', 'Host density', 'Pop. size'))
+allModels$transmission <- factor(allModels$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
+
+
+ggplot(allModels, aes(x = variedSort, y = estimate, colour = Density)) + 
+  facet_grid(. ~ transmission, labeller = label_parsed) +
+  geom_point() +
+  geom_errorbar(aes(ymax = conf.high, ymin = conf.low), width = 0.3) +
+  xlab('Population-level trait') +
+  ylab('Regression estimate') +
+  scale_colour_poke(pokemon = 'Charizard', spread = 2, guide_legend(title = '')) +
+  coord_flip() +
+  theme(legend.position = 'bottom')
+
+%%end.rcode
+
+
+
+
+
+
 %%begin.rcode transMeansCapt
 
 transMeansCapt <- '
@@ -803,7 +805,8 @@ transMeansTitle <- 'Comparison of the probability of the affect of group size an
 %%end.rcode
 
 
-%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.7\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 4.8
+%%begin.rcode plotTransMeans, fig.cap = transMeansCapt, fig.scap = transMeansTitle, out.width = '0.7\\textwidth', fig.show = TRUE, cache = FALSE, fig.height = 5
+
 # Convert to percentage change in density, colonysize or colony number.
 
 d2 <- rbind(dens1Means %>% 
@@ -818,7 +821,6 @@ d2$vary <- factor(d2$vary, levels = unique(d2$vary)[c(2, 3, 1)])
 d2$transmission <- factor(d2$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
 
 # Join predictions
-
 
 colonySizePredictions2 <- dens1 %>% 
                              mutate(invasion = nExtantDis == 2 ) %>%
@@ -843,7 +845,6 @@ colonyNumberPredictions2 <- dens2 %>%
 percChangePreds2 <- rbind(colonySizePredictions2, colonyNumberPredictions2)
 
 percChangePreds2$transmission <- factor(percChangePreds2$transmission, labels = c('beta == 0.1', '0.2', '0.3'))
-
 
 ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
   geom_line(data = percChangePreds2, aes(x = pop, y = .fitted, colour = vary)) +
