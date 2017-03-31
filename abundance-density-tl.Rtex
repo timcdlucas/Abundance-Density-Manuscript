@@ -33,85 +33,8 @@
 %       References preamble                  %                  
 % ------------------------------------------ %
 
-\usepackage[
-  backend=biber, 
-  bibencoding=utf8, 
-  useprefix=true,%
-	uniquename=false, 
-  uniquelist=false, %
-	style=numeric-comp, 
-  sorting=none,
-  firstinits=true, 
-	bibstyle=authoryear,
-	maxcitenames=2,
-  terseinits=true,
-  maxbibnames=10,
-	minbibnames=10
-]{biblatex}
-
-\defbibenvironment{bibliography}
-  {\list
-     {\printtext[labelnumberwidth]{%
-    \printfield{prefixnumber}%
-    [\printfield{labelnumber}]}}
-     {\setlength{\labelwidth}{\labelnumberwidth}%
-      \setlength{\leftmargin}{\labelwidth}%
-      \setlength{\labelsep}{\biblabelsep}%
-      \addtolength{\leftmargin}{\labelsep}%
-      \setlength{\itemsep}{\bibitemsep}%
-      \setlength{\parsep}{\bibparsep}}%
-      \renewcommand*{\makelabel}[1]{\hss##1}}
-  {\endlist}
-  {\item}
-
-\renewcommand*{\revsdnamepunct}{}
-\renewcommand{\cite}[1]{\parencite{#1}}
-
-\renewcommand*{\multicitedelim}{\addcomma}
-
-\DeclareNameAlias{sortname}{last-first}
-\DeclareNameAlias{default}{last-first}
-
-
-% no "In: "
-\renewbibmacro{in:}{%
-  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
-
-\DeclareFieldFormat[article]{title}{#1} 
-%\DeclareFieldFormat[article]{number}{}
-\DeclareFieldFormat[article]{volume}{\textbf{#1}}
-
-
-\renewbibmacro*{volume+number+eid}{%
-  \printfield{volume}%
-%  \setunit*{\adddot}% DELETED
-  \setunit*{\addnbspace}% NEW (optional); there's also \addnbthinspace
-  %\printfield{number}%
-  \setunit{\addcomma\space}%
-  \printfield{eid}}
-
-% remove pp
-\DefineBibliographyStrings{english}{%
-	page = {},
-  pages = {},
-}
-
-\usepackage{xpatch}
-
-\xpatchbibmacro{date+extrayear}{%
-  \printtext[parens]%
-}{%
-  \setunit{\space}%
-  \printtext%
-}{}{}
-
-	
-
-\DeclareFieldFormat{doi}{(#1)}
-\DeclareFieldFormat{url}{(#1)}
-
-\addbibresource{epilit.bib}
-% This has to go below fontenc for some reason
+\usepackage{cite}
+\usepackage[numbers]{natbib}
 
 
 % ------------------------------------------ %
@@ -218,7 +141,7 @@ library(assertthat)
 %%end.rcode
 
 
-\title[Lucas et al.: Population-level drivers of pathogen richness]{Role of inter-related population-level host traits in determining pathogen richness and zoonotic risk}
+\title[Lucas et al.: Drivers of pathogen richness]{Role of inter-related population-level host traits in determining pathogen richness and zoonotic risk}
 \author[Tim C.D. Lucas, Hilde M. Wilkinson-Herbots and Kate E. Jones]{Tim C.D. Lucas\textsuperscript{1$\ast\dagger$}, Hilde M. Wilkinson-Herbots\textsuperscript{2} and Kate E. Jones\textsuperscript{3$\ast$}}
 \date{}
 
@@ -1212,8 +1135,9 @@ This study was funded through a CoMPLEX PhD studentship at University College Lo
 
 
 
-\small
-\printbibliography 
+\input{abundance-density-tl.bbl}
+\bibliographystyle{procrsocb}
+
 
 \end{document}
 
