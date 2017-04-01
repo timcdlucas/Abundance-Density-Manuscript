@@ -1,4 +1,4 @@
-A mechanistic model to compare the importance of interrelated population measures: host population size, density and colony size
+Data for Role of inter-related population-level host traits in determining pathogen richness and zoonotic risk
 ===================================================================================================================================================================
 
 The four csv files in this directory contain the data needed for Chapter 4.
@@ -9,6 +9,8 @@ However, the full, raw data, or this summary can be recreated by running [Chapte
 [PopSims.csv](PopSims.csv) contains the results for the simulations where population size is kept constant while density is altered by changing area.
 
 [DensSims.csv](DensSims.csv) contains the results for the simulations where population size is altered by changing colony size and population density is kept constant by altering area to match the changing population size.
+
+[DensSims-Clean.csv](DensSims-Clean.csv) contains the results for the simulations where population size is altered by changing colony size but one row that where the simulation errored out has been removed.
 
 
 [Dens2Sims.csv](Dens2Sims.csv) contains the results for the simulations where population size is altered by changing the number of colonies and population density is kept constant by altering area to match the changing population size.
