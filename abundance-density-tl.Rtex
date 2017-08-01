@@ -6,49 +6,21 @@
 %---------------------------------------------------------------------------------------------------------------------------------%
 
 
-\documentclass[a4paper,10pt,reqno,oneside]{amsart}
 
-%\usepackage[T1]{fontenc}
-
-
-% line numbers
-\usepackage[running, displaymath, mathlines]{lineno} % running vs pagewise 
-\linenumbers
-\linespread{1.5}
-
-
-\usepackage[marginratio=1:1,height=584pt,margin=1in,tmargin=1in,footskip=2em]{geometry}
-
-\usepackage{fancyhdr} 
-\fancyhf{}
-\cfoot{\thepage}
-\pagestyle{fancy}    
+\documentclass[11pt]{article}
+\usepackage[sc]{mathpazo} %Like Palatino with extensive math support
+\usepackage{fullpage}
+\usepackage[authoryear,sectionbib,sort]{natbib}
+\linespread{1.7}
+\usepackage[utf8]{inputenc}
+\usepackage{lineno}
+\renewcommand{\refname}{Literature Cited}
+\renewcommand{\cite}{\citep}
 
 
-\renewcommand\thesubsection{\textbf{(\alph{subsection})}}
-
-
-
-% ------------------------------------------ %
-%       References preamble                  %                  
-% ------------------------------------------ %
-
-\usepackage{cite}
-\usepackage[numbers]{natbib}
-
-
-% ------------------------------------------ %
-%       End References preamble              %                  
-% ------------------------------------------ %
-
-
-
-
-\usepackage{graphicx}
-
-\usepackage[width = 0.5\textwidth]{caption}
+\usepackage[width = 0.9\textwidth]{caption}
 \usepackage{verbatim, graphicx, xcomment, array}
-%\usepackage{amsmath}
+\usepackage{amsmath}
 
 \DeclareGraphicsExtensions{pdf, eps, png}
 
@@ -59,9 +31,75 @@
 \usepackage[pdftex,hidelinks]{hyperref}
 
 
+
+%%%%%%%%%%%%%%%%%%%%%
+% Line numbering
+%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{lineno}
+% Please use line numbering with your initial submission and
+% subsequent revisions. After acceptance, please turn line numbering
+% off by adding percent signs to the lines %\usepackage{lineno} and
+% to %\linenumbers{} and %\modulolinenumbers[3] below.
+
+\title{Role of inter-related population-level host traits in determining pathogen richness and zoonotic risk}
+
+% This version of the LaTeX template was last updated on
+% April 28, 2017.
+
+%%%%%%%%%%%%%%%%%%%%%
+% Authorship
+%%%%%%%%%%%%%%%%%%%%%
+% Please remove authorship information while your paper is under review,
+% unless you wish to waive your anonymity under double-blind review. You
+% will need to add this information back in to your final files after
+% acceptance.
+
+\author{
+  Tim C.D. Lucas\textsuperscript{1,2,$\ast$}\\
+  Hilde M. Wilkinson-Herbots\textsuperscript{3}\\ 
+  Kate E. Jones\textsuperscript{2,4,$\ast$}
+}
+
+\date{}
+
+
+
 \begin{document}
 
+\maketitle
 
+\noindent{} 1. Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, OX3~7FZ, United Kingdom.;
+
+\noindent{} 2. Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E~6BT, United Kingdom 
+
+\noindent{} 3. Department of Statistical Science, University College London, Gower Street, London, WC1E~6BT, United Kingdom;
+
+\noindent{} 4. Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1~4RY, United Kingdom. 
+
+\noindent{} \textbf{ORCIDs} Lucas, 0000-0003-4694-8107. Jones, 0000-0001-5231-3293.
+
+\noindent{} $\ast$ Corresponding authors; e-mail: timcdlucas@gmail.com, kate.e.jones@ucl.ac.uk.
+
+\bigskip
+
+\textit{Manuscript elements}: Figure~1, figure~2, table~1, online appendices~A and B (including figure~A1, figure~A2, figure~A3, figure~A4, table~A1, table~A2, table~A3 and table~A4). Figures~1 and  2 are to print in color.
+
+\bigskip
+
+\textit{Keywords}: Pathogen competition, zoonotic disease, metapopulations, host pathogen richness, bats, emerging infectious disease.
+
+\bigskip
+
+\textit{Manuscript type}: Article. %Or e-article, note, e-note, natural history miscellany, e-natural history miscellany, comment, reply, invited symposium, or countdown to 150.
+
+\bigskip
+
+\noindent{\footnotesize Prepared using the suggested \LaTeX{} template for \textit{Am.\ Nat.}}
+
+\linenumbers{}
+\modulolinenumbers[3]
+
+\newpage{}
 
 
 
@@ -140,33 +178,7 @@ library(assertthat)
 
 %%end.rcode
 
-
-\title[Lucas et al.: Drivers of pathogen richness]{Role of inter-related population-level host traits in determining pathogen richness and zoonotic risk}
-\author[Tim C.D. Lucas, Hilde M. Wilkinson-Herbots and Kate E. Jones]{Tim C.D. Lucas\textsuperscript{1$\ast\dagger$}, Hilde M. Wilkinson-Herbots\textsuperscript{2} and Kate E. Jones\textsuperscript{3$\ast$}}
-\date{}
-
-\maketitle
-%\tableofcontents
-
-
-
-
-%\subsection*{Addresses:}{\ }\\
-\noindent\textsuperscript{1}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E~6BT, United Kingdom. 0000-0003-4694-8107\\
-\textsuperscript{2}Department of Statistical Science, University College London, Gower Street, London, WC1E~6BT, United Kingdom.\\ 
-\textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E~6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1~4RY, United Kingdom. 0000-0001-5231-3293\\ 
-$^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, OX3~7FZ, United Kingdom. \\
-\vspace{3mm}
-\noindent \textsuperscript{$\ast$}Corresponding authors: Tim C.D. Lucas: timcdlucas@gmail.com, Kate E. Jones: kate.e.jones@ucl.ac.uk
-
-
-
-\subsection*{Word count:} 6999
-\subsection*{Running header:} Host population-level drivers of pathogen richness
-
-\clearpage
-
-\section*{Abstract}
+\section{Abstract}
 
 Zoonotic diseases are an increasingly important source of human infectious diseases, and host pathogen richness of reservoir host species is a critical driver of spill-over risk. 
 Population-level traits of hosts such as population size, host density and geographic range size have all been shown to be important determinants of host pathogen richness. 
@@ -176,9 +188,6 @@ We use bats as a case study as they are highly social and an important source of
 We show that larger populations and group sizes had a greater influence on the chances of pathogen invasion and persistence than increased host density or the number of groups. 
 As anthropogenic change affects these traits to different extents, this increased understanding of how traits independently determine pathogen richness will aid in predicting future zoonotic spill-over risk.
 
-
-\subsection*{Keywords} %max keywords/phrase 3--6 - current 3
-Pathogen competition, zoonotic disease, metapopulations, host pathogen richness, bats, emerging infectious disease
 
 
 
@@ -1103,32 +1112,32 @@ Species that are experiencing an increase in group size \cite{lehmann2010apes} w
 In contrast, species suffering a reduction in geographic range size \cite{thomas2004extinction} or a decrease in population size \cite{craigie2010large}, without a corresponding decrease in group size,  are expected to experience smaller changes in pathogen richness.
 Only by examining the mechanisms that control pathogen richness can we understand and predict these changes.
 
-\section*{Data accessibility}
+\section{Data accessibility}
 \sloppy
 The implementation of the model is available as an R package on GitHub \cite{metapopepi}. This can be found at \href{https://github.com/timcdlucas/MetapopEpi}{https://github.com/timcdlucas/MetapopEpi}.
 All other code and simulation output data is available on GitHub at \href{https://github.com/timcdlucas/Abundance-Density-Manuscript}{https://github.com/timcdlucas/Abundance-Density-Manuscript}.
 \fussy
 
 
-\section*{Competing interests}
+\section{Competing interests}
 We have no competing interests.
 
 
 
-\section*{Author's contributions}
+\section{Author's contributions}
 
 TCDL wrote the simulations and performed the analysis.
 TCDL, HMH and KEJ co-designed the study.
 TCDL drafted the manuscript.
 TCDL, HMH and KEJ all edited the manuscript and gave final approval for publication.
 
-\section*{Acknowledgements}
+\section{Acknowledgements}
 We thank Andy Fenton and David Murrell for comments on the manuscript and help with the analytical model. 
 This work, The Dynamic Drivers of Disease in Africa Consortium, NERC project no. NE-J001570-1 was funded with support from the Ecosystem Services for Poverty Alleviation Programme (ESPA). 
 The ESPA programme is funded by the Department for International Development (DFID), the Economic and Social Research Council (ESRC) and the Natural Environment Research Council (NERC).
 
 
-\section*{Funding}
+\section{Funding}
 This study was funded through a CoMPLEX PhD studentship at University College London supported by BBSRC and EPSRC (TCDL). KEJ was funded by the Ecosystem Services for Poverty Alleviation Programme (ESPA) (NE-J001570-1).
 
 
