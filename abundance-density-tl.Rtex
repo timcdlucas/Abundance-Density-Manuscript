@@ -104,7 +104,7 @@
 
 \newpage{}
 
-
+% running title: Population-level drivers of pathogen richness
 
 
 %%begin.rcode settings, echo = FALSE, cache = FALSE, message = FALSE, results = 'hide'
@@ -1007,12 +1007,7 @@ The 95\% confidence intervals of regression coefficients for group size did not 
 
 \begin{table}
 \captionsetup{width=0.9\textwidth}
-\caption[Regression results]{
-Regression results comparing effects of group size, number of groups and host density.
-Estimated regression coefficients and their 95\% confidence intervals are from binomial GLM regressions with the proportion of invasions as the response variable and all explanatory variables being standardised by dividing by the default parameter value and applying a $\log_2$ transform.
-Group size and number of groups were varied while keeping density equal while density was varied by changing geographic range size while keeping population size equal.
-Results are given for three transmission ($\beta$) values.
-}
+\caption{Regression results}
 \label{t:regrCoefs}
 \centering
 \begin{tabular}{@{}rlrrr@{}}
@@ -1030,7 +1025,14 @@ $\beta$ & \emph{Variable} & \emph{Coefficient} & (95\% \emph{CI}) & $p$\\
 &    Density       & \rinline{areaModel$estimate[6]} & (\rinline{areaModel$conf.low[6]}, \rinline{areaModel$conf.high[6]}) & \rinline{areaModel$p.value[6]} \\
 \bottomrule
 
+
 \end{tabular}
+\caption*{
+Regression results comparing effects of group size, number of groups and host density.
+Estimated regression coefficients and their 95\% confidence intervals are from binomial GLM regressions with the proportion of invasions as the response variable and all explanatory variables being standardised by dividing by the default parameter value and applying a $\log_2$ transform.
+Group size and number of groups were varied while keeping density equal while density was varied by changing geographic range size while keeping population size equal.
+Results are given for three transmission ($\beta$) values.
+}
 \end{table}
 
 
