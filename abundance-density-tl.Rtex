@@ -83,6 +83,8 @@
 
 \bigskip
 
+\textit{Word count}: 4371
+
 \textit{Manuscript elements}: Figure~1, figure~2, table~1, online appendices~A and B (including figure~A1, figure~A2, figure~A3, figure~A4, table~A1, table~A2, table~A3 and table~A4). Figures~1 and  2 are to print in color.
 
 \bigskip
@@ -1145,8 +1147,8 @@ This study was funded through a CoMPLEX PhD studentship at University College Lo
 
 
 
-\input{abundance-density-tl.bbl}
-\bibliographystyle{procrsocb}
+\bibliography{epilit}
+\bibliographystyle{amnat}
 
 \include{abundance-density-tl-SI}
 
