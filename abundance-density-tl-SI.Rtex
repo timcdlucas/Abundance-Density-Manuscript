@@ -40,12 +40,14 @@ library(broom)
 
 
 \begin{table}[h!]
-\captionsetup{width=.9\textwidth}
+\captionsetup{width=\textwidth}
 \centering
+\small
+
 \caption{A summary of all symbols used along with their units and default values.
 The justifications for parameter values are given in the main manuscript.}
 
-\begin{tabular}{@{}lp{6cm}p{2.9cm}r@{}}
+\begin{tabular}{@{}lp{7cm}p{2.9cm}r@{}}
 \toprule
 Symbol & Explanation & Units & Value\\
 \midrule
