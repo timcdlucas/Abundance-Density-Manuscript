@@ -5,92 +5,6 @@
 %---------------------------------------------------------------------------------------------------------------------------------%
 
 
-\documentclass[a4paper,10pt,reqno]{amsart}
-
-
-
-
-\usepackage{graphicx}
-
-\usepackage[width = 0.9\textwidth]{caption}
-\usepackage{verbatim, geometry, fancyhdr,  graphicx, xcomment, microtype, array}
-
-\DeclareGraphicsExtensions{pdf, eps, png}
-
-\geometry{margin=1in}
-
-
-
-% ------------------------------------------ %
-%       References preamble                  %                  
-% ------------------------------------------ %
-
-\usepackage[
-  backend=biber, 
-  bibencoding=utf8, 
-  useprefix=true,%
-	uniquename=false, 
-  uniquelist=false, %
-	style=numeric-comp, 
-  sorting=none,
-  firstinits=true, 
-	maxcitenames=2, 
-  terseinits=true,
-  maxbibnames=10
-]{biblatex}
-
-\renewcommand{\cite}[1]{\parencite{#1}}
-
-\renewcommand*{\multicitedelim}{\addcomma}
-
-% no "In: "
-\renewbibmacro{in:}{%
-  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
-
-
-\addbibresource{epilit.bib}
-% This has to go below fontenc for some reason
-
-
-% ------------------------------------------ %
-%       End References preamble              %                  
-% ------------------------------------------ %
-
-
-
-\usepackage{booktabs}
-\usepackage[pdftex,hidelinks]{hyperref}
-
-
-\renewcommand\thefigure{S\arabic{figure}}    
-\renewcommand\thetable{S\arabic{table}}    
-\renewcommand\thesection{S\arabic{section}}    
-
-\begin{document}
-
-
-\title[Lucas et al.: Drivers of pathogen richness]{Electronic Supplementary Material: Role of inter-related population-level host traits in determining pathogen richness and zoonotic risk}
-\author[Tim C.D. Lucas, Hilde M. Wilkinson-Herbots and Kate E. Jones]{Tim C.D. Lucas\textsuperscript{1$\ast\dagger$}, Hilde M. Wilkinson-Herbots\textsuperscript{2} and Kate E. Jones\textsuperscript{3$\ast$}}
-\date{}
-
-\maketitle
-%\tableofcontents
-
-
-
-
-%\subsection*{Addresses:}{\ }\\
-\noindent\textsuperscript{1}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E~6BT, United Kingdom. 0000-0003-4694-8107\\
-\textsuperscript{2}Department of Statistical Science, University College London, Gower Street, London, WC1E~6BT, United Kingdom.\\ 
-\textsuperscript{3}Centre for Biodiversity and Environment Research, Department of Genetics, Evolution and Environment, University College London, Gower Street, London, WC1E~6BT, United Kingdom and Institute of Zoology, Zoological Society of London, Regent's Park, London, NW1~4RY, United Kingdom. 0000-0001-5231-3293\\ 
-$^\dagger$Current address:  Oxford Big Data Institute, Li Ka Shing Centre for Health Information and Discovery, University of Oxford, Oxford, OX3~7FZ, United Kingdom. \\
-\vspace{3mm}
-\noindent \textsuperscript{$\ast$}Corresponding authors: Tim C.D. Lucas: timcdlucas@gmail.com, Kate E. Jones: kate.e.jones@ucl.ac.uk
-
-\clearpage
-
-
-
 
 %%begin.rcode settings, echo = FALSE, cache = FALSE, message = FALSE, results = 'hide', eval = TRUE
 
@@ -224,7 +138,7 @@ while coinfection, given the coinfection adjustment factor $\alpha$, is given by
   i_{12,x} \rightarrow i_{12,x}+1,\;\;\; i_{1x} \rightarrow i_{1x}-1 &\;\;\text{at a rate of}\;\; \alpha\beta i_{1x}\left(i_{2x} + i_{12x}\right),\\
   i_{12,x} \rightarrow i_{12,x}+1,\;\;\; i_{2x} \rightarrow i_{2x}-1 &\;\;\text{at a rate of}\;\; \alpha\beta i_{2x}\left(i_{1x} + i_{12x}\right).
 \end{align}
-Note that lower values of $\alpha$ give lower rates of coinfection as in \textcite{castillo1989epidemiological}.
+Note that lower values of $\alpha$ give lower rates of coinfection as in \cite{castillo1989epidemiological}.
 
 
 
@@ -253,7 +167,8 @@ Finally, recovery from any infectious class occurs at a rate $\gamma$
 
 % todo Align equal signs across groups
 % http://tex.stackexchange.com/questions/11855/alignment-of-equals-sign-in-multiple-align-environments
-
+%
+% Should probably put whole, single patch model into sympy and see what I get out...
 
 We can study the model analytically if we restrict the population to a single subpopulation.
 We first study the endemic pathogen. 
@@ -269,7 +184,7 @@ We then have a typical SIR model with vital dynamics \cite{Kermack1932}.
 
 
 To find the equilibrium number of susceptibles, $S^\ast$, we set $\frac{dI_1}{dt} = 0$.
-We then have the trvial. steady state of $S^* = n$ and  $I_1^* = 0$.
+We then have the trival steady state of $S^* = n$ and  $I_1^* = 0$.
 To find the endemic steady state ($I_1^* \ne 0$) we write
 
 \begin{align}
@@ -567,36 +482,36 @@ par(mfrow = c(2,2))
 
 
 plotColonyNet(p1, area = side[5], cex = points, mar = c(bigx, bigy, 2, 2), alpha = 1, lowgrey = 0.2, highgrey = 0.7, col = pokepal('Charizard')[c(4, 14)])
-axis(2, col = 'grey', cex.axis = axSz, at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), col.axis = '#a4a4a4', family = 'sans', font = 2)
-axis(1, col = 'grey', labels = FALSE)
-title(main = bquote(italic(bar(k)) ~ '='~ .(k1)), cex.main = titleSz, family = 'sans',  line = -1.18)
-mtext(side = 2,  line = 4, text = 'Latitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
+#axis(2, col = 'grey', cex.axis = axSz, at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), col.axis = '#a4a4a4')
+axis(1)
+#title(main = bquote(italic(bar(k)) ~ '='~ .(k1)), cex.main = titleSz, line = -1.18)
+mtext(side = 2,  line = 4, text = 'Latitude', cex = labSz, col  =  "#8B8B8B")
 lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
-mtext(side = 3,  line = -0.3, text = 'A)', cex = 1, family = 'sans', at = -62)
+mtext(side = 3,  line = -0.3, text = 'A)', cex = 1, at = -62)
 
 plotColonyNet(p4, area = side[5], cex = points, mar = c(bigx, 6, 2, 2), alpha = 1, lowgrey = 0.2, highgrey = 0.7, col = pokepal('Charizard')[c(4, 14)])
 axis(2, col = 'grey', labels = FALSE)
 axis(1, col = 'grey', labels = FALSE)
-title(main = bquote(italic(bar(k)) ~ '='~ .(k4)), cex.main = titleSz, family = 'sans',  line = -1.18)
-mtext(side = 3,  line = -0.3, text = 'B)', cex = 1, family = 'sans', at = -22)
+#title(main = bquote(italic(bar(k)) ~ '='~ .(k4)), cex.main = titleSz, line = -1.18)
+mtext(side = 3,  line = -0.3, text = 'B)', cex = 1, at = -22)
 
 plotColonyNet(p3, area = side[5], cex = points, mar = c(bigx, bigy, 0, 2), alpha = 1, lowgrey = 0.2, highgrey = 0.7, col = pokepal('Charizard')[c(4, 14)])
-axis(2, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'), family = 'sans', font = 2)
+axis(2, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 50, 100, 150, 200), labels = c('0', '', '100', '', '200'))
 axis(1, col = 'grey', labels = FALSE)
-axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'sans', font = 2, line = 0.5, lwd = 0)
-title(main = bquote(italic(bar(k)) ~ '='~ .(k3)), cex.main = titleSz, family = 'sans',  line = -1.18)
-mtext(side = 2,  line = 4, text = 'Latitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
-mtext(side = 1,  line = 4.4, text = 'Longitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
+axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'),  line = 0.5, lwd = 0)
+#title(main = bquote(italic(bar(k)) ~ '='~ .(k3)), cex.main = titleSz, line = -1.18)
+mtext(side = 2,  line = 4, text = 'Latitude', cex = labSz, col  =  "#8B8B8B")
+mtext(side = 1,  line = 4.4, text = 'Longitude', cex = labSz, col  =  "#8B8B8B")
 lines(x = c(0, 100, 100), y = c(100, 100, 0), lty = 2, col = 'grey')
-mtext(side = 3,  line = -0.3, text = 'C)', cex = 1, family = 'sans', at = -62)
+mtext(side = 3,  line = -0.3, text = 'C)', cex = 1, at = -62)
 
 plotColonyNet(p2, area = side[5], cex = points, mar = c(bigx, 6, 0, 2), alpha = 1, lowgrey = 0.2, highgrey = 0.7, col = pokepal('Charizard')[c(4, 14)])
 axis(1, col = 'grey', labels = FALSE)
-axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'), family = 'sans', font = 2, line = 0.5, lwd = 0)
+axis(1, col = 'grey', cex.axis = axSz, col.axis = '#a4a4a4', at = c(0, 100, 200), labels = c('0', '100', '200'),  line = 0.5, lwd = 0)
 axis(2, col = 'grey', labels = FALSE)
-title(main = bquote(italic(bar(k)) ~ '='~ .(k2)), cex.main = titleSz, family = 'sans',  line = -1.18)
-mtext(side = 1,  line = 4.4, text = 'Longitude', cex = labSz, family = 'sans', col  =  "#8B8B8B")
-mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, family = 'sans', at = -22)
+#title(main = bquote(italic(bar(k)) ~ '='~ .(k2)), cex.main = titleSz, line = -1.18)
+mtext(side = 1,  line = 4.4, text = 'Longitude', cex = labSz, col  =  "#8B8B8B")
+mtext(side = 3,  line = -0.3, text = 'D)', cex = 1, at = -22)
 
 
 
@@ -865,18 +780,6 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
 	theme(legend.position = 'bottom', legend.direction = 'vertical')
 
 %%end.rcode
-
-
-
-
-
-
-
-\clearpage
-\small
-\printbibliography 
-
-\end{document}
 
 
 

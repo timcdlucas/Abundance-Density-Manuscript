@@ -16,6 +16,7 @@
 \usepackage{lineno}
 \renewcommand{\refname}{Literature Cited}
 \renewcommand{\cite}{\citep}
+\usepackage[nomarkers, nolists,figuresonly]{endfloat}
 
 
 \usepackage[width = 0.9\textwidth]{caption}
@@ -178,7 +179,7 @@ library(assertthat)
 
 %%end.rcode
 
-\section{Abstract}
+\section*{Abstract}
 
 Zoonotic diseases are an increasingly important source of human infectious diseases, and host pathogen richness of reservoir host species is a critical driver of spill-over risk. 
 Population-level traits of hosts such as population size, host density and geographic range size have all been shown to be important determinants of host pathogen richness. 
@@ -194,13 +195,13 @@ As anthropogenic change affects these traits to different extents, this increase
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{Introduction}
+\section*{Introduction}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-%\tmpsection{General Intro}
+%\tmpsection*{General Intro}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A basic introduction to the field,
 % comprehensible to a scientist in any discipline.
@@ -452,7 +453,7 @@ write.csv(z, file = 'Data/PopSims.csv')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{Methods}
+\section*{Methods}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -475,7 +476,7 @@ write.csv(z, file = 'Data/PopSims.csv')
 
 
 
-\subsection{Two pathogen SIR model}
+\subsection*{Two pathogen SIR model}
 
 
 We developed a multipathogen, susceptible-infected-recovered (SIR) compartment model to examine the probability that a newly evolved pathogen would invade and persist into a population in the presence of an identical, endemic pathogen.
@@ -501,7 +502,7 @@ We examined the full model using stochastic, continuous-time simulations, in \em
 The full details of the model are given in electronic supplementary material~S1.
 
 
-\subsection{Deterministic model}
+\subsection*{Deterministic model}
 \label{s:determ}
 
 We examined a single-group, deterministic model to establish a baseline expectation for whether a newly evolved pathogen strain could invade into a population in the presence of an identical strain given the assumptions of our two-pathogen SIR model (for details see electronic supplementary material~S2).
@@ -518,7 +519,7 @@ That is, provided cross-immunity is not complete, Pathogen~2 will invade in this
 This means that it is only stochastic extinction that would prevent a pathogen from invading into a population.
 Our more detailed simulations are therefore examining how effectively different population-level traits alleviate stochastic extinction or allow longer term persistence.
 
-\subsection{Parameter selection}
+\subsection*{Parameter selection}
 \label{s:paramSelect}
 
 While some fixed parameters were chosen to approximate those found in wild bat populations, others were chosen for modelling reasons. 
@@ -535,7 +536,7 @@ The case where Pathogen~2 does not invade and spread ($\alpha = 0$) is not impor
 The dispersal rate, $\xi$, was set to 0.01 which yields 17\% of individuals dispersing in their lifetime.
 This relates to a species with juvenile dispersal of a proportion of males and very few females \cite{kerth2008causes, chen2008sex}.
 
-%\subsection{Population-level factors} % This isn't a full subsection...
+%\subsection*{Population-level factors} % This isn't a full subsection...
 
 The effect of geographic range size on disease dynamics occurred through changes in the metapopulation network.
 Dispersal was only allowed to occur between two groups if they were connected nodes in the metapopulation network.
@@ -548,7 +549,7 @@ Therefore, it was considered preferential to keep the unconnected networks.
 
 
 
-\subsection{Experimental setup}
+\subsection*{Experimental setup}
 
 A total of 4500 simulations were run.
 In each simulation, each group in the host population was seeded with 20 individuals infected with Pathogen~1. 
@@ -882,7 +883,7 @@ ggplot(d2, aes(x = pop, y = mean, colour = vary)) +
 
 
 
-\subsection{Statistical analysis}
+\subsection*{Statistical analysis}
 
 
 
@@ -904,7 +905,7 @@ To examine whether an increase in group size creates a stronger increase in inva
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{Results}
+\section*{Results}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -987,14 +988,14 @@ ggplot(d, aes(x = ValueChange, y = mean, colour = vary, shape = vary)) +
 
 %%end.rcode
 
-\subsection{Population size and host density}
+\subsection*{Population size and host density}
 The estimated GLM coefficients were always larger for simulations where population size was varied (sets \emph{ii} and \emph{iii}) than when host density (set \emph{i}) was varied (table~\ref{t:regrCoefs}, electronic supplementary material figure~S3).
 Increasing population size, either by increasing group size or number of groups, increased the probability of invasion (figure~\ref{fig:plotValueChangeMeans}).
 The positive relationship between group size and invasion was strong and significant at all transmission rates, while the relationship between number of groups and invasion was weaker but still significant.
 In contrast, varying host density did not significantly alter invasion probability except for when $\beta = 0.3$ where there was a significant decrease in invasion probability with increased host density (GLM: coefficient = $\rinline{areaModel$estimate[6]}$, $p$ = \rinline{areaModel$p.value[6]}).
 The 95\% confidence intervals for the coefficients of group size did not overlap with those for the coefficients of host density at any value of $\beta$ while the 95\% confidence intervals for coefficients of number of groups only overlapped with those for host density at $\beta = 0.2$.
 
-\subsection{Group size and number of groups}
+\subsection*{Group size and number of groups}
 In all cases, the estimated GLM coefficients were larger for simulations where group size was varied (set \emph{ii}) than when the number of groups (set \emph{iii}) was varied (table~\ref{t:regrCoefs}, electronic supplementary material figures~S3 and S4).
 Increasing either group size or the number of groups increased the probability of invasion but this effect was  stronger for group size (figure~\ref{fig:plotValueChangeMeans}).
 The 95\% confidence intervals of regression coefficients for group size did not overlap with those for number of groups for the simulations with $\beta = 0.2$ or $0.3$ but the confidence intervals did overlap for the simulations when $\beta = 0.1$.
@@ -1035,7 +1036,7 @@ $\beta$ & \emph{Variable} & \emph{Coefficient} & (95\% \emph{CI}) & $p$\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{Discussion}
+\section*{Discussion}
 
 %todo what are the four things i want to say.
 % Restate. Interpret at simple level.
@@ -1049,7 +1050,7 @@ $\beta$ & \emph{Variable} & \emph{Coefficient} & (95\% \emph{CI}) & $p$\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\tmpsection{Restate results}
+%\tmpsection*{Restate results}
 
 % Population-level traits such as increased increased host density \cite{morand1998density, kamiya2014determines, nunn2003comparative}, geographic range size \cite{nunn2003comparative, turmelle2009correlates, kamiya2014determines} and population structure (nonrandom interactions between individuals) \cite{maganga2014bat, turmelle2009correlates} have been shown to correlate with high pathogen richness, although the relationship with group sizes in many studies has been equivocal \cite{vitone2004body, gay2014parasite, rifkin2012animals, nunn2003comparative}. 
 
@@ -1079,7 +1080,7 @@ However, given that in our study, increased density affects disease dynamics by 
 %However, again, this effect was very weak compared to the strong changes in local disease dynamics caused by increasing colony size.
 
 
-%\subsection{Comparative studies}
+%\subsection*{Comparative studies}
 
 Many comparative studies measure population-level traits, yet it is rarely considered how these might be causally related (though statistical correlations between explanatory variables are often handled appropriately).
 For example, host density is often used in studies \cite{morand1998density, lindenfors2007parasite, nunn2003comparative}, yet host density is directly associated with population size.
@@ -1091,7 +1092,7 @@ Researchers could include of an interaction term between geographic range size a
 %Furthermore, measurements of host density from the literature should be treated carefully; for example, were the original authors estimating global density or measuring local density in an area of unusually high host density?
 
 
-% \tmpsection{Only two pathogens, direct transmission}
+% \tmpsection*{Only two pathogens, direct transmission}
 
 This study was limited to one mechanism by which pathogen richness can be increased; the invasion and persistence of a newly evolved pathogen \cite{vickery1998parasite}.
 However, other processes such as pathogen extinction are also likely to be important \cite{vickery1998parasite}.
@@ -1101,7 +1102,7 @@ Infection via shared food sources or contact between individuals from different 
 However, further modelling would be required to demonstrate this while only empirical studies would be able to indicate the true relative importance of these different transmission routes in wild populations.
 
 
-%\subsection{Global change}
+%\subsection*{Global change}
 
 It is clear that many species are suffering strong population changes due to global change \cite{thomas2004extinction}.
 These changes might affect geographic range size \cite{thomas2004extinction}, population size \cite{craigie2010large}, population connectivity \cite{rivera2015habitat, fonturbel2014forest} or group size \cite{lehmann2010apes, atwood2006influence} to different degrees.
@@ -1112,32 +1113,32 @@ Species that are experiencing an increase in group size \cite{lehmann2010apes} w
 In contrast, species suffering a reduction in geographic range size \cite{thomas2004extinction} or a decrease in population size \cite{craigie2010large}, without a corresponding decrease in group size,  are expected to experience smaller changes in pathogen richness.
 Only by examining the mechanisms that control pathogen richness can we understand and predict these changes.
 
-\section{Data accessibility}
+\section*{Data accessibility}
 \sloppy
 The implementation of the model is available as an R package on GitHub \cite{metapopepi}. This can be found at \href{https://github.com/timcdlucas/MetapopEpi}{https://github.com/timcdlucas/MetapopEpi}.
 All other code and simulation output data is available on GitHub at \href{https://github.com/timcdlucas/Abundance-Density-Manuscript}{https://github.com/timcdlucas/Abundance-Density-Manuscript}.
 \fussy
 
 
-\section{Competing interests}
+\section*{Competing interests}
 We have no competing interests.
 
 
 
-\section{Author's contributions}
+\section*{Author's contributions}
 
 TCDL wrote the simulations and performed the analysis.
 TCDL, HMH and KEJ co-designed the study.
 TCDL drafted the manuscript.
 TCDL, HMH and KEJ all edited the manuscript and gave final approval for publication.
 
-\section{Acknowledgements}
+\section*{Acknowledgements}
 We thank Andy Fenton and David Murrell for comments on the manuscript and help with the analytical model. 
 This work, The Dynamic Drivers of Disease in Africa Consortium, NERC project no. NE-J001570-1 was funded with support from the Ecosystem Services for Poverty Alleviation Programme (ESPA). 
 The ESPA programme is funded by the Department for International Development (DFID), the Economic and Social Research Council (ESRC) and the Natural Environment Research Council (NERC).
 
 
-\section{Funding}
+\section*{Funding}
 This study was funded through a CoMPLEX PhD studentship at University College London supported by BBSRC and EPSRC (TCDL). KEJ was funded by the Ecosystem Services for Poverty Alleviation Programme (ESPA) (NE-J001570-1).
 
 
@@ -1146,6 +1147,9 @@ This study was funded through a CoMPLEX PhD studentship at University College Lo
 
 \input{abundance-density-tl.bbl}
 \bibliographystyle{procrsocb}
+
+\include{abundance-density-tl-SI}
+
 
 
 \end{document}
