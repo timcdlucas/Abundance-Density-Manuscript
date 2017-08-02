@@ -4,9 +4,11 @@ Role of inter-related population-level host traits in determining pathogen richn
 
 Repo for manuscript and analysis.
 
+The preprint is on BioRxiv ([preprint](http://www.biorxiv.org/content/early/2017/04/02/123067)).
+
 This paper is a reworking of [Chapter 4 of my thesis](https://github.com/timcdlucas/PhDThesis)  ([with commit history](https://github.com/timcdlucas/PhDThesis/commits/master/Chapter4.Rtex)).
 
-For submission to Proceedings of the Royal Society: B
+For submission to American Naturalist
 
 It comprises simulations that test whether it is abundance, density, colony size, number of colonies or distribution area which most strongly affects pathogen richness.
 The simulations are run using my R package [metapopEpi](https://github.com/timcdlucas/metapopEpi).
